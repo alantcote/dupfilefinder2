@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="785.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cotelab.dupfilefinder2.FXMLController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <GridPane hgap="5.0" vgap="5.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Directory Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
+            <Label text="Failed Access Count:" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
+            <Label text="Other Count:" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="11" />
+            <Label text="Regular File Count:" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
+            <Label text="Symbolic Link Count:" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
+            <Label text="Unreadable Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
+            <Label fx:id="sspDirectoryCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Label fx:id="sspFailedAccessCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+            <Label fx:id="sspOtherCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+            <Label fx:id="sspRegularFileCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+            <Label fx:id="sspSymbolicLinkCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+            <Label fx:id="sspUnreadableCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+            <Label contentDisplay="RIGHT" text="Pipeline State:" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Label fx:id="pipelineState" text="Unknown" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Subtree Search Phase State:" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
+            <Label fx:id="sspState" text="Unknown" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+            <Label fx:id="pipelineName" text="Unknown" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="sspName" text="Unknown" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="8">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="pipelineInputQueueName" text="Unknown" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label text="Put Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+            <Label fx:id="pipelineInputPutCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label fx:id="pipelineInputTakeCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label text="Take Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+            <Label fx:id="pipelineOutputPutCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="47" />
+            <Label fx:id="pipelineOutputQueueName" text="Unknown" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="46">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label text="Put Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="47" />
+            <Label text="Take Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="48" />
+            <Label fx:id="pipelineOutputTakeCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="48" />
+            <Label fx:id="ss2gbsQueueName" text="Unknown" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="17">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label text="Put Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="18" />
+            <Label fx:id="ss2gbsPutCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+            <Label text="Take Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="19" />
+            <Label fx:id="ss2gbsTakeCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="19" />
+            <Label fx:id="gbsName" text="Unknown" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="21">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label text="Files Measured" GridPane.halignment="RIGHT" GridPane.rowIndex="22" />
+            <Label fx:id="gbsFilesMeasuredCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="22" />
+            <Label text="Size Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="23" />
+            <Label fx:id="gbsSizeCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="23" />
+            <Label text="Unmeasurable Count" GridPane.halignment="RIGHT" GridPane.rowIndex="25" />
+            <Label fx:id="gbsUnmeasurableCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="25" />
+            <Label text="Group By Size Phase State:" GridPane.halignment="RIGHT" GridPane.rowIndex="26" />
+            <Label fx:id="gbsState" text="Unknown" GridPane.columnIndex="1" GridPane.rowIndex="26" />
+            <Label text="Unique Files Identified Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="24" />
+            <Label fx:id="gbsUniqueCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="24" />
+            <Label text="Put Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="29" />
+            <Label text="Take Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="30" />
+            <Label fx:id="gbs2gbcQueueName" text="Unknown" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="28">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="gbs2gbcPutCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="29" />
+            <Label fx:id="gbs2gbcTakeCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="30" />
+            <Label text="Unique Files Identified Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="35" />
+            <Label text="Group By Content Phase State:" GridPane.halignment="RIGHT" GridPane.rowIndex="36" />
+            <Label fx:id="gbcName" text="Unknown" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="32">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="gbcUniqueCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="35" />
+            <Label fx:id="gbcState" text="Unknown" GridPane.columnIndex="1" GridPane.rowIndex="36" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="16" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="20" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="27" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="31" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="45" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="49" />
+            <Label text="Bytes Compared Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="33" />
+            <Label text="Files Compared Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="34" />
+            <Label fx:id="gbcBytesCompared" text="0" GridPane.columnIndex="1" GridPane.rowIndex="33" />
+            <Label fx:id="gbcFilesCompared" text="0" GridPane.columnIndex="1" GridPane.rowIndex="34" />
+            <Label text="Elapsed Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <Label fx:id="elapsedTime" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="37" />
+            <Label fx:id="gbc2msiQueueName" text="Unknown" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="38">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label text="Put Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="39" />
+            <Label text="Take Count:" GridPane.halignment="RIGHT" GridPane.rowIndex="40" />
+            <Label fx:id="gbc2msiPutCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="39" />
+            <Label fx:id="gbc2msiTakeCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="40" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="41" />
+            <Label fx:id="msiName" text="Unknown" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="42">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label text="Matched Subtree ID Phase State:" GridPane.halignment="RIGHT" GridPane.rowIndex="44" />
+            <Label fx:id="msiState" text="Unknown" GridPane.columnIndex="1" GridPane.rowIndex="44" />
+            <Label text="Path Groups Considered:" GridPane.halignment="RIGHT" GridPane.rowIndex="43" />
+            <Label fx:id="msiPathGroupsConsidered" text="0" GridPane.columnIndex="1" GridPane.rowIndex="43" />
+         </children>
+      </GridPane>
+   </center>
+   <bottom>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <ButtonBar prefHeight="18.0" prefWidth="199.0">
+              <buttons>
+                  <Button fx:id="startButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Begin" textAlignment="CENTER" textFill="GREEN">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding>
+                  </Button>
+                <Button fx:id="cancelButton" alignment="CENTER" contentDisplay="CENTER" disable="true" minWidth="0.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="386.0" text="Cancel" textAlignment="CENTER" textFill="RED">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding>
+                  </Button>
+              </buttons>
+            </ButtonBar>
+            <Label fx:id="heapMessage" alignment="CENTER" prefHeight="17.0" prefWidth="401.0" text="Heap Info" textAlignment="CENTER" />
+            <ProgressBar fx:id="heapProgressBar" prefHeight="18.0" prefWidth="199.0" progress="0.0" />
+         </children>
+      </HBox>
+   </bottom>
+   <left>
+      <TreeView fx:id="placeHolderTreeView" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <TreeView fx:id="resultsTreeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </right>
+</BorderPane>

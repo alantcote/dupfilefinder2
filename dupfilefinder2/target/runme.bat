@@ -1,0 +1,1 @@
+start jlink-image\bin\javaw -jar modules\dupfilefinder2-0.0.1-SNAPSHOT.jar
