@@ -23,9 +23,13 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 
 		@Override
 		public void handle(WorkerStateEvent event) {
+			Throwable t = new Throwable();
+			
+			System.err.println("Phase.ChildProblemEventHandler.handle(): handling " + event);
+			t.printStackTrace();
 
 			// may as well cancel this Phase.
-			cancel(true);
+//			cancel(true);
 		}
 	}
 
@@ -73,6 +77,11 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	public boolean cancel(boolean mayInterruptIfRunning) {
 		boolean success = true;
 		ArrayList<Phase> livingKids = new ArrayList<Phase>();
+
+		System.err.println("Phase.cancel(): cancel entered for " + phaseName.get());
+		Throwable throwable = new Throwable();
+		
+		throwable.printStackTrace();
 
 		for (Phase child : children) {
 			if (!child.isDone()) {
@@ -191,13 +200,19 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	 */
 	@Override
 	protected Void call() throws Exception {
-//		System.out.println("Phase.call(): starting child phases");
+		try {
+//			System.out.println("Phase.call(): starting child phases");
 
-		startChildren();
+			startChildren();
 
-//		System.out.println("Phase.call(): waiting for child phases to end");
+//			System.out.println("Phase.call(): waiting for child phases to end");
 
-		waitForChildrenDone();
+			waitForChildrenDone();
+		} catch (Exception e) {
+			System.err.println("Phase.call(): caught" + e.getMessage());
+			e.printStackTrace();
+			cancel();
+		}
 
 //		System.out.println("Phase.call(): method complete");
 

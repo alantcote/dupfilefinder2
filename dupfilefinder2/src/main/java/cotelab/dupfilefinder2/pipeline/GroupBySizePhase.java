@@ -65,15 +65,17 @@ public class GroupBySizePhase extends Phase {
 
 		try {
 //			System.out.println("GroupBySizePhase.call(): taking");
+			
+			Collection<Path> batch;
 
-			// only really expect one batch
-			Collection<Path> batch = inputQueue.take();
+			// obeying EOF convention
+			while (((batch = inputQueue.take()) != null) && !batch.isEmpty()) {
+//				System.out.println("GroupBySizePhase.call(): calling processBatch()");
 
-//			System.out.println("GroupBySizePhase.call(): calling processBatch()");
+				processBatch(batch);
 
-			processBatch(batch);
-
-//			System.out.println("GroupBySizePhase.call(): batch processed");
+//				System.out.println("GroupBySizePhase.call(): batch processed");
+			}
 		} catch (InterruptedException e) {
 			// if cancelled, it'll be discovered later
 //			System.out.println("GroupBySizePhase.call(): caught exception");
@@ -86,6 +88,8 @@ public class GroupBySizePhase extends Phase {
 
 			publishResults();
 		}
+		
+		outputQueue.put(new ArrayList<Path>()); // EOF convention
 
 //		System.out.println("GroupBySizePhase.call(): method completed");
 

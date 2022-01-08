@@ -422,26 +422,30 @@ public class FXMLController implements Initializable {
 	}
 
 	protected Pipeline setUpPipeline() {
-		input = new PipelineQueue(5, "Pipeline Input");
+		input = new PipelineQueue(Integer.MAX_VALUE, "Pipeline Input");
 		output = new PipelineQueue(Integer.MAX_VALUE, "Pipeline Output");
 
 		Pipeline result = new Pipeline("Pipeline", input, output);
-		LinkedList<Path> searchRoots = new LinkedList<Path>();
+//		LinkedList<Path> searchRoots = new LinkedList<Path>();
 		MultipleSelectionModel<TreeItem<File>> selModel = fileTreeView.getSelectionModel();
 		ObservableList<TreeItem<File>> selectedItems = selModel.getSelectedItems();
 
-		for (TreeItem<File> rootItem : selectedItems) {
-			File rootFile = rootItem.getValue();
-//			Path rootPath = Paths.get(rootFile.getAbsolutePath());
-			Path rootPath = rootFile.toPath();
-
-			searchRoots.add(rootPath);
-
-//			System.out.println("FXMLController.setupPhase(): root = " + root);
-		}
 
 		try {
-			input.put(searchRoots);
+			for (TreeItem<File> rootItem : selectedItems) {
+				File rootFile = rootItem.getValue();
+//				Path rootPath = Paths.get(rootFile.getAbsolutePath());
+				Path rootPath = rootFile.toPath();
+				LinkedList<Path> searchRoots = new LinkedList<Path>();
+
+				searchRoots.add(rootPath);
+				input.put(searchRoots);
+
+//				System.out.println("FXMLController.setupPhase(): root = " + root);
+			}
+			
+//			input.put(searchRoots);
+			input.put(new ArrayList<Path>()); // EOF convention
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

@@ -68,7 +68,7 @@ public class Pipeline extends Phase {
 
 		System.out.println("Pipeline.Pipeline(): creating inter-phase queues");
 
-		subtreeSearch2GroupBySizeQueue = new PipelineQueue(10, "SubtreeSearch to GroupBySize");
+		subtreeSearch2GroupBySizeQueue = new PipelineQueue(Integer.MAX_VALUE, "SubtreeSearch to GroupBySize");
 		groupBySize2GroupByContentQueue = new PipelineQueue(Integer.MAX_VALUE, "GroupBySize to GroupByContent");
 		groupByContent2MatchingSubtreeIdentificationQueue = new PipelineQueue(Integer.MAX_VALUE,
 				"GroupByContent to MatchingSubtreeIdentification");

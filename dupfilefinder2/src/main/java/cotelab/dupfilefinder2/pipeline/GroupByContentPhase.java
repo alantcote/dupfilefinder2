@@ -116,7 +116,7 @@ public class GroupByContentPhase extends Phase {
 	protected Void call() throws Exception {
 		Void result = super.call();
 		
-		outputQueue.put(new ArrayList<Path>());
+		outputQueue.put(new ArrayList<Path>()); // EOF convention
 		
 		return result;
 	}

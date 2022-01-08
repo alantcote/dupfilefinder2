@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
@@ -29,6 +30,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 public class SubtreeSearchPhase extends Phase {
 	protected class SearchVisitor extends SimpleFileVisitor<Path> {
 
+		protected LinkedList<Path> files = new LinkedList<Path>();
 		protected int filesVisited = 0;
 
 		@Override
@@ -83,6 +85,23 @@ public class SubtreeSearchPhase extends Phase {
 			failedAccessCount.set(failedAccessCount.get() + 1);
 
 			return FileVisitResult.SKIP_SUBTREE;
+		}
+
+		@Override
+		public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+			if (files.size() > 0) {
+				try {
+					outputQueue.put(new ArrayList<Path>(files));
+					files.clear();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					
+					if (isCancelled()) {
+						return FileVisitResult.TERMINATE;
+					}
+				}
+			}
+			return super.postVisitDirectory(dir, exc);
 		}
 
 	}
@@ -145,7 +164,6 @@ public class SubtreeSearchPhase extends Phase {
 //		System.out.println("SubtreeSearchPhase.main(): elapsedString = " + elapsedString);
 	}
 
-	protected LinkedList<Path> files = new LinkedList<Path>();
 	protected SimpleIntegerProperty directoryCount = new SimpleIntegerProperty(0);
 	protected SimpleIntegerProperty failedAccessCount = new SimpleIntegerProperty(0);
 	protected SimpleIntegerProperty otherCount = new SimpleIntegerProperty(0);
@@ -214,6 +232,10 @@ public class SubtreeSearchPhase extends Phase {
 			if (isCancelled()) {
 				break;
 			}
+			
+			if (packet.isEmpty()) { // EOF convention
+				break;
+			}
 
 			for (Path aPath : packet) {
 				if (isCancelled()) {
@@ -224,9 +246,11 @@ public class SubtreeSearchPhase extends Phase {
 			}
 		}
 
-		if (!isCancelled()) {
-			outputQueue.put(files);
-		}
+//		if (!isCancelled() && !files.isEmpty()) {
+//			outputQueue.put(files);
+//		}
+		
+		outputQueue.put(new ArrayList<Path>()); // EOF convention
 
 		return null;
 	}

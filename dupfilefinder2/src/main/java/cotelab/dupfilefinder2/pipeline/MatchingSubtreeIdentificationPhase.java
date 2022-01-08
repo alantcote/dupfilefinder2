@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * A {@link Phase} designed to identify matching subtrees. The input is a
@@ -27,8 +28,7 @@ import java.util.Hashtable;
  *
  */
 public class MatchingSubtreeIdentificationPhase extends Phase {
-	protected ThreadSafeSimpleIntegerProperty pathGroupsConsideredProperty =
-			new ThreadSafeSimpleIntegerProperty(); 
+	protected ThreadSafeSimpleIntegerProperty pathGroupsConsideredProperty = new ThreadSafeSimpleIntegerProperty();
 
 	/**
 	 * Construct a new object.
@@ -47,42 +47,107 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	public ThreadSafeSimpleIntegerProperty getPathGroupsConsideredProperty() {
 		return pathGroupsConsideredProperty;
 	}
+	
+	/**
+	 * Build a map from parent to child groups that each contain at least one child
+	 * of the parent.
+	 * 
+	 * @param candidateGroupGroup a collection of child groups.
+	 * @return the map.
+	 */
+	protected Map<Path, Collection<Collection<Path>>> buildParent2CandidateGroupMap(
+			Collection<Collection<Path>> candidateGroupGroup) {
+		Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap = new Hashtable<Path, Collection<Collection<Path>>>();
+
+		for (Collection<Path> candidateGroup : candidateGroupGroup) {
+			for (Path candidate : candidateGroup) {
+				if (isCancelled()) {
+					return parent2CandidateGroupMap;
+				}
+
+				Path parent = candidate.getParent();
+
+				Collection<Collection<Path>> aGroupGroup = parent2CandidateGroupMap.get(parent);
+
+				if (aGroupGroup == null) {
+					aGroupGroup = new ArrayList<Collection<Path>>();
+
+					parent2CandidateGroupMap.put(parent, aGroupGroup);
+				}
+
+				aGroupGroup.add(candidateGroup);
+			}
+			
+			pathGroupsConsideredProperty.increment(1);
+		}
+
+		return parent2CandidateGroupMap;
+	}
+
+	/**
+	 * Find all the subtrees that match one another. We build the subtrees layer
+	 * by layer, from the bottom up.
+	 * @param candidateGroups a collection of groups of matching paths.
+	 * @return a collection of groups of matching subtrees.
+	 */
+	protected Collection<Collection<Path>> buildSubtrees(Collection<Collection<Path>> candidateGroups) {
+		Collection<Collection<Path>> subtreeGroups = new ArrayList<Collection<Path>>();
+		Collection<Collection<Path>> duplicateSetGroup;
+		
+		System.out.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): entry");
+		
+		while ((duplicateSetGroup = findDuplicateSets(candidateGroups)).size() > 1) {
+			// not sure the right criterion is being used here
+			if (isCancelled()) {
+				return subtreeGroups;
+			}
+			
+			System.out.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): duplicateSetGroup.size() = " + duplicateSetGroup.size());
+			
+			for (Collection<Path> duplicateSet : duplicateSetGroup) {
+				System.out.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): duplicateSet = " + duplicateSet);
+			}
+			
+			subtreeGroups.addAll(duplicateSetGroup);
+			
+			candidateGroups = duplicateSetGroup;
+		}
+		
+		System.out.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): method completed.");
+		
+		return subtreeGroups;
+	}
 
 	@Override
 	protected Void call() throws Exception {
-		// gather input and capture the information
-		Collection<Collection<Path>> groups = gatherInputGroups();
+		try {
+			// gather input and capture the information
+			Collection<Collection<Path>> groups = gatherInputGroups();
 
-		System.out.println("MatchingSubtreeIdentificationPhase.call(): " + groups.size() + " input groups");
+			System.out.println("MatchingSubtreeIdentificationPhase.call(): " + groups.size() + " input groups");
 
-		if (isCancelled()) {
-			return null;
-		}
-
-		// recursively seek duplicate parents
-		Collection<Collection<Path>> parentGroups = new ArrayList<Collection<Path>>();
-
-		if (groups.size() > 1) {
-			System.out.println("MatchingSubtreeIdentificationPhase.call(): calling findDupParentGroups()");
-
-			parentGroups = findDupParentGroups(groups);
-		}
-
-		if (isCancelled()) {
-			return null;
-		}
-
-		System.out.println(
-				"MatchingSubtreeIdentificationPhase.call(): publishing " + parentGroups.size() + " parent groups");
-
-		// publish the duplicate parent groups
-		for (Collection<Path> group : parentGroups) {
 			if (isCancelled()) {
 				return null;
 			}
 
-			outputQueue.put(group);
+			Collection<Collection<Path>> subtreeGroups = buildSubtrees(groups);
+
+			System.out.println("MatchingSubtreeIdentificationPhase.call(): publishing" + subtreeGroups.size() + " subtree groups");
+			
+			// publish results
+			for (Collection<Path> subtreeGroup : subtreeGroups) {
+				if (isCancelled()) {
+					return null;
+				}
+				
+				outputQueue.put(subtreeGroup);
+			}
+		} catch (Exception e) {
+			System.err.println("MatchingSubtreeIdentificationPhase.call(): caught " + e.getMessage());
+			e.printStackTrace();
 		}
+
+		outputQueue.put(new ArrayList<Path>()); // EOF convention
 
 		System.out.println("MatchingSubtreeIdentificationPhase.call(): method completed");
 
@@ -90,179 +155,44 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	}
 
 	/**
-	 * Find parents of duplicates identified in groups that are, in turn,
-	 * duplicates, and so forth, recursively.
+	 * Get a single level of matching parents of groups of matching paths.
 	 * 
-	 * @param parentGroups groups of parents of entries in groups that are
-	 *                     duplicates. Note that these parents are, by definition,
-	 *                     directories.
-	 * @param groups       groups of known duplicates to consider
-	 * @return
+	 * @param candidateGroups a collection of groups of matching paths.
+	 * @return the collection of groups of matching parents.
 	 */
-	protected Collection<Collection<Path>> findDupParentGroups(Collection<Collection<Path>> groups) {
-		// map parents to children
-		Hashtable<Path, Collection<Collection<Path>>> parent2KidGroups = new Hashtable<Path, Collection<Collection<Path>>>();
-		Collection<Collection<Path>> matchingParentsGroups = new ArrayList<Collection<Path>>();
-
-		System.out
-				.println("MatchingSubtreeIdentificationPhase.findDupParentGroups(): groups.size() = " + groups.size());
-
-		if (groups.size() < 2) {
-			return matchingParentsGroups;
-		}
-
-		if (isCancelled()) {
-			return matchingParentsGroups;
-		}
-
-		System.out.println("MatchingSubtreeIdentificationPhase.findDupParentGroups(): building parent2Kid");
-
-		for (Collection<Path> pathColl : groups) {
-			for (Path kid : pathColl) {
-				if (isCancelled()) {
-					return matchingParentsGroups;
-				}
-
-				System.out
-						.println("MatchingSubtreeIdentificationPhase.findDupParentGroups(): finding parent of " + kid);
-
-				Path parent = kid.getParent();
-
-				System.out.println("MatchingSubtreeIdentificationPhase.findDupParentGroups(): parent = " + parent);
-
-				Collection<Collection<Path>> kidsOfParent = parent2KidGroups.get(parent);
-
-				if (kidsOfParent == null) {
-					kidsOfParent = new ArrayList<Collection<Path>>();
-					parent2KidGroups.put(parent, kidsOfParent);
-				}
-
-				kidsOfParent.add(pathColl);
-			}
-		}
-
-		if (isCancelled()) {
-			return matchingParentsGroups;
-		}
-
-//		System.out.println(
-//				"MatchingSubtreeIdentificationPhase.findDupParentGroups(): bucketing parents by nbr kid groups");
-//
-//		Hashtable<Integer, Collection<Path>> nbrKidGroups2ParentGroup = new Hashtable<Integer, Collection<Path>>();
-//
-//		for (Path parentPath : parent2KidGroups.keySet()) {
-//			Collection<Collection<Path>> kidGroups = parent2KidGroups.get(parentPath);
-//			Integer nbrKidGroups = kidGroups.size();
-//			Collection<Path> parents = nbrKidGroups2ParentGroup.get(nbrKidGroups);
-//
-//			if (isCancelled()) {
-//				return matchingParentsGroups;
-//			}
-//
-//			if (parents == null) {
-//				parents = new ArrayList<Path>();
-//
-//				nbrKidGroups2ParentGroup.put(nbrKidGroups, parents);
-//			}
-//
-//			if (!parents.contains(parentPath)) {
-//				parents.add(parentPath);
-//			}
-//		}
-//
-//		if (isCancelled()) {
-//			return matchingParentsGroups;
-//		}
-//
-//		System.out.println("MatchingSubtreeIdentificationPhase.findDupParentGroups(): making bucketList");
-//
-//		Collection<Collection<Path>> bucketList = new ArrayList<Collection<Path>>();
-//
-//		for (Integer nbrKids : nbrKidGroups2ParentGroup.keySet()) {
-//			Collection<Path> parentGroup = nbrKidGroups2ParentGroup.get(nbrKids);
-//
-//			bucketList.add(parentGroup);
-//		}
-//
-//		if (isCancelled()) {
-//			return matchingParentsGroups;
-//		}
+	protected Collection<Collection<Path>> findDuplicateSets(Collection<Collection<Path>> candidateGroups) {
+		Collection<Collection<Path>> duplicateSetGroup = new ArrayList<Collection<Path>>();
 		
-		// make bucketList, a list containing one list that contains all the parents
-
-		System.out.println("MatchingSubtreeIdentificationPhase.findDupParentGroups(): making initial bucket list");
+		System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): entry");
 		
-		Collection<Collection<Path>> bucketList = new ArrayList<Collection<Path>>();
-		ArrayList<Path> initialBucket = new ArrayList<Path>();
-		
-		for (Path parent : parent2KidGroups.keySet()) {
-			initialBucket.add(parent);
-		}
-		
-		bucketList.add(initialBucket);
+		Map<Integer, Collection<Collection<Path>>> sizeToGroupMap = groupBySize(candidateGroups);
 
-		if (isCancelled()) {
-			return matchingParentsGroups;
-		}
-
-		System.out.println("MatchingSubtreeIdentificationPhase.findDupParentGroups(): calling matchKidGroupParents()");
-
-		bucketList = matchKidGroupParents(parent2KidGroups, bucketList);
-
-		if (isCancelled()) {
-			return matchingParentsGroups;
-		}
-
-		Collection<Collection<Path>> newBucketList = new ArrayList<Collection<Path>>();
-		
-		for (Collection<Path> bucket : bucketList) {
-			if (bucket.size() > 1) {
-				newBucketList.add(bucket);
-			}
-		}
-
-		if (isCancelled()) {
-			return matchingParentsGroups;
-		}
-
-		System.out
-				.println("MatchingSubtreeIdentificationPhase.findDupParentGroups(): calling checkDuplicateDirGroups()");
-
-		bucketList = checkDuplicateDirGroups(parent2KidGroups, newBucketList);
-
-		matchingParentsGroups.addAll(bucketList);
-		
-		for (Collection<Path> bucket : bucketList) {
-			if (bucket.size() > 1) {
-				matchingParentsGroups.add(bucket);
-			}
-		}
-
-		if (isCancelled()) {
-			return matchingParentsGroups;
-		}
-
-		if (matchingParentsGroups.size() > 1) {
-			// build the tree upward. some of the newly-found groups may have parents in common
-			System.out.println("MatchingSubtreeIdentificationPhase.findDupParentGroups(): recursing");
-
-			bucketList = findDupParentGroups(matchingParentsGroups);
-
+		for (Integer size : sizeToGroupMap.keySet()) {
 			if (isCancelled()) {
-				return matchingParentsGroups;
+				return duplicateSetGroup;
 			}
+			
+			System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): size = " + size);
 
-			// accumulate the groups of 2 or more into the matching parents group
-			for (Collection<Path> group : bucketList) {
-				if (group.size() > 1) {
-					matchingParentsGroups.add(group);
-				}
-			}
+			Collection<Collection<Path>> equalSizedGroups = sizeToGroupMap.get(size);
+			Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap = buildParent2CandidateGroupMap(
+					equalSizedGroups);
+			Collection<Collection<Path>> dupParentGroups = nWayCompare(parent2CandidateGroupMap,
+					parent2CandidateGroupMap.keySet());
+			
+			System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): dupParentGroups.size() = " + dupParentGroups.size());
+			
+			Collection<Collection<Path>> validatedDupParentGroups = validateGroupsOnFileSystem(parent2CandidateGroupMap,
+					dupParentGroups);
+			
+			System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): validatedDupParentGroups.size() = " + validatedDupParentGroups.size());
+
+			duplicateSetGroup.addAll(validatedDupParentGroups);
 		}
+		
+		System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): method completed.");
 
-		System.out.println("MatchingSubtreeIdentificationPhase.findDupParentGroups(): method completed");
-
-		return matchingParentsGroups;
+		return duplicateSetGroup;
 	}
 
 	/**
@@ -283,7 +213,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 
 		try {
 			do {
-				if (isCancelled() || (inputGroup.size() == 0)) {
+				if (isCancelled() || (inputGroup.isEmpty())) { // EOF convention
 					break;
 				}
 
@@ -309,127 +239,154 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	}
 
 	/**
-	 * Find parent groups from a bucket list that have the same number of directory
-	 * entries per parent as the parent has child groups.
+	 * Build a map from size of candidate group to candidate group.
 	 * 
-	 * @param parent2KidGroups a map from parent to child groups.
-	 * @param bucketList       the bucket list.
-	 * @return the parent groups. Each parent group has at least two members.
+	 * @param candidateGroups The candidate groups.
+	 * @return The map.
 	 */
-	Collection<Collection<Path>> checkDuplicateDirGroups(Hashtable<Path, Collection<Collection<Path>>> parent2KidGroups,
-			Collection<Collection<Path>> bucketList) {
-		Collection<Collection<Path>> checkedParentGroups = new ArrayList<Collection<Path>>();
+	protected Map<Integer, Collection<Collection<Path>>> groupBySize(Collection<Collection<Path>> candidateGroups) {
+		Map<Integer, Collection<Collection<Path>>> sizeToGroupMap = new Hashtable<Integer, Collection<Collection<Path>>>();
 
-		for (Collection<Path> parentGroup : bucketList) {
-			Path badParent = null;
-
-			for (Path parent : parentGroup) {
-				int nbrDirEntriesExpected = parent2KidGroups.get(parent).size();
-				int nbrDirEntriesFound = parent.toFile().list().length;
-
-				if (isCancelled()) {
-					return checkedParentGroups;
-				}
-
-				if (nbrDirEntriesExpected != nbrDirEntriesFound) {
-					badParent = parent;
-
-					break;
-				}
+		for (Collection<Path> candidateGroup : candidateGroups) {
+			if (isCancelled()) {
+				return sizeToGroupMap;
 			}
 
-			if (badParent != null) {
-				parentGroup.remove(badParent);
+			Integer size = candidateGroup.size();
 
-				if (parentGroup.size() < 2) {
-					bucketList.remove(parentGroup);
-				}
+			Collection<Collection<Path>> collections = sizeToGroupMap.get(size);
 
-				if (isCancelled()) {
-					return checkedParentGroups;
-				}
+			if (collections == null) {
+				collections = new ArrayList<Collection<Path>>();
 
-				checkedParentGroups = checkDuplicateDirGroups(parent2KidGroups, bucketList);
-
-				break;
+				sizeToGroupMap.put(size, collections);
 			}
+
+			collections.add(candidateGroup);
 		}
 
-		checkedParentGroups.addAll(bucketList);
-
-		return checkedParentGroups;
+		return sizeToGroupMap;
 	}
 
 	/**
-	 * Match up the child groups of the parents in the bucket list.
+	 * Find the collections of parents that share child candidate groups from a
+	 * collection of candidate parents.
 	 * 
-	 * @param parent2KidGroups a map from parent to child groups.
-	 * @param bucketList       the bucket list.
-	 * @return a list of groups of parents such that the child groups of the parents
-	 *         in each group match. Each such group of parents has at least two
-	 *         members.
+	 * @param parent2CandidateGroupMap a map from parent to candidate groups. each
+	 *                                 of which contains at least one entry that is
+	 *                                 a child of the parent.
+	 * @param candidateParentGroup     the candidate parents.
+	 * @return
 	 */
-	Collection<Collection<Path>> matchKidGroupParents(Hashtable<Path, Collection<Collection<Path>>> parent2KidGroups,
-			Collection<Collection<Path>> bucketList) {
-		Collection<Collection<Path>> result = new ArrayList<Collection<Path>>();
-		Hashtable<Collection<Collection<Path>>, Collection<Path>> buckets = new Hashtable<Collection<Collection<Path>>, Collection<Path>>();
-		
-		System.out.println("MatchingSubtreeIdentificationPhase.matchKidGroupParents(): bucketList = " + bucketList);
+	protected Collection<Collection<Path>> nWayCompare(Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap,
+			Collection<Path> candidateParentGroup) {
+		Collection<Collection<Path>> dupParentGroups = new ArrayList<Collection<Path>>();
 
-		for (Collection<Path> parentGroup : bucketList) {
+		// invert parent2CandidateGroupMap, yielding map of candidate group groups to
+		// parents
+		Map<Collection<Collection<Path>>, Collection<Path>> childGroupGroupToParentGroup = new Hashtable<Collection<Collection<Path>>, Collection<Path>>();
+
+		for (Path parent : candidateParentGroup) {
+			Collection<Collection<Path>> childGroupGroup = parent2CandidateGroupMap.get(parent);
+			Collection<Path> parentGroup = childGroupGroupToParentGroup.get(childGroupGroup);
+
 			if (isCancelled()) {
-				return result;
-			}
-			
-			buckets.clear();
-
-			for (Path parent : parentGroup) {
-				Collection<Path> parents = buckets.get(parent2KidGroups.get(parent));
-
-				if (parents == null) {
-					parents = new ArrayList<Path>();
-
-					buckets.put(parent2KidGroups.get(parent), parents);
-				}
-
-				parents.add(parent);
-
-				if (isCancelled()) {
-					return result;
-				}
-				
-				pathGroupsConsideredProperty.increment(parent2KidGroups.get(parent).size());
+				return dupParentGroups;
 			}
 
-			System.out.println("MatchingSubtreeIdentificationPhase.matchKidGroupParents(): buckets.size() = " + buckets.size());
+			if (parentGroup == null) {
+				parentGroup = new ArrayList<Path>();
+				childGroupGroupToParentGroup.put(childGroupGroup, parentGroup);
+			}
 
-			if (buckets.size() > 1) {
-				// happy day! this parentGroup checks out
-				result.add(parentGroup);
-			} else {
-				Collection<Collection<Path>> newBucketList = new ArrayList<Collection<Path>>();
+			parentGroup.add(parent);
+		}
 
-				for (Collection<Collection<Path>> key : buckets.keySet()) {
-					Collection<Path> bucket = buckets.get(key);
+// each child group group in childGroupGroupToParentGroup.keySet() has the parents identified in the corresponding parent group; those parents match
+// this assumes that hashcodes of collections do not reflect the order of members of those collections. we shall see.
 
-					if (bucket.size() > 1) {
-						newBucketList.add(bucket);
-					}
-				}
+		for (Collection<Collection<Path>> childGroupGroup : childGroupGroupToParentGroup.keySet()) {
+			Collection<Path> dupParents = childGroupGroupToParentGroup.get(childGroupGroup);
 
-				System.out.println("MatchingSubtreeIdentificationPhase.matchKidGroupParents(): calling matchKidGroupParents()");
+			if (isCancelled()) {
+				return dupParentGroups;
+			}
 
-				Collection<Collection<Path>> recursionResult = matchKidGroupParents(parent2KidGroups, newBucketList);
-
-				System.out.println("MatchingSubtreeIdentificationPhase.matchKidGroupParents(): recursionResult = " + recursionResult);
-
-				result.addAll(recursionResult);
+			if (dupParents.size() > 1) {
+				dupParentGroups.add(dupParents);
 			}
 		}
-		
-		System.out.println("MatchingSubtreeIdentificationPhase.matchKidGroupParents(): method completed");
 
-		return result;
+		return dupParentGroups;
+	}
+
+	/**
+	 * Check that each candidate parent has the right number of directory entries.
+	 * 
+	 * @param parent2CandidateGroupMap a map from parent to candidate groups.
+	 * @param candidateParentGroups    the parent groups to check.
+	 * @return the subset of candidateParentGroups that conform.
+	 */
+	protected Collection<Collection<Path>> validateGroupsOnFileSystem(
+			Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap,
+			Collection<Collection<Path>> candidateParentGroups) {
+		Collection<Collection<Path>> validatedDupParentGroups = new ArrayList<Collection<Path>>();
+
+		for (Collection<Path> parentGroup : candidateParentGroups) {
+			if (isCancelled()) {
+				return validatedDupParentGroups;
+			}
+
+			if (parentGroup.size() > 1) {
+				Collection<Path> validatedWithFileSystem = validateOnFileSystem(parent2CandidateGroupMap, parentGroup);
+
+				if (validatedWithFileSystem.size() > 1) {
+					validatedDupParentGroups.add(validatedWithFileSystem);
+				}
+			}
+
+		}
+
+		return validatedDupParentGroups;
+	}
+
+	/**
+	 * Get the subset of a candidate parent group for which each parent has the same
+	 * number of directory entries as each of the parents has child groups.
+	 * 
+	 * @param parent2CandidateGroupMap a map from parent to candidate groups. each
+	 *                                 of which contains at least one entry that is
+	 *                                 a child of the parent.
+	 * @param candidateParentGroup     a group of parents.
+	 * @return the subset.
+	 */
+	protected Collection<Path> validateOnFileSystem(Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap,
+			Collection<Path> candidateParentGroup) {
+		Collection<Path> validatedParentGroup = new ArrayList<Path>();
+		Path sampleParent = (Path) candidateParentGroup.toArray()[0];
+		Collection<Collection<Path>> sampleGroups = parent2CandidateGroupMap.get(sampleParent);
+		@SuppressWarnings("unchecked")
+		Collection<Path> sampleGroup = (Collection<Path>) sampleGroups.toArray()[0];
+		int desiredSize = sampleGroup.size();
+		Collection<Path> badParents = new ArrayList<Path>();
+
+		for (Path parent : candidateParentGroup) {
+			if (isCancelled()) {
+				return validatedParentGroup;
+			}
+
+			String[] dirListing = parent.toFile().list();
+			int actualSize = dirListing.length;
+
+			if (actualSize != desiredSize) {
+				badParents.add(parent);
+			}
+		}
+
+		validatedParentGroup.addAll(candidateParentGroup);
+		validatedParentGroup.removeAll(badParents);
+
+		return validatedParentGroup;
 	}
 
 }

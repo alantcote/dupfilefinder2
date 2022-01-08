@@ -1,10 +1,12 @@
 cotelab\dupfilefinder2\pipeline\Pipeline.class
+cotelab\dupfilefinder2\FXMLController$34.class
 cotelab\dupfilefinder2\pipeline\QueueProcessor.class
 cotelab\dupfilefinder2\FXMLController$24.class
 cotelab\dupfilefinder2\pipeline\GroupByContentPhase.class
 cotelab\dupfilefinder2\FXMLController$21.class
 cotelab\dupfilefinder2\pipeline\GroupByContentPhase$2.class
 cotelab\dupfilefinder2\FXMLController$11.class
+cotelab\dupfilefinder2\FXMLController$31.class
 cotelab\dupfilefinder2\FXMLController$HeapMonitor$1.class
 cotelab\dupfilefinder2\FXMLController$18.class
 cotelab\dupfilefinder2\FXMLController$28.class
@@ -47,6 +49,7 @@ cotelab\dupfilefinder2\FXMLController$2.class
 module-info.class
 cotelab\dupfilefinder2\pipeline\GroupByContentPhase$3.class
 cotelab\dupfilefinder2\FXMLController$23.class
+cotelab\dupfilefinder2\FXMLController$33.class
 cotelab\dupfilefinder2\pipeline\PipelineQueue.class
 cotelab\dupfilefinder2\FXMLController$13.class
 cotelab\dupfilefinder2\DupFileFinder2.class
@@ -62,5 +65,6 @@ cotelab\dupfilefinder2\FXMLController$12.class
 cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleLongProperty$2.class
 cotelab\dupfilefinder2\FXMLController$19.class
 cotelab\dupfilefinder2\FXMLController$27.class
+cotelab\dupfilefinder2\FXMLController$32.class
 cotelab\dupfilefinder2\FXMLController$3.class
 cotelab\dupfilefinder2\DecoratedFileTreeCell$1$1.class
