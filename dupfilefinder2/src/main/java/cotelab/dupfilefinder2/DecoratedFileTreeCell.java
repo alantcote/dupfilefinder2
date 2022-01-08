@@ -5,8 +5,11 @@ package cotelab.dupfilefinder2;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -62,6 +65,32 @@ public class DecoratedFileTreeCell extends FileTreeCell {
 		onContextMenuRequestedProperty().set(null);
 	}
 
+	protected void doDelete(Path aPath) {
+		try {
+			Files.walkFileTree(aPath, new SimpleFileVisitor<Path>() {
+				@Override
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+					Files.delete(file);
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Override
+				public FileVisitResult postVisitDirectory(Path dir, IOException e) throws IOException {
+					if (e == null) {
+						Files.delete(dir);
+						return FileVisitResult.CONTINUE;
+					} else {
+						// directory iteration failed
+						throw e;
+					}
+				}
+			});
+		} catch (IOException e) {
+			System.err.println("DecoratedFileTreeCell.doDelete(): caught" + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
 	protected void enableContextMenu(Path path) {
 		onContextMenuRequestedProperty().set(new EventHandler<ContextMenuEvent>() {
 
@@ -114,46 +143,41 @@ public class DecoratedFileTreeCell extends FileTreeCell {
 				public void handle(ActionEvent event) {
 					// delete the thing identified by aPath
 
-					try {
-						Files.delete(aPath);
+//					Files.delete(aPath);
+					doDelete(aPath);
 
-						// remove the label from the grid pane
+					// remove the label from the grid pane
 
-						gridPane.getChildren().remove(pathLabel);
+					gridPane.getChildren().remove(pathLabel);
 
-						// remove entries in various maps and sets
-						// they're in the controller; must be done before refresh is safe
+					// remove entries in various maps and sets
+					// they're in the controller; must be done before refresh is safe
 
-						Collection<Path> containingColl = null;
+					Collection<Path> containingColl = null;
 
-						for (Collection<Path> coll : dupCollections) {
-							if (coll.contains(aPath)) {
-								containingColl = coll;
+					for (Collection<Path> coll : dupCollections) {
+						if (coll.contains(aPath)) {
+							containingColl = coll;
 
-								break;
-							}
+							break;
 						}
-
-						if (containingColl != null) {
-							if (containingColl.size() < 3) {
-								dupCollections.remove(containingColl);
-							} else {
-								containingColl.remove(aPath);
-							}
-						}
-
-						controller.refreshResultAids();
-
-						// refresh the tree view
-
-//						System.out.println("DecoratedFileTreeCell.showDupCollection(): refreshing the tree view");
-
-						getTreeView().refresh();
-					} catch (IOException e) {
-						// Auto-generated catch block
-						e.printStackTrace();
-						return;
 					}
+
+					if (containingColl != null) {
+						if (containingColl.size() < 3) {
+							dupCollections.remove(containingColl);
+						} else {
+							containingColl.remove(aPath);
+						}
+					}
+
+					controller.refreshResultAids();
+
+					// refresh the tree view
+
+//					System.out.println("DecoratedFileTreeCell.showDupCollection(): refreshing the tree view");
+
+					getTreeView().refresh();
 
 				}
 
@@ -170,7 +194,7 @@ public class DecoratedFileTreeCell extends FileTreeCell {
 		DialogPane thePopupPane = thePopup.getDialogPane();
 		ButtonType okButtonType = new ButtonType("OK", ButtonData.OK_DONE);
 		ScrollPane scrollPane = new ScrollPane();
-		
+
 		scrollPane.setContent(gridPane);
 
 		thePopup.setTitle("" + memberPaths.size() + " Duplicates");
@@ -195,10 +219,10 @@ public class DecoratedFileTreeCell extends FileTreeCell {
 				Path path = item.toPath();
 
 				if (pathToDupCollMap.containsKey(path)) {
-					setTextFill(Color.BLUE);
+					setTextFill(Color.RED);
 					enableContextMenu(path);
 				} else if (ancestorSet.contains(path)) {
-					setTextFill(Color.CYAN);
+					setTextFill(Color.PURPLE);
 				} else {
 					setTextFill(Color.BLACK);
 				}

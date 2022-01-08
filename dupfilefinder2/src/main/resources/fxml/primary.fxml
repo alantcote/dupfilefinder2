@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="785.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cotelab.dupfilefinder2.FXMLController">
@@ -247,6 +248,24 @@
       <TreeView fx:id="placeHolderTreeView" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </left>
    <right>
-      <TreeView fx:id="resultsTreeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <BorderPane BorderPane.alignment="CENTER">
+         <center>
+            <TreeView fx:id="resultsTreeView" prefHeight="200.0" prefWidth="200.0" />
+         </center>
+         <bottom>
+            <VBox prefHeight="73.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="Legend" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label text="Unique objects are BLACK" />
+                  <Label text="Duplicated objects are RED" textFill="RED" />
+                  <Label text="Ancestors of duplicates are PURPLE" textFill="PURPLE" />
+               </children>
+            </VBox>
+         </bottom>
+      </BorderPane>
    </right>
 </BorderPane>
