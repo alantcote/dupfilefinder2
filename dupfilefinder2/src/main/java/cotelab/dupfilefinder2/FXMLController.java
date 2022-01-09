@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import cotelab.dupfilefinder2.pipeline.Phase;
 import cotelab.dupfilefinder2.pipeline.Pipeline;
 import cotelab.dupfilefinder2.pipeline.PipelineQueue;
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,6 +25,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.SelectionMode;
@@ -93,8 +95,15 @@ public class FXMLController implements Initializable {
 		}
 
 	}
+	
+	public static final String HELP_ABOUT_RESOURCE = "helpAbout.html";
+	
+	public static final String HELP_USAGE_URL =
+			"https://github.com/alantcote/dupfilefinder2/wiki/Usage";
 
 	protected HashSet<Path> ancestorSet = new HashSet<Path>();
+
+	protected PopupBrowserLauncher browserLauncher = null;
 
 	@FXML
 	protected Button cancelButton;
@@ -103,6 +112,9 @@ public class FXMLController implements Initializable {
 
 	@FXML
 	protected Label elapsedTime;
+
+	@FXML
+	protected MenuItem fileCloseMenuItem;
 
 	protected FileTreeView fileTreeView;
 
@@ -162,6 +174,14 @@ public class FXMLController implements Initializable {
 
 	@FXML
 	protected ProgressBar heapProgressBar;
+
+	@FXML
+	protected MenuItem helpAboutMenuItem;
+
+	@FXML
+	protected MenuItem helpUsageMenuItem;
+
+	protected HostServices hostServices = null;
 
 	protected PipelineQueue input = null;
 
@@ -250,7 +270,7 @@ public class FXMLController implements Initializable {
 	protected Button startButton;
 
 	protected long startStamp = 0;
-
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		System.out.println("FXMLController.initialize(): switching to proper TreeView");
@@ -264,6 +284,41 @@ public class FXMLController implements Initializable {
 
 		t.setDaemon(true);
 		t.start();
+		
+		fileCloseMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				System.exit(0);
+			}
+			
+		});
+		
+		helpUsageMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				setupBrowserLauncher();
+				
+				browserLauncher.popup(HELP_USAGE_URL);
+			}
+			
+		});
+		
+		helpAboutMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				URL url = getClass().getResource(HELP_ABOUT_RESOURCE);
+				
+				if (url != null) {
+					setupBrowserLauncher();
+					
+					browserLauncher.openWebViewDialog(url.toExternalForm(), 300, 400);
+				}
+			}
+			
+		});
 
 		System.out.println("FXMLController.initialize(): calling startButton.setOnAction()");
 
@@ -361,8 +416,6 @@ public class FXMLController implements Initializable {
 		}
 	}
 
-//    protected FileTreeView subtreeSelectionTreeView = new FileTreeView(null);
-
 	protected void buildPathToDupCollMap() {
 		pathToDupCollMap.clear();
 
@@ -372,6 +425,8 @@ public class FXMLController implements Initializable {
 			}
 		}
 	}
+
+//    protected FileTreeView subtreeSelectionTreeView = new FileTreeView(null);
 
 	protected void collectResultsFromPipeline() {
 		PipelineQueue pipelineOutputQueue = output;
@@ -421,6 +476,18 @@ public class FXMLController implements Initializable {
 		return result;
 	}
 
+	protected void setupBrowserLauncher() {
+		if (browserLauncher == null) {
+			Object userObject = rootPane.getUserData();
+
+			if (userObject instanceof HostServices) {
+				hostServices = (HostServices) userObject;
+			}
+			
+			browserLauncher = new PopupBrowserLauncher(hostServices);
+		}
+	}
+
 	protected Pipeline setUpPipeline() {
 		input = new PipelineQueue(Integer.MAX_VALUE, "Pipeline Input");
 		output = new PipelineQueue(Integer.MAX_VALUE, "Pipeline Output");
@@ -429,7 +496,6 @@ public class FXMLController implements Initializable {
 //		LinkedList<Path> searchRoots = new LinkedList<Path>();
 		MultipleSelectionModel<TreeItem<File>> selModel = fileTreeView.getSelectionModel();
 		ObservableList<TreeItem<File>> selectedItems = selModel.getSelectedItems();
-
 
 		try {
 			for (TreeItem<File> rootItem : selectedItems) {
@@ -443,7 +509,7 @@ public class FXMLController implements Initializable {
 
 //				System.out.println("FXMLController.setupPhase(): root = " + root);
 			}
-			
+
 //			input.put(searchRoots);
 			input.put(new ArrayList<Path>()); // EOF convention
 		} catch (InterruptedException e) {

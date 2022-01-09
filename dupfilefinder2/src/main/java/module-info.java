@@ -6,6 +6,7 @@ module cotelab {
     requires javafx.fxml;
 	requires transitive javafx.graphics;
     requires javafx.media;
+	requires javafx.web;
 	
     opens cotelab.dupfilefinder2 to javafx.fxml;
     
