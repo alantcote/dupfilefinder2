@@ -14,6 +14,7 @@ cotelab\dupfilefinder2\pipeline\Phase.class
 cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleLongProperty$1.class
 cotelab\dupfilefinder2\FXMLController$30.class
 cotelab\dupfilefinder2\pipeline\GroupBySizePhase.class
+cotelab\dupfilefinder2\DecoratedFileTreeCell$3.class
 cotelab\dupfilefinder2\FXMLController$7.class
 cotelab\dupfilefinder2\DecoratedFileTreeCell$2.class
 cotelab\dupfilefinder2\FXMLController$25.class
@@ -24,6 +25,7 @@ cotelab\dupfilefinder2\pipeline\MatchingSubtreeIdentificationPhase.class
 cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleLongProperty$3.class
 cotelab\dupfilefinder2\DecoratedFileTreeCellFactory.class
 cotelab\dupfilefinder2\String2StringConverter.class
+cotelab\dupfilefinder2\DecoratedFileTreeCell$2$1.class
 cotelab\dupfilefinder2\FXMLController$1.class
 cotelab\dupfilefinder2\pipeline\GroupByContentWorker.class
 cotelab\dupfilefinder2\DecoratedFileTreeView.class
@@ -67,4 +69,3 @@ cotelab\dupfilefinder2\FXMLController$19.class
 cotelab\dupfilefinder2\FXMLController$27.class
 cotelab\dupfilefinder2\FXMLController$32.class
 cotelab\dupfilefinder2\FXMLController$3.class
-cotelab\dupfilefinder2\DecoratedFileTreeCell$1$1.class

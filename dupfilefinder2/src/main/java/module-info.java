@@ -1,11 +1,11 @@
 module cotelab {
 	requires transitive clutilities;
+	requires java.desktop;
+	requires transitive javafx.base;
     requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.media;
 	requires transitive javafx.graphics;
-	requires transitive javafx.base;
-	requires java.desktop;
+    requires javafx.media;
 	
     opens cotelab.dupfilefinder2 to javafx.fxml;
     

@@ -1,2 +1,0 @@
-JAVA_VERSION="17.0.1"
-MODULES="java.base java.datatransfer java.xml java.prefs java.desktop java.logging javafx.base jdk.unsupported javafx.graphics javafx.controls jdk.unsupported.desktop javafx.swing clutilities java.scripting javafx.fxml javafx.media cotelab"
