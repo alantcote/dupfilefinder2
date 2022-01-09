@@ -17,11 +17,11 @@ public class DupFileFinder2 extends Application {
     @Override
     public void start(Stage s) throws IOException {
         stage=s;
-        setRoot("primary","");
+        setRoot("primary","dupfilefinder2");
     }
 
     static void setRoot(String fxml) throws IOException {
-        setRoot(fxml,stage.getTitle());
+        setRoot(fxml,"dupfilefinder2");
     }
 
     static void setRoot(String fxml, String title) throws IOException {
