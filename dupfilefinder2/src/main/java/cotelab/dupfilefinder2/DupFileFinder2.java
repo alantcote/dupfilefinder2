@@ -1,5 +1,7 @@
 package cotelab.dupfilefinder2;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -8,45 +10,76 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.io.IOException;
-
-
+/**
+ * The main class.
+ */
 public class DupFileFinder2 extends Application {
-    private static Stage stage;
+	/**
+	 * The {@link Stage}.
+	 */
+	private static Stage stage;
 
-    @Override
-    public void start(Stage s) throws IOException {
-        stage=s;
-        setRoot("primary","dupfilefinder2");
-    }
+	/**
+	 * The program entry point.
+	 * 
+	 * @param args the command-line arguments.
+	 */
+	public static void main(String[] args) {
+		launch(args);
+	}
 
-    static void setRoot(String fxml) throws IOException {
-        setRoot(fxml,"dupfilefinder2");
-    }
+	/**
+	 * Create a new {@link Parent} by loading fxml.
+	 * 
+	 * @param fxml the fxml to load.
+	 * @return the new object.
+	 * @throws IOException if any is thrown by the underlying code.
+	 */
+	private static Parent loadFXML(String fxml) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(DupFileFinder2.class.getResource("/fxml/" + fxml + ".fxml"));
+		return fxmlLoader.load();
+	}
 
-    static void setRoot(String fxml, String title) throws IOException {
-        Scene scene = new Scene(loadFXML(fxml));
-        stage.setTitle(title);
-        stage.setScene(scene);
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+	/**
+	 * Set the root node.
+	 * 
+	 * @param fxml the fxml to be used to assemble the root node.
+	 * @throws IOException if any is thrown by the underlying code.
+	 */
+	static void setRoot(String fxml) throws IOException {
+		setRoot(fxml, "dupfilefinder2");
+	}
+
+	/**
+	 * Set the root node and window title.
+	 * 
+	 * @param fxml  the fxml to be used to assemble the root node.
+	 * @param title the window title.
+	 * @throws IOException if any is thrown by the underlying code.
+	 */
+	static void setRoot(String fxml, String title) throws IOException {
+		Scene scene = new Scene(loadFXML(fxml));
+		stage.setTitle(title);
+		stage.setScene(scene);
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
 			@Override
 			public void handle(WindowEvent event) {
 				System.exit(0);
 			}
-        	
-        });
-        stage.show();
-    }
 
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(DupFileFinder2.class.getResource("/fxml/"+fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
+		});
 
+		stage.show();
+	}
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void start(Stage s) throws IOException {
+		stage = s;
+		setRoot("primary", "dupfilefinder2");
+	}
 
 }

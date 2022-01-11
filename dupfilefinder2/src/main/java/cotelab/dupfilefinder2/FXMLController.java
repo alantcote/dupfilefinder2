@@ -10,9 +10,13 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 
+import cotelab.dupfilefinder2.pipeline.GroupByContentPhase;
+import cotelab.dupfilefinder2.pipeline.GroupBySizePhase;
+import cotelab.dupfilefinder2.pipeline.MatchingSubtreeIdentificationPhase;
 import cotelab.dupfilefinder2.pipeline.Phase;
 import cotelab.dupfilefinder2.pipeline.Pipeline;
 import cotelab.dupfilefinder2.pipeline.PipelineQueue;
+import cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase;
 import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -36,351 +40,499 @@ import net.sf.cotelab.util.javafx.tree.FileIconFactory;
 import net.sf.cotelab.util.javafx.tree.FileTreeItem;
 import net.sf.cotelab.util.javafx.tree.FileTreeView;
 
+/* This class is way too big; it needs some sort of refactoring to make it more
+ * understandable and more testable.
+ */
+/**
+ * The GUI controller.
+ */
 public class FXMLController implements Initializable {
-	public class HeapMonitor implements Runnable {
-		protected static final long DELAY_MILLIS = 500;
-		protected static final long GIG = 1024 * 1024 * 1024;
-		protected static final long KILO = 1024;
-		protected static final long MEG = 1024 * 1024;
-
-		protected Runtime runtime = Runtime.getRuntime();
-
-		@Override
-		public void run() {
-			while (true) {
-				try {
-					while (true) {
-						Thread.sleep(DELAY_MILLIS);
-
-						updateHeapProgressBar();
-					}
-				} catch (InterruptedException e) {
-//					e.printStackTrace();
-				}
-			}
-		}
-
-		protected String conciseFormat(long val) {
-			String result = "";
-
-			if (val >= GIG) {
-				result = Long.toString(val / GIG) + "." + Long.toString((val % GIG) / MEG) + "G";
-			} else if (val >= MEG) {
-				result = Long.toString(val / MEG) + "." + Long.toString((val % MEG) / KILO) + "M";
-			} else if (val >= KILO) {
-				result = Long.toString(val / KILO) + "." + Long.toString(val % KILO) + "K";
-			} else {
-				result = Long.toString(val) + "B";
-			}
-
-			return result;
-		}
-
-		protected void updateHeapProgressBar() {
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					long totalHeap = runtime.totalMemory();
-					long freeHeap = runtime.freeMemory();
-					long usedHeapBytes = totalHeap - freeHeap;
-					double progress = ((double) usedHeapBytes) / totalHeap;
-					String usedString = conciseFormat(usedHeapBytes);
-					String totalString = conciseFormat(totalHeap);
-					String mssg = usedString + " / " + totalString + " heap used.";
-
-					heapProgressBar.setProgress(progress);
-					heapMessage.setText(mssg);
-				}
-			});
-		}
-
-	}
-	
+	/**
+	 * The name of the resource used as Help>About dialog content.
+	 */
 	public static final String HELP_ABOUT_RESOURCE = "helpAbout.html";
-	
-	public static final String HELP_USAGE_URL =
-			"https://github.com/alantcote/dupfilefinder2/wiki/Usage";
 
-	protected HashSet<Path> ancestorSet = new HashSet<Path>();
+	/**
+	 * The URL of the web page used as Help>Usage content.
+	 */
+	public static final String HELP_USAGE_URL = "https://github.com/alantcote/dupfilefinder2/wiki/Usage";
 
+	/**
+	 * The ancestor set.
+	 */
+	protected HashSet<Path> ancestorSet = newPathHashSet();
+
+	/**
+	 * The popup browser launcher.
+	 */
 	protected PopupBrowserLauncher browserLauncher = null;
 
+	/**
+	 * The cancel button.
+	 */
 	@FXML
 	protected Button cancelButton;
 
+	/**
+	 * The collection of duplicate file groups.
+	 */
 	protected ArrayList<Collection<Path>> dupCollections = null;
 
+	/**
+	 * The elapsed time display.
+	 */
 	@FXML
 	protected Label elapsedTime;
 
+	/**
+	 * The File>Close menu item.
+	 */
 	@FXML
 	protected MenuItem fileCloseMenuItem;
 
-	protected FileTreeView fileTreeView;
-
+	/**
+	 * The {@link GroupByContentPhase} to {@link MatchingSubtreeIdentificationPhase}
+	 * queue put count field.
+	 */
 	@FXML
 	protected Label gbc2msiPutCount;
 
+	/**
+	 * The {@link GroupByContentPhase} to {@link MatchingSubtreeIdentificationPhase}
+	 * queue name field.
+	 */
 	@FXML
 	protected Label gbc2msiQueueName;
 
+	/**
+	 * The {@link GroupByContentPhase} to {@link MatchingSubtreeIdentificationPhase}
+	 * queue take count field.
+	 */
 	@FXML
 	protected Label gbc2msiTakeCount;
 
+	/**
+	 * The {@link GroupByContentPhase} bytes compared count field.
+	 */
 	@FXML
 	protected Label gbcBytesCompared;
 
+	/**
+	 * The {@link GroupByContentPhase} files compared count field.
+	 */
 	@FXML
 	protected Label gbcFilesCompared;
 
+	/**
+	 * The {@link GroupByContentPhase} name field.
+	 */
 	@FXML
 	protected Label gbcName;
 
+	/**
+	 * The {@link GroupByContentPhase} state field.
+	 */
 	@FXML
 	protected Label gbcState;
 
+	/**
+	 * The {@link GroupByContentPhase} unique files count field.
+	 */
 	@FXML
 	protected Label gbcUniqueCount;
 
+	/**
+	 * The {@link GroupBySizePhase} to {@link GroupByContentPhase} queue put count
+	 * field.
+	 */
 	@FXML
 	protected Label gbs2gbcPutCount;
 
+	/**
+	 * The {@link GroupBySizePhase} to {@link GroupByContentPhase} queue name field.
+	 */
 	@FXML
 	protected Label gbs2gbcQueueName;
 
+	/**
+	 * The {@link GroupBySizePhase} to {@link GroupByContentPhase} queue take count
+	 * field.
+	 */
 	@FXML
 	protected Label gbs2gbcTakeCount;
 
+	/**
+	 * The {@link GroupBySizePhase} files measured count field.
+	 */
 	@FXML
 	protected Label gbsFilesMeasuredCount;
 
+	/**
+	 * The {@link GroupBySizePhase} name field.
+	 */
 	@FXML
 	protected Label gbsName;
 
+	/**
+	 * The {@link GroupBySizePhase} file size count field.
+	 */
 	@FXML
 	protected Label gbsSizeCount;
 
+	/**
+	 * The {@link GroupBySizePhase} state field.
+	 */
 	@FXML
 	protected Label gbsState;
 
+	/**
+	 * The {@link GroupBySizePhase} unique files count field.
+	 */
 	@FXML
 	protected Label gbsUniqueCount;
 
+	/**
+	 * The {@link GroupBySizePhase} unmeasurable files count field.
+	 */
 	@FXML
 	protected Label gbsUnmeasurableCount;
 
+	/**
+	 * The heap message field.
+	 */
 	@FXML
 	protected Label heapMessage;
 
+	/**
+	 * The heap progress bar.
+	 */
 	@FXML
 	protected ProgressBar heapProgressBar;
 
+	/**
+	 * The Help>About menu item.
+	 */
 	@FXML
 	protected MenuItem helpAboutMenuItem;
 
+	/**
+	 * The Help>Usage menu item.
+	 */
 	@FXML
 	protected MenuItem helpUsageMenuItem;
 
+	/**
+	 * The instance of {@link HostServices}.
+	 */
 	protected HostServices hostServices = null;
 
+	/**
+	 * The pipeline input queue.
+	 */
 	protected PipelineQueue input = null;
 
+	/**
+	 * The {@link MatchingSubtreeIdentificationPhase} name field.
+	 */
 	@FXML
 	protected Label msiName;
 
+	/**
+	 * The {@link MatchingSubtreeIdentificationPhase} path groups considered count
+	 * field.
+	 */
 	@FXML
 	protected Label msiPathGroupsConsidered;
 
+	/**
+	 * The {@link MatchingSubtreeIdentificationPhase} state field.
+	 */
 	@FXML
 	protected Label msiState;
 
+	/**
+	 * The pipeline output queue.
+	 */
 	protected PipelineQueue output = null;
 
+	/**
+	 * The path to duplicate paths map.
+	 */
 	protected Hashtable<Path, Collection<Path>> pathToDupCollMap = new Hashtable<Path, Collection<Path>>();
 
+	/**
+	 * The pipeline.
+	 */
 	protected Pipeline pipeline;
 
+	/**
+	 * The pipeline input queue put count field.
+	 */
 	@FXML
 	protected Label pipelineInputPutCount;
 
+	/**
+	 * The pipeline input queue name field.
+	 */
 	@FXML
 	protected Label pipelineInputQueueName;
 
+	/**
+	 * The pipeline input queue take count field.
+	 */
 	@FXML
 	protected Label pipelineInputTakeCount;
 
+	/**
+	 * The pipeline name field.
+	 */
 	@FXML
 	protected Label pipelineName;
 
+	/**
+	 * The pipeline output queue put count field.
+	 */
 	@FXML
 	protected Label pipelineOutputPutCount;
 
+	/**
+	 * The pipeline output queue name field.
+	 */
 	@FXML
 	protected Label pipelineOutputQueueName;
 
+	/**
+	 * The pipeline output queue take count field.
+	 */
 	@FXML
 	protected Label pipelineOutputTakeCount;
 
+	/**
+	 * The pipeline state field.
+	 */
 	@FXML
 	protected Label pipelineState;
 
+	/**
+	 * The placeholder subtree selection tree view.
+	 */
 	@FXML
 	protected TreeView<String> placeHolderTreeView;
 
+	/**
+	 * The placeholder results tree view.
+	 */
 	@FXML
 	protected TreeView<File> resultsTreeView;
 
+	/**
+	 * The root pane.
+	 */
 	@FXML
 	protected BorderPane rootPane;
 
+	/**
+	 * The {@link SubtreeSearchPhase} to {@link GroupBySizePhase} queue put count
+	 * field.
+	 */
 	@FXML
 	protected Label ss2gbsPutCount;
 
+	/**
+	 * The {@link SubtreeSearchPhase} to {@link GroupBySizePhase} queue name field.
+	 */
 	@FXML
 	protected Label ss2gbsQueueName;
 
+	/**
+	 * The {@link SubtreeSearchPhase} to {@link GroupBySizePhase} queue take count
+	 * field.
+	 */
 	@FXML
 	protected Label ss2gbsTakeCount;
 
+	/**
+	 * The {@link SubtreeSearchPhase} directory count field.
+	 */
 	@FXML
 	protected Label sspDirectoryCount;
 
+	/**
+	 * The {@link SubtreeSearchPhase} failed access count field.
+	 */
 	@FXML
 	protected Label sspFailedAccessCount;
 
+	/**
+	 * The {@link SubtreeSearchPhase} name field.
+	 */
 	@FXML
 	protected Label sspName;
 
+	/**
+	 * The {@link SubtreeSearchPhase} other count field.
+	 */
 	@FXML
 	protected Label sspOtherCount;
 
+	/**
+	 * The {@link SubtreeSearchPhase} regular file count field.
+	 */
 	@FXML
 	protected Label sspRegularFileCount;
 
+	/**
+	 * The {@link SubtreeSearchPhase} state field.
+	 */
 	@FXML
 	protected Label sspState;
 
+	/**
+	 * The {@link SubtreeSearchPhase} symbolic link count field.
+	 */
 	@FXML
 	protected Label sspSymbolicLinkCount;
 
+	/**
+	 * The {@link SubtreeSearchPhase} unreadable count field.
+	 */
 	@FXML
 	protected Label sspUnreadableCount;
 
+	/**
+	 * The start button.
+	 */
 	@FXML
 	protected Button startButton;
 
+	/**
+	 * The starting timestamp.
+	 */
 	protected long startStamp = 0;
-	
+
+	/**
+	 * The subtree selection tree view.
+	 */
+	protected FileTreeView subtreeSelectionTreeView;
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		System.out.println("FXMLController.initialize(): switching to proper TreeView");
+//		System.out.println("FXMLController.initialize(): switching to proper TreeView");
 
-		fileTreeView = createFileTreeView();
-		fileTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		subtreeSelectionTreeView = createFileTreeView();
+		subtreeSelectionTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-		rootPane.setLeft(fileTreeView);
+		rootPane.setLeft(subtreeSelectionTreeView);
 
-		Thread t = new Thread(new HeapMonitor());
+		startHeapMonitor();
 
-		t.setDaemon(true);
-		t.start();
-		
 		fileCloseMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				System.exit(0);
 			}
-			
+
 		});
-		
+
 		helpUsageMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
 				setupBrowserLauncher();
-				
+
 				browserLauncher.popup(HELP_USAGE_URL);
 			}
-			
+
 		});
-		
+
 		helpAboutMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
 				URL url = getClass().getResource(HELP_ABOUT_RESOURCE);
-				
+
 				if (url != null) {
 					setupBrowserLauncher();
-					
+
 					browserLauncher.openWebViewDialog(url.toExternalForm(), 300, 400);
 				}
 			}
-			
+
 		});
 
-		System.out.println("FXMLController.initialize(): calling startButton.setOnAction()");
+//		System.out.println("FXMLController.initialize(): calling startButton.setOnAction()");
 
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("FXMLController.initialize(): start button handler calling setUpPipeline()");
+//				System.out.println("FXMLController.initialize(): start button handler calling setUpPipeline()");
 
 				startStamp = System.currentTimeMillis();
 
 				pipeline = setUpPipeline();
 
-				System.out.println("FXMLController.initialize(): start button handler starting pipeline");
+//				System.out.println("FXMLController.initialize(): start button handler starting pipeline");
 
 				startPhase(pipeline);
 
-				System.out.println("FXMLController.initialize(): start button handler enabling cancel button");
+//				System.out.println("FXMLController.initialize(): start button handler enabling cancel button");
 
 				cancelButton.setDisable(false);
 
-				System.out.println("FXMLController.initialize(): start button handler disabling start button");
+//				System.out.println("FXMLController.initialize(): start button handler disabling start button");
 
 				startButton.setDisable(true);
 
-				System.out.println("FXMLController.initialize(): start button handler method complete");
+//				System.out.println("FXMLController.initialize(): start button handler method complete");
 			}
 
 		});
 
-		System.out.println("FXMLController.initialize(): calling cancelButton.setOnAction()");
+//		System.out.println("FXMLController.initialize(): calling cancelButton.setOnAction()");
 
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("FXMLController.initialize(): cancel button handler cancelling pipeline");
+//				System.out.println("FXMLController.initialize(): cancel button handler cancelling pipeline");
 
 				pipeline.cancel(true);
 
-				System.out.println("FXMLController.initialize(): cancel button handler disabling cancel button");
+//				System.out.println("FXMLController.initialize(): cancel button handler disabling cancel button");
 
 				cancelButton.setDisable(true);
 
-				System.out.println("FXMLController.initialize(): cancel button handler enabling start button");
+//				System.out.println("FXMLController.initialize(): cancel button handler enabling start button");
 
 				startButton.setDisable(false);
 
-				System.out.println("FXMLController.initialize(): cancel button handler method complete");
+//				System.out.println("FXMLController.initialize(): cancel button handler method complete");
 
 			}
 
 		});
 
-		System.out.println("FXMLController.initialize(): method complete");
+//		System.out.println("FXMLController.initialize(): method complete");
 	}
 
+	/**
+	 * Refresh the result aids.
+	 */
 	public void refreshResultAids() {
 		buildPathToDupCollMap();
 		buildAncestorSet();
 	}
 
+	/**
+	 * Add the ancestors of a given path to the ancestor set.
+	 * 
+	 * @param path the given path.
+	 */
 	protected void addAncestors(Path path) {
 		Path parent = path.getParent();
 
@@ -393,11 +545,17 @@ public class FXMLController implements Initializable {
 		}
 	}
 
+	/**
+	 * Gather up the pipeline results.
+	 */
 	protected void assembleResults() {
 		collectResultsFromPipeline();
 		refreshResultAids();
 	}
 
+	/**
+	 * Assemble the results display.
+	 */
 	protected void assembleResultsTreeView() {
 		FileIconFactory fileIconFactory = new FileIconFactory();
 
@@ -406,6 +564,9 @@ public class FXMLController implements Initializable {
 		resultsTreeView.setShowRoot(false);
 	}
 
+	/**
+	 * Build up the ancestor set.
+	 */
 	protected void buildAncestorSet() {
 		ancestorSet.clear();
 
@@ -426,8 +587,9 @@ public class FXMLController implements Initializable {
 		}
 	}
 
-//    protected FileTreeView subtreeSelectionTreeView = new FileTreeView(null);
-
+	/**
+	 * Collect the results from the pipeline.
+	 */
 	protected void collectResultsFromPipeline() {
 		PipelineQueue pipelineOutputQueue = output;
 		Collection<Path> dupColl = null;
@@ -442,6 +604,9 @@ public class FXMLController implements Initializable {
 		dupCollections = dupColls;
 	}
 
+	/**
+	 * @return a new object.
+	 */
 	protected FileTreeView createFileTreeView() {
 		TreeItem<File> rootFileTreeItem = new FileTreeItem(null);
 		FileTreeView fileTreeView = new FileTreeView(rootFileTreeItem);
@@ -451,6 +616,12 @@ public class FXMLController implements Initializable {
 		return fileTreeView;
 	}
 
+	/**
+	 * Format elapsed time for display.
+	 * 
+	 * @param elapsedMillis the elapsed time, in milliseconds.
+	 * @return
+	 */
 	protected String formatElapsed(long elapsedMillis) {
 		long fraction = elapsedMillis % 1000;
 		long remnant = elapsedMillis / 1000;
@@ -476,6 +647,16 @@ public class FXMLController implements Initializable {
 		return result;
 	}
 
+	/**
+	 * @return a new object.
+	 */
+	protected HashSet<Path> newPathHashSet() {
+		return new HashSet<Path>();
+	}
+
+	/**
+	 * Set up the browser launcher.
+	 */
 	protected void setupBrowserLauncher() {
 		if (browserLauncher == null) {
 			Object userObject = rootPane.getUserData();
@@ -483,18 +664,23 @@ public class FXMLController implements Initializable {
 			if (userObject instanceof HostServices) {
 				hostServices = (HostServices) userObject;
 			}
-			
+
 			browserLauncher = new PopupBrowserLauncher(hostServices);
 		}
 	}
 
+	/**
+	 * Set up a pipeline.
+	 * 
+	 * @return a new object.
+	 */
 	protected Pipeline setUpPipeline() {
 		input = new PipelineQueue(Integer.MAX_VALUE, "Pipeline Input");
 		output = new PipelineQueue(Integer.MAX_VALUE, "Pipeline Output");
 
 		Pipeline result = new Pipeline("Pipeline", input, output);
 //		LinkedList<Path> searchRoots = new LinkedList<Path>();
-		MultipleSelectionModel<TreeItem<File>> selModel = fileTreeView.getSelectionModel();
+		MultipleSelectionModel<TreeItem<File>> selModel = subtreeSelectionTreeView.getSelectionModel();
 		ObservableList<TreeItem<File>> selectedItems = selModel.getSelectedItems();
 
 		try {
@@ -521,6 +707,15 @@ public class FXMLController implements Initializable {
 		return result;
 	}
 
+	/*
+	 * This method is entirely too long, and needs to be refactored for better
+	 * readability and testability.
+	 */
+	/**
+	 * Set up the pipeline listeners.
+	 * 
+	 * @param line the pipeline.
+	 */
 	protected void setUpPipelineListeners(Pipeline line) {
 
 		pipelineInputQueueName.setText(line.getInputName().get());
@@ -820,30 +1015,48 @@ public class FXMLController implements Initializable {
 
 	}
 
+	/**
+	 * Display the pipeline results.
+	 */
 	protected void showResults() {
 		Platform.runLater(new Runnable() {
 
 			@Override
 			public void run() {
-				System.out.println("FXMLController.showResults(): calling assembleResults()");
+//				System.out.println("FXMLController.showResults(): calling assembleResults()");
 
 				assembleResults();
 
-				System.out.println("FXMLController.showResults(): calling assembleResultsTreeView()");
+//				System.out.println("FXMLController.showResults(): calling assembleResultsTreeView()");
 
 				assembleResultsTreeView();
 
-				System.out.println("FXMLController.showResults(): calling rootPane.setRight()");
+//				System.out.println("FXMLController.showResults(): calling rootPane.setRight()");
 
 				rootPane.setRight(resultsTreeView);
 				resultsTreeView.setVisible(true);
 
-				System.out.println("FXMLController.showResults(): method completed.");
+//				System.out.println("FXMLController.showResults(): method completed.");
 			}
 
 		});
 	}
 
+	/**
+	 * Start the heap monitor.
+	 */
+	protected void startHeapMonitor() {
+		Thread t = new Thread(new HeapMonitor(heapProgressBar, heapMessage));
+
+		t.setDaemon(true);
+		t.start();
+	}
+
+	/**
+	 * Start up a {@link Phase} in a {@link Thread}.
+	 * 
+	 * @param aPhase
+	 */
 	protected void startPhase(Phase aPhase) {
 		Thread th = new Thread(aPhase);
 
@@ -851,6 +1064,9 @@ public class FXMLController implements Initializable {
 		th.start();
 	}
 
+	/**
+	 * Update the elapsed time field.
+	 */
 	protected void updateElapsedTime() {
 		long now = System.currentTimeMillis();
 		long elapsedMillis = now - startStamp;

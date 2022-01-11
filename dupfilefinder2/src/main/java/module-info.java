@@ -2,7 +2,7 @@ module cotelab {
 	requires transitive clutilities;
 	requires java.desktop;
 	requires transitive javafx.base;
-    requires javafx.controls;
+    requires transitive javafx.controls;
     requires javafx.fxml;
 	requires transitive javafx.graphics;
     requires javafx.media;

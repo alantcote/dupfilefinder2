@@ -34,21 +34,35 @@ import net.sf.cotelab.util.javafx.tree.FileTreeCell;
 
 /**
  * A {@link FileTreeCell} decorated to present {@link DupFileFinder2} results.
- * 
- * @author alantcote
- *
  */
 public class DecoratedFileTreeCell extends FileTreeCell {
+	/**
+	 * The ancestor set.
+	 */
 	protected HashSet<Path> ancestorSet = null;
+	
+	/**
+	 * The controller.
+	 */
 	protected FXMLController controller = null;
+	
+	/**
+	 * The collection of duplicate path groups.
+	 */
 	protected ArrayList<Collection<Path>> dupCollections = null;
+	
+	/**
+	 * The map from path to duplicate paths.
+	 */
 	protected Hashtable<Path, Collection<Path>> pathToDupCollMap = null;
 
 	/**
 	 * Construct a new object.
-	 * 
-	 * @param aFileIconFactory a source for platform-authentic icon images that are
-	 *                         appropriate to files being represented.
+	 * @param aFileIconFactory a factory for icons.
+	 * @param anAncestorSet a set of ancestors.
+	 * @param aDupCollections a collection of duplicate path groups.
+	 * @param aPathToDupCollMap a map from paths to duplicate paths.
+	 * @param aController a controller.
 	 */
 	public DecoratedFileTreeCell(FileIconFactory aFileIconFactory, HashSet<Path> anAncestorSet,
 			ArrayList<Collection<Path>> aDupCollections, Hashtable<Path, Collection<Path>> aPathToDupCollMap,
@@ -61,10 +75,17 @@ public class DecoratedFileTreeCell extends FileTreeCell {
 		controller = aController;
 	}
 
+	/**
+	 * Disable the context menu.
+	 */
 	protected void disableContextMenu() {
 		onContextMenuRequestedProperty().set(null);
 	}
 
+	/**
+	 * Delete a subtree from the file system.
+	 * @param aPath the subtree's root path.
+	 */
 	protected void doDelete(Path aPath) {
 		try {
 			Files.walkFileTree(aPath, new SimpleFileVisitor<Path>() {
@@ -91,6 +112,10 @@ public class DecoratedFileTreeCell extends FileTreeCell {
 		}
 	}
 
+	/**
+	 * Enable the context menu.
+	 * @param path
+	 */
 	protected void enableContextMenu(Path path) {
 		onContextMenuRequestedProperty().set(new EventHandler<ContextMenuEvent>() {
 
@@ -103,7 +128,7 @@ public class DecoratedFileTreeCell extends FileTreeCell {
 					double x = event.getScreenX();
 					double y = event.getScreenY();
 					MenuItem popupMenuItem = new MenuItem("Show Duplicates");
-					ContextMenu menu = new ContextMenu(popupMenuItem);
+					ContextMenu menu = newContextMenu(popupMenuItem);
 
 					popupMenuItem.onActionProperty().set(new EventHandler<ActionEvent>() {
 
@@ -121,6 +146,10 @@ public class DecoratedFileTreeCell extends FileTreeCell {
 		});
 	}
 
+	/**
+	 * Display a dialog listing the duplicate paths for a given path.
+	 * @param path the given path.
+	 */
 	protected void showDupCollection(Path path) {
 //		System.out.println("DecoratedFileTreeCell.showDupCollection(): path = " + path);
 
@@ -128,14 +157,14 @@ public class DecoratedFileTreeCell extends FileTreeCell {
 
 //		System.out.println("DecoratedFileTreeCell.showDupCollection(): memberPaths = " + memberPaths);
 
-		GridPane gridPane = new GridPane();
+		GridPane gridPane = newGridPane();
 		int row = 0;
 
 		for (Path aPath : memberPaths) {
 			String pathString = aPath.toString();
-			Label pathLabel = new Label(pathString);
-			MenuItem deleteMenuItem = new MenuItem("Delete");
-			ContextMenu contextMenu = new ContextMenu(deleteMenuItem);
+			Label pathLabel = newPathLabel(pathString);
+			MenuItem deleteMenuItem = newDeleteMenuItem();
+			ContextMenu contextMenu = newContextMenu(deleteMenuItem);
 
 			deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -190,10 +219,10 @@ public class DecoratedFileTreeCell extends FileTreeCell {
 			++row;
 		}
 
-		Dialog<Void> thePopup = new Dialog<>();
+		Dialog<Void> thePopup = newDialog();
 		DialogPane thePopupPane = thePopup.getDialogPane();
-		ButtonType okButtonType = new ButtonType("OK", ButtonData.OK_DONE);
-		ScrollPane scrollPane = new ScrollPane();
+		ButtonType okButtonType = newOKButtonType();
+		ScrollPane scrollPane = newScrollPane();
 
 		scrollPane.setContent(gridPane);
 
@@ -205,6 +234,60 @@ public class DecoratedFileTreeCell extends FileTreeCell {
 		thePopup.showAndWait();
 	}
 
+	/**
+	 * @return a new object.
+	 */
+	protected ScrollPane newScrollPane() {
+		return new ScrollPane();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected ButtonType newOKButtonType() {
+		return new ButtonType("OK", ButtonData.OK_DONE);
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected Dialog<Void> newDialog() {
+		return new Dialog<>();
+	}
+
+	/**
+	 * @param menuItem the first menu item.
+	 * @return a new object.
+	 */
+	protected ContextMenu newContextMenu(MenuItem menuItem) {
+		return new ContextMenu(menuItem);
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected MenuItem newDeleteMenuItem() {
+		return new MenuItem("Delete");
+	}
+
+	/**
+	 * @param pathString the path string.
+	 * @return a new object.
+	 */
+	protected Label newPathLabel(String pathString) {
+		return new Label(pathString);
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected GridPane newGridPane() {
+		return new GridPane();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void updateItem(File item, boolean empty) {
 		super.updateItem(item, empty);
