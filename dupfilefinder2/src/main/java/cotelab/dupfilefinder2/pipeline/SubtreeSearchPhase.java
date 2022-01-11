@@ -3,17 +3,10 @@
  */
 package cotelab.dupfilefinder2.pipeline;
 
-import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
 import javafx.beans.property.SimpleIntegerProperty;
@@ -23,153 +16,38 @@ import javafx.beans.property.SimpleIntegerProperty;
  * file system. The input is a single collection containing pathnames of files
  * and directories to be treated as roots of subtrees to be enumerated. The
  * output is a collection of the enumerated regular file pathnames.
- * 
- * @author alantcote
- *
  */
 public class SubtreeSearchPhase extends Phase {
-	protected class SearchVisitor extends SimpleFileVisitor<Path> {
 
-		protected LinkedList<Path> files = new LinkedList<Path>();
-		protected int filesVisited = 0;
+	/**
+	 * The number of directory paths found.
+	 */
+	protected SimpleIntegerProperty directoryCount = newSimpleIntegerProperty();
 
-		@Override
-		public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-			if (!Files.isReadable(dir)) {
-				unreadableCount.set(unreadableCount.get() + 1);
+	/**
+	 * The number of paths that could not be accessed.
+	 */
+	protected SimpleIntegerProperty failedAccessCount = newSimpleIntegerProperty();
 
-				return FileVisitResult.SKIP_SUBTREE;
-			}
+	/**
+	 * The number of paths that didn't fit in another category.
+	 */
+	protected SimpleIntegerProperty otherCount = newSimpleIntegerProperty();
 
-			directoryCount.set(directoryCount.get() + 1);
+	/**
+	 * The number of regular file paths found.
+	 */
+	protected SimpleIntegerProperty regularFileCount = newSimpleIntegerProperty();
 
-			return super.preVisitDirectory(dir, attrs);
-		}
+	/**
+	 * The number of symbolic link paths found.
+	 */
+	protected SimpleIntegerProperty symbolicLinkCount = newSimpleIntegerProperty();
 
-		@Override
-		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-			if (isCancelled()) {
-				return FileVisitResult.TERMINATE;
-			}
-
-//			if (((++filesVisited) % 1000) == 0) {
-//				System.out.println("SubtreeSearchPhase.SearchVisitor.visitFile: filesVisited = " + filesVisited);
-//			}
-
-			if (Files.isReadable(file)) {
-				if (attrs.isRegularFile()) {
-					files.add(file);
-					regularFileCount.set(regularFileCount.get() + 1);
-				} else if (attrs.isDirectory()) {
-					directoryCount.set(directoryCount.get() + 1);
-				} else if (attrs.isSymbolicLink()) {
-					symbolicLinkCount.set(symbolicLinkCount.get() + 1);
-				} else {
-					otherCount.set(otherCount.get() + 1);
-				}
-
-				return FileVisitResult.CONTINUE;
-			} else {
-				unreadableCount.set(unreadableCount.get() + 1);
-
-				return FileVisitResult.SKIP_SUBTREE;
-			}
-
-		}
-
-		@Override
-		public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-//			System.err.println("SubtreeSearchPhase.SearchVisitor.visitFileFailed: file = " + file);
-//			System.err.println("SubtreeSearchPhase.SearchVisitor.visitFileFailed: mssg = " + exc.getClass());
-
-			failedAccessCount.set(failedAccessCount.get() + 1);
-
-			return FileVisitResult.SKIP_SUBTREE;
-		}
-
-		@Override
-		public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-			if (files.size() > 0) {
-				try {
-					outputQueue.put(new ArrayList<Path>(files));
-					files.clear();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					
-					if (isCancelled()) {
-						return FileVisitResult.TERMINATE;
-					}
-				}
-			}
-			return super.postVisitDirectory(dir, exc);
-		}
-
-	}
-
-	public static void main(String[] args) {
-		PipelineQueue input = new PipelineQueue(5, "Input Queue");
-		PipelineQueue output = new PipelineQueue(5, "Output Queue");
-		SubtreeSearchPhase ssp = new SubtreeSearchPhase("Demo SubtreeSearchPhase", input, output);
-		LinkedList<Path> searchRoots = new LinkedList<Path>();
-		FileSystem fileSystem = FileSystems.getDefault();
-		Iterable<Path> rootDirs = fileSystem.getRootDirectories();
-
-		for (Path root : rootDirs) {
-			searchRoots.add(root);
-
-//			System.out.println("SubtreeSearchPhase.main(): root = " + root);
-		}
-
-		try {
-			input.put(searchRoots);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-//		Date startStamp = new Date();
-
-		try {
-			ssp.call();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-//		Date endStamp = new Date();
-//		long elapsed = endStamp.getTime() - startStamp.getTime();
-//		long eHours = elapsed / (60 * 60 * 1000);
-//		long eMinutes = (elapsed / (60 * 1000)) % 60;
-//		long eSeconds = (elapsed / 1000) % 60;
-//		long eMillis = elapsed % 1000;
-//		String elapsedString = "" + eHours + ":" + eMinutes + ":" + eSeconds + "." + eMillis;
-		@SuppressWarnings("unused")
-		Collection<Path> paths = null;
-
-		try {
-			paths = output.take();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-//		System.out.println("SubtreeSearchPhase.main(): startStamp = " + startStamp);
-//		System.out.println("SubtreeSearchPhase.main(): input.takeCount = " + input.takeCount);
-//		System.out.println("SubtreeSearchPhase.main(): output.putCount = " + output.putCount);
-//		System.out.println("SubtreeSearchPhase.main(): ssp.directoryCount = " + ssp.directoryCount);
-//		System.out.println("SubtreeSearchPhase.main(): ssp.otherCount = " + ssp.otherCount);
-//		System.out.println("SubtreeSearchPhase.main(): ssp.regularFileCount = " + ssp.regularFileCount);
-//		System.out.println("SubtreeSearchPhase.main(): ssp.symbolicLinkCount = " + ssp.symbolicLinkCount);
-//		System.out.println("SubtreeSearchPhase.main(): ssp.unreadableCount = " + ssp.unreadableCount);
-//		System.out.println("SubtreeSearchPhase.main(): ssp.failedAccessCount = " + ssp.failedAccessCount);
-//		System.out.println("SubtreeSearchPhase.main(): paths.size() = " + paths.size());
-//		System.out.println("SubtreeSearchPhase.main(): endStamp = " + endStamp);
-//		System.out.println("SubtreeSearchPhase.main(): elapsedString = " + elapsedString);
-	}
-
-	protected SimpleIntegerProperty directoryCount = new SimpleIntegerProperty(0);
-	protected SimpleIntegerProperty failedAccessCount = new SimpleIntegerProperty(0);
-	protected SimpleIntegerProperty otherCount = new SimpleIntegerProperty(0);
-	protected SimpleIntegerProperty regularFileCount = new SimpleIntegerProperty(0);
-	protected SimpleIntegerProperty symbolicLinkCount = new SimpleIntegerProperty(0);
-	protected SimpleIntegerProperty unreadableCount = new SimpleIntegerProperty(0);
+	/**
+	 * The number of paths that could not be read.
+	 */
+	protected SimpleIntegerProperty unreadableCount = newSimpleIntegerProperty();
 
 	/**
 	 * Construct a new object.
@@ -224,6 +102,9 @@ public class SubtreeSearchPhase extends Phase {
 		return unreadableCount;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected Void call() throws Exception {
 		Collection<Path> packet;
@@ -232,7 +113,7 @@ public class SubtreeSearchPhase extends Phase {
 			if (isCancelled()) {
 				break;
 			}
-			
+
 			if (packet.isEmpty()) { // EOF convention
 				break;
 			}
@@ -242,17 +123,40 @@ public class SubtreeSearchPhase extends Phase {
 					break;
 				}
 
-				Files.walkFileTree(aPath, new SearchVisitor());
+				PathSearchVisitor pathSearchVisitor = new PathSearchVisitor();
+
+				Files.walkFileTree(aPath, pathSearchVisitor);
+
+				directoryCount.set(directoryCount.get() + pathSearchVisitor.getDirectoryCount().get());
+				failedAccessCount.set(failedAccessCount.get() + pathSearchVisitor.getFailedAccessCount().get());
+				otherCount.set(otherCount.get() + pathSearchVisitor.getOtherCount().get());
+				regularFileCount.set(regularFileCount.get() + pathSearchVisitor.getRegularFileCount().get());
+				symbolicLinkCount.set(symbolicLinkCount.get() + pathSearchVisitor.getSymbolicLinkCount().get());
+				unreadableCount.set(unreadableCount.get() + pathSearchVisitor.getUnreadableCount().get());
+
+				if (pathSearchVisitor.getFiles().size() > 0) {
+					outputQueue.put(pathSearchVisitor.getFiles());
+				}
 			}
 		}
 
-//		if (!isCancelled() && !files.isEmpty()) {
-//			outputQueue.put(files);
-//		}
-		
-		outputQueue.put(new ArrayList<Path>()); // EOF convention
+		outputQueue.put(newPathArrayList()); // EOF convention
 
 		return null;
+	}
+
+	/**
+	 * @return
+	 */
+	protected ArrayList<Path> newPathArrayList() {
+		return new ArrayList<Path>();
+	}
+
+	/**
+	 * @return a new object with its value set to zero.
+	 */
+	protected SimpleIntegerProperty newSimpleIntegerProperty() {
+		return new SimpleIntegerProperty(0);
 	}
 
 }

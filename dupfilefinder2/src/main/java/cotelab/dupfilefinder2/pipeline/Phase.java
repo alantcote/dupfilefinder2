@@ -8,37 +8,23 @@ import java.util.ArrayList;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 
 /**
  * A {@link Task} that may have child tasks that it manages.
  * 
  * A tree of Phase objects may be created and managed as one.
- * 
- * @author alantcote
  */
 public abstract class Phase extends Task<Void> implements QueueProcessor {
-	protected class ChildProblemEventHandler implements EventHandler<WorkerStateEvent> {
 
-		@Override
-		public void handle(WorkerStateEvent event) {
-			Throwable t = new Throwable();
-			
-			System.err.println("Phase.ChildProblemEventHandler.handle(): handling " + event);
-			t.printStackTrace();
-
-			// may as well cancel this Phase.
-//			cancel(true);
-		}
-	}
-
+	/**
+	 * The handler of problems in child Phases.
+	 */
 	protected ChildProblemEventHandler childProblemEventHandler;
 
 	/**
 	 * The child Phases.
 	 */
-	protected final ArrayList<Phase> children = new ArrayList<Phase>();
+	protected final ArrayList<Phase> children = newPhaseArrayList();
 
 	/**
 	 * The input queue.
@@ -73,14 +59,17 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 		outputQueue = theOutput;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean cancel(boolean mayInterruptIfRunning) {
 		boolean success = true;
-		ArrayList<Phase> livingKids = new ArrayList<Phase>();
+		ArrayList<Phase> livingKids = newPhaseArrayList();
 
 		System.err.println("Phase.cancel(): cancel entered for " + phaseName.get());
 		Throwable throwable = new Throwable();
-		
+
 		throwable.printStackTrace();
 
 		for (Phase child : children) {
@@ -94,7 +83,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 				System.out.println("Phase.cancel(): cancelling " + child.phaseName.get());
 
 				success = success && child.cancel(mayInterruptIfRunning);
-				
+
 				System.out.println("Phase.cancel(): cancelling " + child.phaseName.get() + ": " + success);
 			}
 		}
@@ -111,7 +100,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.PipelineQueue#getName()
 	 */
 	public SimpleStringProperty getInputName() {
@@ -119,13 +108,16 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getPutCount()
 	 */
 	public SimpleIntegerProperty getInputPutCount() {
 		return inputQueue.getPutCount();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public PipelineQueue getInputQueue() {
 		// TODO Auto-generated method stub
@@ -133,7 +125,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getTakeCount()
 	 */
 	public SimpleIntegerProperty getInputTakeCount() {
@@ -141,7 +133,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.PipelineQueue#getName()
 	 */
 	public SimpleStringProperty getOutputName() {
@@ -149,13 +141,16 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getPutCount()
 	 */
 	public SimpleIntegerProperty getOutputPutCount() {
 		return outputQueue.getPutCount();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public PipelineQueue getOutputQueue() {
 		// TODO Auto-generated method stub
@@ -163,7 +158,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getTakeCount()
 	 */
 	public SimpleIntegerProperty getOutputTakeCount() {
@@ -171,7 +166,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	}
 
 	/**
-	 * @return the phaseName
+	 * @return the property.
 	 */
 	public SimpleStringProperty getPhaseName() {
 		return phaseName;
@@ -220,6 +215,13 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	}
 
 	/**
+	 * @return a new object.
+	 */
+	protected ArrayList<Phase> newPhaseArrayList() {
+		return new ArrayList<Phase>();
+	}
+
+	/**
 	 * Start up the children.
 	 */
 	protected void startChildren() {
@@ -235,9 +237,9 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 				Thread th = new Thread(child);
 
 				th.setDaemon(true);
-				
+
 //				System.out.println("Phase.startChildren(): starting child " + child.getPhaseName().get());
-				
+
 				th.start();
 			}
 		}
@@ -247,7 +249,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	 * Wait for the children to end, whether by cancellation, failure, or success.
 	 */
 	protected void waitForChildrenDone() {
-		ArrayList<Phase> livingKids = new ArrayList<Phase>();
+		ArrayList<Phase> livingKids = newPhaseArrayList();
 
 		for (Phase child : children) {
 			if (!child.isDone()) {
@@ -261,9 +263,9 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 			} catch (InterruptedException e) {
 				// e.printStackTrace();
 			}
-			
+
 			livingKids.clear();
-			
+
 			for (Phase child : children) {
 				if (!child.isDone()) {
 					livingKids.add(child);

@@ -10,21 +10,48 @@ import javafx.beans.value.ChangeListener;
 
 /**
  * A {@link SimpleLongProperty} that does its work in the JavaFX thread.
- * 
- * @author alantcote
  */
 public class ThreadSafeSimpleLongProperty {
+	/**
+	 * The backing {@link SimpleLongProperty}.
+	 */
 	protected final SimpleLongProperty slp;
 
 	/**
 	 * Construct a new object.
 	 */
 	public ThreadSafeSimpleLongProperty() {
-		slp = new SimpleLongProperty();
+		slp = newSimpleLongProperty();
 	}
 
+	/**
+	 * Construct a new object.
+	 * 
+	 * @param initialValue the initial value of the property.
+	 */
 	public ThreadSafeSimpleLongProperty(long initialValue) {
-		slp = new SimpleLongProperty(initialValue);
+		slp = newSimpleLongProperty(initialValue);
+	}
+
+	/**
+	 * Add a change listener, which always will be called on the JavaFX thread.
+	 * 
+	 * @param listener a change listener.
+	 * @see javafx.beans.property.LongPropertyBase#addListener(javafx.beans.value.ChangeListener)
+	 */
+	public void addListener(ChangeListener<? super Number> listener) {
+		slp.addListener(listener);
+	}
+
+	/**
+	 * Add an invalidation listener, which always will be called on the JavaFX
+	 * thread.
+	 * 
+	 * @param listener an invalidation listener.
+	 * @see javafx.beans.property.LongPropertyBase#addListener(javafx.beans.InvalidationListener)
+	 */
+	public void addListener(InvalidationListener listener) {
+		slp.addListener(listener);
 	}
 
 //	/**
@@ -73,19 +100,27 @@ public class ThreadSafeSimpleLongProperty {
 //	}
 
 	/**
-	 * @param listener
-	 * @see javafx.beans.property.LongPropertyBase#addListener(javafx.beans.value.ChangeListener)
+	 * Get the property's value.
+	 * 
+	 * @return
+	 * @see javafx.beans.property.LongPropertyBase#get()
 	 */
-	public void addListener(ChangeListener<? super Number> listener) {
-		slp.addListener(listener);
+	public long get() {
+		// not sure how to do this in a truly thread-safe manner. take our chances.
+		return slp.get();
 	}
 
 	/**
-	 * @param listener
-	 * @see javafx.beans.property.LongPropertyBase#addListener(javafx.beans.InvalidationListener)
+	 * Increment the property's value.
+	 * 
+	 * @param addend the amount by which the value is to be incremented.
 	 */
-	public void addListener(InvalidationListener listener) {
-		slp.addListener(listener);
+	public void increment(long addend) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				slp.set(slp.get() + addend);
+			}
+		});
 	}
 
 //	/**
@@ -211,12 +246,13 @@ public class ThreadSafeSimpleLongProperty {
 //	}
 
 	/**
-	 * @return
-	 * @see javafx.beans.property.LongPropertyBase#get()
+	 * Remove a change listener.
+	 * 
+	 * @param listener a change listener.
+	 * @see javafx.beans.property.LongPropertyBase#removeListener(javafx.beans.value.ChangeListener)
 	 */
-	public long get() {
-		// not sure how to do this in a truly thread-safe manner. take our chances.
-		return slp.get();
+	public void removeListener(ChangeListener<? super Number> listener) {
+		slp.removeListener(listener);
 	}
 
 //	/**
@@ -341,12 +377,14 @@ public class ThreadSafeSimpleLongProperty {
 //		return slp.hashCode();
 //	}
 
-	public void increment(long addend) {
-		Platform.runLater(new Runnable() {
-			public void run() {
-				slp.set(slp.get() + addend);
-			}
-		});
+	/**
+	 * Remove an invalidation listener.
+	 * 
+	 * @param listener an invalidation listener.
+	 * @see javafx.beans.property.LongPropertyBase#removeListener(javafx.beans.InvalidationListener)
+	 */
+	public void removeListener(InvalidationListener listener) {
+		slp.removeListener(listener);
 	}
 
 //	/**
@@ -673,23 +711,9 @@ public class ThreadSafeSimpleLongProperty {
 //	}
 
 	/**
-	 * @param listener
-	 * @see javafx.beans.property.LongPropertyBase#removeListener(javafx.beans.value.ChangeListener)
-	 */
-	public void removeListener(ChangeListener<? super Number> listener) {
-		slp.removeListener(listener);
-	}
-
-	/**
-	 * @param listener
-	 * @see javafx.beans.property.LongPropertyBase#removeListener(javafx.beans.InvalidationListener)
-	 */
-	public void removeListener(InvalidationListener listener) {
-		slp.removeListener(listener);
-	}
-
-	/**
-	 * @param newValue
+	 * Set a new value for the property.
+	 * 
+	 * @param newValue the new value.
 	 * @see javafx.beans.property.LongPropertyBase#set(long)
 	 */
 	public void set(long newValue) {
@@ -701,7 +725,9 @@ public class ThreadSafeSimpleLongProperty {
 	}
 
 	/**
-	 * @param v
+	 * Set a new value for the property.
+	 * 
+	 * @param v the new value.
 	 * @see javafx.beans.property.LongProperty#setValue(java.lang.Number)
 	 */
 	public void setValue(Number v) {
@@ -710,6 +736,29 @@ public class ThreadSafeSimpleLongProperty {
 				slp.setValue(v);
 			}
 		});
+	}
+
+	/**
+	 * A factory for {@link SimpleLongProperty} objects.
+	 * 
+	 * This trivial method helps enable unit testing.
+	 * 
+	 * @return the new object.
+	 */
+	protected SimpleLongProperty newSimpleLongProperty() {
+		return new SimpleLongProperty();
+	}
+
+	/**
+	 * A factory for {@link SimpleLongProperty} objects.
+	 * 
+	 * This trivial method helps enable unit testing.
+	 * 
+	 * @param initialValue the initial value of the property.
+	 * @return the new object.
+	 */
+	protected SimpleLongProperty newSimpleLongProperty(long initialValue) {
+		return new SimpleLongProperty(initialValue);
 	}
 
 //	/**

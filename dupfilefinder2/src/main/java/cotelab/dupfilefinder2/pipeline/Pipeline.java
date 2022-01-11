@@ -12,9 +12,6 @@ import javafx.beans.property.SimpleStringProperty;
  * directory pathnames to be compared to one another. The output from the
  * pipeline is a number of collections of file and directory pathnames; each
  * output collection is comprised of pathnames that have identical contents.
- * 
- * @author alantcote
- *
  */
 public class Pipeline extends Phase {
 	/**
@@ -62,47 +59,58 @@ public class Pipeline extends Phase {
 	 */
 	public Pipeline(String aName, PipelineQueue theInput, PipelineQueue theOutput) {
 		super(aName, theInput, theOutput);
-		
-		// TODO if any phase finishes with no output, remaining phases should be
+
+		// if any phase finishes with no output, remaining phases could be
 		// cancelled
 
-		System.out.println("Pipeline.Pipeline(): creating inter-phase queues");
+//		System.out.println("Pipeline.Pipeline(): creating inter-phase queues");
 
-		subtreeSearch2GroupBySizeQueue = new PipelineQueue(Integer.MAX_VALUE, "SubtreeSearch to GroupBySize");
-		groupBySize2GroupByContentQueue = new PipelineQueue(Integer.MAX_VALUE, "GroupBySize to GroupByContent");
-		groupByContent2MatchingSubtreeIdentificationQueue = new PipelineQueue(Integer.MAX_VALUE,
+		subtreeSearch2GroupBySizeQueue = newPipelineQueue(Integer.MAX_VALUE, "SubtreeSearch to GroupBySize");
+		groupBySize2GroupByContentQueue = newPipelineQueue(Integer.MAX_VALUE, "GroupBySize to GroupByContent");
+		groupByContent2MatchingSubtreeIdentificationQueue = newPipelineQueue(Integer.MAX_VALUE,
 				"GroupByContent to MatchingSubtreeIdentification");
 
-		System.out.println("Pipeline.Pipeline(): creating phases");
+//		System.out.println("Pipeline.Pipeline(): creating phases");
 
-		subtreeSearchPhase = new SubtreeSearchPhase("Subtree Search Phase", inputQueue, subtreeSearch2GroupBySizeQueue);
-		groupBySizePhase = new GroupBySizePhase("Group By Size Phase", subtreeSearch2GroupBySizeQueue,
+		subtreeSearchPhase = newSubtreeSearchPhase("Subtree Search Phase", inputQueue, subtreeSearch2GroupBySizeQueue);
+		groupBySizePhase = newGroupBySizePhase("Group By Size Phase", subtreeSearch2GroupBySizeQueue,
 				groupBySize2GroupByContentQueue);
-		groupByContentPhase = new GroupByContentPhase("Group By Content Phase", groupBySize2GroupByContentQueue,
+		groupByContentPhase = newGroupByContentPhase("Group By Content Phase", groupBySize2GroupByContentQueue,
 				groupByContent2MatchingSubtreeIdentificationQueue);
-		matchingSubtreeIdentificationPhase = new MatchingSubtreeIdentificationPhase(
-				"Matching Subtree Identification Phase", groupByContent2MatchingSubtreeIdentificationQueue, outputQueue);
+		matchingSubtreeIdentificationPhase = newMatchingSubtreeIdentificationPhase(
+				"Matching Subtree Identification Phase", groupByContent2MatchingSubtreeIdentificationQueue,
+				outputQueue);
 
-		System.out.println("Pipeline.Pipeline(): registering phases");
+//		System.out.println("Pipeline.Pipeline(): registering phases");
 
 		children.add(subtreeSearchPhase);
 		children.add(groupBySizePhase);
 		children.add(groupByContentPhase);
 		children.add(matchingSubtreeIdentificationPhase);
 
-		System.out.println("Pipeline.Pipeline(): method complete");
+//		System.out.println("Pipeline.Pipeline(): method complete");
 	}
 
+	/**
+	 * Get the GroupByContentPhase state property.
+	 * 
+	 * @return the property.
+	 */
 	public ReadOnlyObjectProperty<State> gbcStateProperty() {
 		return groupByContentPhase.stateProperty();
 	}
 
+	/**
+	 * Get the GroupBySizePhase state property.
+	 * 
+	 * @return the property.
+	 */
 	public ReadOnlyObjectProperty<State> gbsStateProperty() {
 		return groupBySizePhase.stateProperty();
 	}
 
 	/**
-	 * @return
+	 * @return the groupByContent2MatchingSubtreeIdentificationQueue name.
 	 * @see cotelab.dupfilefinder2.pipeline.PipelineQueue#getName()
 	 */
 	public SimpleStringProperty getGBC2MSIQueueName() {
@@ -110,7 +118,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getPutCount()
 	 */
 	public SimpleIntegerProperty getGBC2MSIQueuePutCount() {
@@ -118,7 +126,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getTakeCount()
 	 */
 	public SimpleIntegerProperty getGBC2MSIQueueTakeCount() {
@@ -126,7 +134,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.GroupByContentPhase#getBytesComparedCount()
 	 */
 	public ThreadSafeSimpleLongProperty getGBCBytesComparedCount() {
@@ -134,7 +142,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.GroupByContentPhase#getFilesComparedCount()
 	 */
 	public ThreadSafeSimpleIntegerProperty getGBCFilesComparedCount() {
@@ -142,7 +150,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.Phase#getPhaseName()
 	 */
 	public SimpleStringProperty getGBCPhaseName() {
@@ -150,7 +158,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.GroupByContentPhase#getUniqueCount()
 	 */
 	public ThreadSafeSimpleIntegerProperty getGBCUniqueCount() {
@@ -158,7 +166,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.PipelineQueue#getName()
 	 */
 	public SimpleStringProperty getGBS2GBCQueueName() {
@@ -166,7 +174,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getPutCount()
 	 */
 	public SimpleIntegerProperty getGBS2GBCQueuePutCount() {
@@ -174,7 +182,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getTakeCount()
 	 */
 	public SimpleIntegerProperty getGBS2GBCQueueTakeCount() {
@@ -182,7 +190,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.GroupBySizePhase#getFilesMeasuredCount()
 	 */
 	public SimpleIntegerProperty getGBSFilesMeasuredCount() {
@@ -190,7 +198,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.Phase#getPhaseName()
 	 */
 	public SimpleStringProperty getGBSPhaseName() {
@@ -198,7 +206,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.GroupBySizePhase#getSizeCount()
 	 */
 	public SimpleIntegerProperty getGBSSizeCount() {
@@ -206,7 +214,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.GroupBySizePhase#getUniqueCount()
 	 */
 	public SimpleIntegerProperty getGBSUniqueCount() {
@@ -214,7 +222,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.GroupBySizePhase#getUnmeasurableCount()
 	 */
 	public SimpleIntegerProperty getGBSUnmeasurableCount() {
@@ -222,7 +230,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.MatchingSubtreeIdentificationPhase#getPathGroupsConsideredProperty()
 	 */
 	public ThreadSafeSimpleIntegerProperty getMSIPathGroupsConsideredProperty() {
@@ -230,7 +238,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.Phase#getPhaseName()
 	 */
 	public SimpleStringProperty getMSIPhaseName() {
@@ -238,7 +246,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.PipelineQueue#getName()
 	 */
 	public SimpleStringProperty getSS2GBSQueueName() {
@@ -246,7 +254,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getPutCount()
 	 */
 	public SimpleIntegerProperty getSS2GBSQueuePutCount() {
@@ -254,7 +262,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getTakeCount()
 	 */
 	public SimpleIntegerProperty getSS2GBSQueueTakeCount() {
@@ -262,7 +270,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase#getDirectoryCount()
 	 */
 	public SimpleIntegerProperty getSSPDirectoryCount() {
@@ -270,7 +278,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase#getFailedAccessCount()
 	 */
 	public SimpleIntegerProperty getSSPFailedAccessCount() {
@@ -278,7 +286,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase#getOtherCount()
 	 */
 	public SimpleIntegerProperty getSSPOtherCount() {
@@ -286,7 +294,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.Phase#getPhaseName()
 	 */
 	public SimpleStringProperty getSSPPhaseName() {
@@ -294,7 +302,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase#getRegularFileCount()
 	 */
 	public SimpleIntegerProperty getSSPRegularFileCount() {
@@ -302,7 +310,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase#getSymbolicLinkCount()
 	 */
 	public SimpleIntegerProperty getSSPSymbolicLinkCount() {
@@ -310,7 +318,7 @@ public class Pipeline extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase#getUnreadableCount()
 	 */
 	public SimpleIntegerProperty getSSPUnreadableCount() {
@@ -321,8 +329,48 @@ public class Pipeline extends Phase {
 		return matchingSubtreeIdentificationPhase.stateProperty();
 	}
 
+	/**
+	 * @return the property.
+	 */
 	public ReadOnlyObjectProperty<State> sspStateProperty() {
 		return subtreeSearchPhase.stateProperty();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected GroupByContentPhase newGroupByContentPhase(String aName, PipelineQueue theInput,
+			PipelineQueue theOutput) {
+		return new GroupByContentPhase(aName, theInput, theOutput);
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected GroupBySizePhase newGroupBySizePhase(String aName, PipelineQueue theInput, PipelineQueue theOutput) {
+		return new GroupBySizePhase(aName, theInput, theOutput);
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected MatchingSubtreeIdentificationPhase newMatchingSubtreeIdentificationPhase(String aName,
+			PipelineQueue theInput, PipelineQueue theOutput) {
+		return new MatchingSubtreeIdentificationPhase(aName, theInput, theOutput);
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected PipelineQueue newPipelineQueue(int capacity, String aName) {
+		return new PipelineQueue(capacity, aName);
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected SubtreeSearchPhase newSubtreeSearchPhase(String aName, PipelineQueue theInput, PipelineQueue theOutput) {
+		return new SubtreeSearchPhase(aName, theInput, theOutput);
 	}
 
 }

@@ -23,12 +23,12 @@ import java.util.Map;
  * <li>Each of the regular files in one subtree matches the corresponding
  * regular file in the other subtree.</li>
  * </ul>
- * 
- * @author alantcote
- *
  */
 public class MatchingSubtreeIdentificationPhase extends Phase {
-	protected ThreadSafeSimpleIntegerProperty pathGroupsConsideredProperty = new ThreadSafeSimpleIntegerProperty();
+	/**
+	 * The number of path groups considered.
+	 */
+	protected ThreadSafeSimpleIntegerProperty pathGroupsConsideredProperty = newThreadSafeSimpleIntegerProperty();
 
 	/**
 	 * Construct a new object.
@@ -47,7 +47,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	public ThreadSafeSimpleIntegerProperty getPathGroupsConsideredProperty() {
 		return pathGroupsConsideredProperty;
 	}
-	
+
 	/**
 	 * Build a map from parent to child groups that each contain at least one child
 	 * of the parent.
@@ -57,7 +57,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	 */
 	protected Map<Path, Collection<Collection<Path>>> buildParent2CandidateGroupMap(
 			Collection<Collection<Path>> candidateGroupGroup) {
-		Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap = new Hashtable<Path, Collection<Collection<Path>>>();
+		Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap = newPathToPathGroupGroupHashtable();
 
 		for (Collection<Path> candidateGroup : candidateGroupGroup) {
 			for (Path candidate : candidateGroup) {
@@ -70,14 +70,14 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 				Collection<Collection<Path>> aGroupGroup = parent2CandidateGroupMap.get(parent);
 
 				if (aGroupGroup == null) {
-					aGroupGroup = new ArrayList<Collection<Path>>();
+					aGroupGroup = newPathGroupArrayList();
 
 					parent2CandidateGroupMap.put(parent, aGroupGroup);
 				}
 
 				aGroupGroup.add(candidateGroup);
 			}
-			
+
 			pathGroupsConsideredProperty.increment(1);
 		}
 
@@ -85,46 +85,52 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	}
 
 	/**
-	 * Find all the subtrees that match one another. We build the subtrees layer
-	 * by layer, from the bottom up.
+	 * Find all the subtrees that match one another. We build the subtrees layer by
+	 * layer, from the bottom up.
+	 * 
 	 * @param candidateGroups a collection of groups of matching paths.
 	 * @return a collection of groups of matching subtrees.
 	 */
 	protected Collection<Collection<Path>> buildSubtrees(Collection<Collection<Path>> candidateGroups) {
-		Collection<Collection<Path>> subtreeGroups = new ArrayList<Collection<Path>>();
+		Collection<Collection<Path>> subtreeGroups = newPathGroupArrayList();
 		Collection<Collection<Path>> duplicateSetGroup;
-		
-		System.out.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): entry");
-		
+
+//		System.out.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): entry");
+
 		while ((duplicateSetGroup = findDuplicateSets(candidateGroups)).size() > 1) {
 			// not sure the right criterion is being used here
 			if (isCancelled()) {
 				return subtreeGroups;
 			}
-			
-			System.out.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): duplicateSetGroup.size() = " + duplicateSetGroup.size());
-			
-			for (Collection<Path> duplicateSet : duplicateSetGroup) {
-				System.out.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): duplicateSet = " + duplicateSet);
-			}
-			
+
+//			System.out.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): duplicateSetGroup.size() = "
+//					+ duplicateSetGroup.size());
+
+//			for (Collection<Path> duplicateSet : duplicateSetGroup) {
+//				System.out
+//						.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): duplicateSet = " + duplicateSet);
+//			}
+
 			subtreeGroups.addAll(duplicateSetGroup);
-			
+
 			candidateGroups = duplicateSetGroup;
 		}
-		
-		System.out.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): method completed.");
-		
+
+//		System.out.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): method completed.");
+
 		return subtreeGroups;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected Void call() throws Exception {
 		try {
 			// gather input and capture the information
 			Collection<Collection<Path>> groups = gatherInputGroups();
 
-			System.out.println("MatchingSubtreeIdentificationPhase.call(): " + groups.size() + " input groups");
+//			System.out.println("MatchingSubtreeIdentificationPhase.call(): " + groups.size() + " input groups");
 
 			if (isCancelled()) {
 				return null;
@@ -132,14 +138,15 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 
 			Collection<Collection<Path>> subtreeGroups = buildSubtrees(groups);
 
-			System.out.println("MatchingSubtreeIdentificationPhase.call(): publishing" + subtreeGroups.size() + " subtree groups");
-			
+//			System.out.println(
+//					"MatchingSubtreeIdentificationPhase.call(): publishing" + subtreeGroups.size() + " subtree groups");
+
 			// publish results
 			for (Collection<Path> subtreeGroup : subtreeGroups) {
 				if (isCancelled()) {
 					return null;
 				}
-				
+
 				outputQueue.put(subtreeGroup);
 			}
 		} catch (Exception e) {
@@ -147,9 +154,9 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 			e.printStackTrace();
 		}
 
-		outputQueue.put(new ArrayList<Path>()); // EOF convention
+		outputQueue.put(newPathArrayList()); // EOF convention
 
-		System.out.println("MatchingSubtreeIdentificationPhase.call(): method completed");
+//		System.out.println("MatchingSubtreeIdentificationPhase.call(): method completed");
 
 		return null;
 	}
@@ -161,36 +168,39 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	 * @return the collection of groups of matching parents.
 	 */
 	protected Collection<Collection<Path>> findDuplicateSets(Collection<Collection<Path>> candidateGroups) {
-		Collection<Collection<Path>> duplicateSetGroup = new ArrayList<Collection<Path>>();
-		
-		System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): entry");
-		
+		Collection<Collection<Path>> duplicateSetGroup = newPathGroupArrayList();
+
+//		System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): entry");
+
 		Map<Integer, Collection<Collection<Path>>> sizeToGroupMap = groupBySize(candidateGroups);
 
 		for (Integer size : sizeToGroupMap.keySet()) {
 			if (isCancelled()) {
 				return duplicateSetGroup;
 			}
-			
-			System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): size = " + size);
+
+//			System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): size = " + size);
 
 			Collection<Collection<Path>> equalSizedGroups = sizeToGroupMap.get(size);
 			Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap = buildParent2CandidateGroupMap(
 					equalSizedGroups);
 			Collection<Collection<Path>> dupParentGroups = nWayCompare(parent2CandidateGroupMap,
 					parent2CandidateGroupMap.keySet());
-			
-			System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): dupParentGroups.size() = " + dupParentGroups.size());
-			
+
+//			System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): dupParentGroups.size() = "
+//					+ dupParentGroups.size());
+
 			Collection<Collection<Path>> validatedDupParentGroups = validateGroupsOnFileSystem(parent2CandidateGroupMap,
 					dupParentGroups);
-			
-			System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): validatedDupParentGroups.size() = " + validatedDupParentGroups.size());
+
+//			System.out.println(
+//					"MatchingSubtreeIdentificationPhase.findDuplicateSets(): validatedDupParentGroups.size() = "
+//							+ validatedDupParentGroups.size());
 
 			duplicateSetGroup.addAll(validatedDupParentGroups);
 		}
-		
-		System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): method completed.");
+
+//		System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): method completed.");
 
 		return duplicateSetGroup;
 	}
@@ -201,7 +211,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	 */
 	protected Collection<Collection<Path>> gatherInputGroups() {
 		Collection<Path> inputGroup = null;
-		ArrayList<Collection<Path>> groups = new ArrayList<Collection<Path>>();
+		ArrayList<Collection<Path>> groups = newPathGroupArrayList();
 
 		// assuming there will be at least one input group
 		try {
@@ -245,7 +255,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	 * @return The map.
 	 */
 	protected Map<Integer, Collection<Collection<Path>>> groupBySize(Collection<Collection<Path>> candidateGroups) {
-		Map<Integer, Collection<Collection<Path>>> sizeToGroupMap = new Hashtable<Integer, Collection<Collection<Path>>>();
+		Map<Integer, Collection<Collection<Path>>> sizeToGroupMap = newIntegerToPathGroupGroupHashtable();
 
 		for (Collection<Path> candidateGroup : candidateGroups) {
 			if (isCancelled()) {
@@ -257,7 +267,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 			Collection<Collection<Path>> collections = sizeToGroupMap.get(size);
 
 			if (collections == null) {
-				collections = new ArrayList<Collection<Path>>();
+				collections = newPathGroupArrayList();
 
 				sizeToGroupMap.put(size, collections);
 			}
@@ -266,6 +276,48 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 		}
 
 		return sizeToGroupMap;
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected Hashtable<Integer, Collection<Collection<Path>>> newIntegerToPathGroupGroupHashtable() {
+		return new Hashtable<Integer, Collection<Collection<Path>>>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected ArrayList<Path> newPathArrayList() {
+		return new ArrayList<Path>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected ArrayList<Collection<Path>> newPathGroupArrayList() {
+		return new ArrayList<Collection<Path>>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected Hashtable<Collection<Collection<Path>>, Collection<Path>> newPathGroupGroupToPathGroupHashtable() {
+		return new Hashtable<Collection<Collection<Path>>, Collection<Path>>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected Hashtable<Path, Collection<Collection<Path>>> newPathToPathGroupGroupHashtable() {
+		return new Hashtable<Path, Collection<Collection<Path>>>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected ThreadSafeSimpleIntegerProperty newThreadSafeSimpleIntegerProperty() {
+		return new ThreadSafeSimpleIntegerProperty();
 	}
 
 	/**
@@ -280,11 +332,11 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	 */
 	protected Collection<Collection<Path>> nWayCompare(Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap,
 			Collection<Path> candidateParentGroup) {
-		Collection<Collection<Path>> dupParentGroups = new ArrayList<Collection<Path>>();
+		Collection<Collection<Path>> dupParentGroups = newPathGroupArrayList();
 
 		// invert parent2CandidateGroupMap, yielding map of candidate group groups to
 		// parents
-		Map<Collection<Collection<Path>>, Collection<Path>> childGroupGroupToParentGroup = new Hashtable<Collection<Collection<Path>>, Collection<Path>>();
+		Map<Collection<Collection<Path>>, Collection<Path>> childGroupGroupToParentGroup = newPathGroupGroupToPathGroupHashtable();
 
 		for (Path parent : candidateParentGroup) {
 			Collection<Collection<Path>> childGroupGroup = parent2CandidateGroupMap.get(parent);
@@ -295,7 +347,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 			}
 
 			if (parentGroup == null) {
-				parentGroup = new ArrayList<Path>();
+				parentGroup = newPathArrayList();
 				childGroupGroupToParentGroup.put(childGroupGroup, parentGroup);
 			}
 
@@ -330,7 +382,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	protected Collection<Collection<Path>> validateGroupsOnFileSystem(
 			Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap,
 			Collection<Collection<Path>> candidateParentGroups) {
-		Collection<Collection<Path>> validatedDupParentGroups = new ArrayList<Collection<Path>>();
+		Collection<Collection<Path>> validatedDupParentGroups = newPathGroupArrayList();
 
 		for (Collection<Path> parentGroup : candidateParentGroups) {
 			if (isCancelled()) {
@@ -362,13 +414,13 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	 */
 	protected Collection<Path> validateOnFileSystem(Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap,
 			Collection<Path> candidateParentGroup) {
-		Collection<Path> validatedParentGroup = new ArrayList<Path>();
+		Collection<Path> validatedParentGroup = newPathArrayList();
 		Path sampleParent = (Path) candidateParentGroup.toArray()[0];
 		Collection<Collection<Path>> sampleGroups = parent2CandidateGroupMap.get(sampleParent);
 		@SuppressWarnings("unchecked")
 		Collection<Path> sampleGroup = (Collection<Path>) sampleGroups.toArray()[0];
 		int desiredSize = sampleGroup.size();
-		Collection<Path> badParents = new ArrayList<Path>();
+		Collection<Path> badParents = newPathArrayList();
 
 		for (Path parent : candidateParentGroup) {
 			if (isCancelled()) {

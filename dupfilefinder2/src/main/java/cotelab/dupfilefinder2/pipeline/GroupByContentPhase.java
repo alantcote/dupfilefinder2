@@ -15,16 +15,31 @@ import javafx.beans.value.ObservableValue;
  * collections of pathnames of files with matching contents.
  *
  * Outputs an empty group as an end of file mark.
- * 
- * @author alantcote
- *
  */
 public class GroupByContentPhase extends Phase {
+	/**
+	 * The number of worker threads.
+	 */
 	public static final int WORKER_COUNT = 5;
 
-	protected ThreadSafeSimpleLongProperty bytesComparedCount = new ThreadSafeSimpleLongProperty(0);
-	protected ThreadSafeSimpleIntegerProperty filesComparedCount = new ThreadSafeSimpleIntegerProperty(0);
-	protected ThreadSafeSimpleIntegerProperty uniqueCount = new ThreadSafeSimpleIntegerProperty(0);
+	/**
+	 * The number of bytes compared.
+	 */
+	protected ThreadSafeSimpleLongProperty bytesComparedCount = newThreadSafeSimpleLongProperty();
+
+	/**
+	 * The number of files compared.
+	 */
+	protected ThreadSafeSimpleIntegerProperty filesComparedCount = newThreadSafeSimpleIntegerProperty();
+
+	/**
+	 * The number of unique files identified.
+	 */
+	protected ThreadSafeSimpleIntegerProperty uniqueCount = newThreadSafeSimpleIntegerProperty();
+
+	/**
+	 * The workers.
+	 */
 	protected GroupByContentWorker workers[] = new GroupByContentWorker[WORKER_COUNT];
 
 	/**
@@ -37,10 +52,10 @@ public class GroupByContentPhase extends Phase {
 	public GroupByContentPhase(String name, PipelineQueue theInput, PipelineQueue theOutput) {
 		super(name, theInput, theOutput);
 
-		System.out.println("GroupByContentPhase.GroupByContentPhase(): creating workers");
+//		System.out.println("GroupByContentPhase.GroupByContentPhase(): creating workers");
 
 		for (int i = 0; i < WORKER_COUNT; ++i) {
-			workers[i] = new GroupByContentWorker("GroupByContentWorker " + (i + 1), theInput, theOutput);
+			workers[i] = newGroupByContentWorker("GroupByContentWorker " + (i + 1), theInput, theOutput);
 
 			workers[i].getBytesComparedCount().addListener(new ChangeListener<Number>() {
 
@@ -112,13 +127,37 @@ public class GroupByContentPhase extends Phase {
 		return uniqueCount;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected Void call() throws Exception {
 		Void result = super.call();
-		
+
 		outputQueue.put(new ArrayList<Path>()); // EOF convention
-		
+
 		return result;
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected GroupByContentWorker newGroupByContentWorker(String name, PipelineQueue input, PipelineQueue output) {
+		return new GroupByContentWorker(name, input, output);
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected ThreadSafeSimpleIntegerProperty newThreadSafeSimpleIntegerProperty() {
+		return new ThreadSafeSimpleIntegerProperty(0);
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected ThreadSafeSimpleLongProperty newThreadSafeSimpleLongProperty() {
+		return new ThreadSafeSimpleLongProperty(0);
 	}
 
 }

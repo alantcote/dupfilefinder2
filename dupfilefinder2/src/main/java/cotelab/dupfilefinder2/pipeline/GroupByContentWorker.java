@@ -4,7 +4,6 @@
 package cotelab.dupfilefinder2.pipeline;
 
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileSystemException;
@@ -25,17 +24,32 @@ import net.sf.cotelab.util.collections.HashMultiMap;
  * A {@link Phase} designed to group files by content. The input is a sequence
  * of collections of pathnames to be grouped. The output is a sequence of
  * collections of pathnames of files with matching contents.
- * 
- * @author alantcote
- *
  */
 public class GroupByContentWorker extends Phase {
+	/**
+	 * The buffer size for buffered input streams.
+	 */
 	public static final int BIS_BUFFER_SIZE = 1024 * 1024;
+
+	/**
+	 * the buffer size for buffered input streams used for n-way comparisons.
+	 */
 	public static final int NWCES_BUFFER_SIZE = 1024 * 1024;
 
-	protected ThreadSafeSimpleLongProperty bytesComparedCount = new ThreadSafeSimpleLongProperty(0);
-	protected ThreadSafeSimpleIntegerProperty filesComparedCount = new ThreadSafeSimpleIntegerProperty(0);
-	protected ThreadSafeSimpleIntegerProperty uniqueCount = new ThreadSafeSimpleIntegerProperty(0);
+	/**
+	 * The number of bytes compared.
+	 */
+	protected ThreadSafeSimpleLongProperty bytesComparedCount = newThreadSafeSimpleLongProperty();
+
+	/**
+	 * The number of files compared.
+	 */
+	protected ThreadSafeSimpleIntegerProperty filesComparedCount = newThreadSafeSimpleIntegerProperty();
+
+	/**
+	 * The number of unique files found.
+	 */
+	protected ThreadSafeSimpleIntegerProperty uniqueCount = newThreadSafeSimpleIntegerProperty();
 
 	/**
 	 * Construct a new object.
@@ -69,6 +83,9 @@ public class GroupByContentWorker extends Phase {
 		return uniqueCount;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected Void call() throws Exception {
 		try {
@@ -82,7 +99,7 @@ public class GroupByContentWorker extends Phase {
 				int nbrPaths = batch.size();
 				Path firstPath = (Path) (batch.toArray()[0]);
 				long fileLen = 1;
-				
+
 				try {
 					fileLen = Files.size(firstPath);
 				} catch (NoSuchFileException e) {
@@ -118,7 +135,7 @@ public class GroupByContentWorker extends Phase {
 						uniqueCount.increment(1);
 					}
 				}
-				
+
 				filesComparedCount.increment(nbrPaths);
 				bytesComparedCount.increment(fileLen * nbrPaths);
 
@@ -140,13 +157,110 @@ public class GroupByContentWorker extends Phase {
 		return null;
 	}
 
+	/**
+	 * @param aPath      the path to open.
+	 * @param bufferSize the buffer size.
+	 * @return a new object.
+	 * @throws IOException if thrown by the underlying code.
+	 */
+	protected BufferedInputStream newBufferedInputStream(Path aPath, int bufferSize) throws IOException {
+		return new BufferedInputStream(Files.newInputStream(aPath), bufferSize);
+	}
+
+	/**
+	 * @param src a group of input streams, the count of which will be the array
+	 *            dimension.
+	 * @return a new object.
+	 */
+	protected BufferedInputStream[] newBufferedInputStreamArray(Collection<BufferedInputStream> src) {
+		return new BufferedInputStream[src.size()];
+	}
+
+	/**
+	 * @param size the dimension of the array.
+	 * @return a new object.
+	 */
+	protected BufferedInputStream[] newBufferedInputStreamArray(int size) {
+		return new BufferedInputStream[size];
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected ArrayList<BufferedInputStream> newBufferedInputStreamArrayList() {
+		return new ArrayList<BufferedInputStream>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected ArrayList<Collection<BufferedInputStream>> newBufferedInputStreamGroupArrayList() {
+		return new ArrayList<Collection<BufferedInputStream>>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected HashMap<BufferedInputStream, Path> newBufferedInputStreamToPathHashMap() {
+		return new HashMap<BufferedInputStream, Path>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected byte[] newByteBuffer() {
+		return new byte[NWCES_BUFFER_SIZE];
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected HashMultiMap<Integer, BufferedInputStream> newIntegerToBufferedInputStreamHashMultiMap() {
+		return new HashMultiMap<Integer, BufferedInputStream>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected ArrayList<Path> newPathArrayList() {
+		return new ArrayList<Path>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected ArrayList<Collection<Path>> newPathGroupArrayList() {
+		return new ArrayList<Collection<Path>>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected LinkedList<Path> newPathLinkedList() {
+		return new LinkedList<Path>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected ThreadSafeSimpleIntegerProperty newThreadSafeSimpleIntegerProperty() {
+		return new ThreadSafeSimpleIntegerProperty(0);
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected ThreadSafeSimpleLongProperty newThreadSafeSimpleLongProperty() {
+		return new ThreadSafeSimpleLongProperty(0);
+	}
+
 	protected Collection<Collection<Path>> nWayCompareEqualPaths(Collection<Path> pathColl) {
-		List<Collection<Path>> retValue = new ArrayList<Collection<Path>>();
-		HashMap<BufferedInputStream, Path> inputStream2Path = new HashMap<BufferedInputStream, Path>();
-		ArrayList<BufferedInputStream> inputStreams = new ArrayList<BufferedInputStream>();
+		List<Collection<Path>> retValue = newPathGroupArrayList();
+		HashMap<BufferedInputStream, Path> inputStream2Path = newBufferedInputStreamToPathHashMap();
+		ArrayList<BufferedInputStream> inputStreams = newBufferedInputStreamArrayList();
 		Collection<Collection<BufferedInputStream>> nwcesRC;
 		String printlnPrefix = phaseName.get() + ": nWayCompareEqualPaths(): ";
-		ArrayList<Path> missingFilePaths = new ArrayList<Path>();
+		ArrayList<Path> missingFilePaths = newPathArrayList();
 
 //		System.out.println(printlnPrefix + "opening files");
 
@@ -166,7 +280,7 @@ public class GroupByContentWorker extends Phase {
 				}
 
 //				is = new BufferedInputStream(new FileInputStream(aPath.toFile()), bisBufferSize);
-				is = new BufferedInputStream(Files.newInputStream(aPath), bisBufferSize);
+				is = newBufferedInputStream(aPath, bisBufferSize);
 				inputStream2Path.put(is, aPath);
 				inputStreams.add(is);
 			} catch (NoSuchFileException e) {
@@ -188,13 +302,13 @@ public class GroupByContentWorker extends Phase {
 		if (isCancelled()) {
 			return retValue;
 		}
-		
+
 		if (!missingFilePaths.isEmpty()) {
 			for (Path bPath : missingFilePaths) {
 				pathColl.remove(bPath);
 			}
 		}
-		
+
 		if (pathColl.size() < 2) {
 			return retValue;
 		}
@@ -209,7 +323,7 @@ public class GroupByContentWorker extends Phase {
 		}
 
 		for (Collection<BufferedInputStream> isColl : nwcesRC) {
-			LinkedList<Path> pathList = new LinkedList<Path>();
+			LinkedList<Path> pathList = newPathLinkedList();
 
 			if (isCancelled()) {
 				break;
@@ -235,14 +349,19 @@ public class GroupByContentWorker extends Phase {
 		return retValue;
 	}
 
-	@SuppressWarnings("removal")
+	/**
+	 * Compare a collection of input streams for equality.
+	 * 
+	 * @param src the input streams to compare.
+	 * @return a group of groups of input streams that match each other.
+	 */
 	protected Collection<Collection<BufferedInputStream>> nWayCompareEqualStreams(Collection<BufferedInputStream> src) {
-		ArrayList<Collection<BufferedInputStream>> retValue = new ArrayList<Collection<BufferedInputStream>>();
-		HashMultiMap<Integer, BufferedInputStream> stepResult = new HashMultiMap<Integer, BufferedInputStream>();
+		ArrayList<Collection<BufferedInputStream>> retValue = newBufferedInputStreamGroupArrayList();
+		HashMultiMap<Integer, BufferedInputStream> stepResult = newIntegerToBufferedInputStreamHashMultiMap();
 		Set<Integer> stepKeys;
 		int srcSize = src.size();
 		Collection<Collection<BufferedInputStream>> recursiveResult;
-		BufferedInputStream srcArray[] = src.<BufferedInputStream>toArray(new BufferedInputStream[src.size()]);
+		BufferedInputStream srcArray[] = src.<BufferedInputStream>toArray(newBufferedInputStreamArray(src));
 //		String printlnPrefix = phaseName.get() + ": nWayCompareEqualStreams(): ";
 
 		if (srcSize == 0) {
@@ -312,7 +431,7 @@ public class GroupByContentWorker extends Phase {
 					theByte = -1;
 				}
 
-				theInteger = new Integer(theByte);
+				theInteger = theByte;
 				stepResult.put(theInteger, is);
 			}
 
@@ -365,8 +484,8 @@ public class GroupByContentWorker extends Phase {
 	 */
 	protected boolean streamsMatch(Collection<BufferedInputStream> src) {
 		int srcSize = src.size();
-		BufferedInputStream srcArray[] = src.<BufferedInputStream>toArray(new BufferedInputStream[srcSize]);
-		byte[] masterBuffer = new byte[NWCES_BUFFER_SIZE];
+		BufferedInputStream srcArray[] = src.<BufferedInputStream>toArray(newBufferedInputStreamArray(srcSize));
+		byte[] masterBuffer = newByteBuffer();
 		boolean buffersMatch = true;
 //		String printlnPrefix = phaseName.get() + ": streamsMatch(): ";
 
@@ -407,7 +526,7 @@ public class GroupByContentWorker extends Phase {
 //			System.out.println(printlnPrefix + "checking a piece");
 			for (int i = 1; buffersMatch && (i < srcArray.length); ++i) {
 				int slaveCount = 0;
-				byte[] slaveBuffer = new byte[masterCount];
+				byte[] slaveBuffer = newByteBuffer();
 
 				if (isCancelled()) {
 					return false;

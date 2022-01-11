@@ -10,20 +10,47 @@ import javafx.beans.value.ChangeListener;
 
 /**
  * A {@link SimpleIntegerProperty} that does its work in the JavaFX thread.
- * @author alantcote
  */
 public class ThreadSafeSimpleIntegerProperty {
+	/**
+	 * The decorated {@link SimpleIntegerProperty}.
+	 */
 	protected final SimpleIntegerProperty sip;
 
 	/**
 	 * Construct a new object.
 	 */
 	public ThreadSafeSimpleIntegerProperty() {
-		sip = new SimpleIntegerProperty();
+		sip = newSimpleIntegerProperty();
 	}
 
+	/**
+	 * Construct a new object.
+	 * 
+	 * @param initialValue the initial value.
+	 */
 	public ThreadSafeSimpleIntegerProperty(int initialValue) {
-		sip = new SimpleIntegerProperty(initialValue);
+		sip = newSimpleIntegerProperty(initialValue);
+	}
+
+	/**
+	 * Add a change listener.
+	 * 
+	 * @param listener a change listener.
+	 * @see javafx.beans.property.IntegerPropertyBase#addListener(javafx.beans.value.ChangeListener)
+	 */
+	public void addListener(ChangeListener<? super Number> listener) {
+		sip.addListener(listener);
+	}
+
+	/**
+	 * Add an invalidation listener.
+	 * 
+	 * @param listener an invalidation listener.
+	 * @see javafx.beans.property.IntegerPropertyBase#addListener(javafx.beans.InvalidationListener)
+	 */
+	public void addListener(InvalidationListener listener) {
+		sip.addListener(listener);
 	}
 
 //	/**
@@ -72,19 +99,27 @@ public class ThreadSafeSimpleIntegerProperty {
 //	}
 
 	/**
-	 * @param listener
-	 * @see javafx.beans.property.IntegerPropertyBase#addListener(javafx.beans.value.ChangeListener)
+	 * Get the property's value.
+	 * 
+	 * @return the property's value.
+	 * @see javafx.beans.property.IntegerPropertyBase#get()
 	 */
-	public void addListener(ChangeListener<? super Number> listener) {
-		sip.addListener(listener);
+	public int get() {
+		// not sure how to do this in a truly thread-safe manner. take our chances.
+		return sip.get();
 	}
 
 	/**
-	 * @param listener
-	 * @see javafx.beans.property.IntegerPropertyBase#addListener(javafx.beans.InvalidationListener)
+	 * Increment the property's value.
+	 * 
+	 * @param addend the amount by which to increment.
 	 */
-	public void addListener(InvalidationListener listener) {
-		sip.addListener(listener);
+	public void increment(int addend) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				sip.set(sip.get() + addend);
+			}
+		});
 	}
 
 //	/**
@@ -209,12 +244,13 @@ public class ThreadSafeSimpleIntegerProperty {
 //	}
 
 	/**
-	 * @return
-	 * @see javafx.beans.property.IntegerPropertyBase#get()
+	 * Remove a change listener.
+	 * 
+	 * @param listener a change listener.
+	 * @see javafx.beans.property.IntegerPropertyBase#removeListener(javafx.beans.value.ChangeListener)
 	 */
-	public int get() {
-		// not sure how to do this in a truly thread-safe manner. take our chances.
-		return sip.get();
+	public void removeListener(ChangeListener<? super Number> listener) {
+		sip.removeListener(listener);
 	}
 
 //	/**
@@ -347,14 +383,16 @@ public class ThreadSafeSimpleIntegerProperty {
 //		return sip.intValue();
 //	}
 
-	public void increment(int addend) {
-		Platform.runLater(new Runnable() {
-			public void run() {
-				sip.set(sip.get() + addend);
-			}
-		});
+	/**
+	 * Remove an invalidation listener.
+	 * 
+	 * @param listener an invalidation listener.
+	 * @see javafx.beans.property.IntegerPropertyBase#removeListener(javafx.beans.InvalidationListener)
+	 */
+	public void removeListener(InvalidationListener listener) {
+		sip.removeListener(listener);
 	}
-	
+
 //	/**
 //	 * @return
 //	 * @see javafx.beans.property.IntegerPropertyBase#isBound()
@@ -669,23 +707,9 @@ public class ThreadSafeSimpleIntegerProperty {
 //	}
 
 	/**
-	 * @param listener
-	 * @see javafx.beans.property.IntegerPropertyBase#removeListener(javafx.beans.value.ChangeListener)
-	 */
-	public void removeListener(ChangeListener<? super Number> listener) {
-		sip.removeListener(listener);
-	}
-
-	/**
-	 * @param listener
-	 * @see javafx.beans.property.IntegerPropertyBase#removeListener(javafx.beans.InvalidationListener)
-	 */
-	public void removeListener(InvalidationListener listener) {
-		sip.removeListener(listener);
-	}
-
-	/**
-	 * @param newValue
+	 * Set the property's value.
+	 * 
+	 * @param newValue the new value.
 	 * @see javafx.beans.property.IntegerPropertyBase#set(int)
 	 */
 	public void set(int newValue) {
@@ -697,7 +721,9 @@ public class ThreadSafeSimpleIntegerProperty {
 	}
 
 	/**
-	 * @param v
+	 * Set the property's value.
+	 * 
+	 * @param v the new value.
 	 * @see javafx.beans.property.IntegerProperty#setValue(java.lang.Number)
 	 */
 	public void setValue(Number v) {
@@ -706,6 +732,26 @@ public class ThreadSafeSimpleIntegerProperty {
 				sip.setValue(v);
 			}
 		});
+	}
+
+	/**
+	 * Get a string value of the property.
+	 * 
+	 * @return a string value of the property.
+	 * @see javafx.beans.property.IntegerPropertyBase#toString()
+	 */
+	public String toString() {
+		// not sure how to do this in a truly thread-safe manner. take our chances.
+		return sip.toString();
+	}
+
+	/**
+	 * A factory for {@link SimpleIntegerProperty} objects.
+	 * 
+	 * @return a new object.
+	 */
+	protected SimpleIntegerProperty newSimpleIntegerProperty() {
+		return new SimpleIntegerProperty();
 	}
 
 //	/**
@@ -754,12 +800,13 @@ public class ThreadSafeSimpleIntegerProperty {
 //	}
 
 	/**
-	 * @return
-	 * @see javafx.beans.property.IntegerPropertyBase#toString()
+	 * A factory for {@link SimpleIntegerProperty} objects.
+	 * 
+	 * @param initialValue the initial value.
+	 * @return a new object.
 	 */
-	public String toString() {
-		// not sure how to do this in a truly thread-safe manner. take our chances.
-		return sip.toString();
+	protected SimpleIntegerProperty newSimpleIntegerProperty(int initialValue) {
+		return new SimpleIntegerProperty(initialValue);
 	}
 
 //	/**

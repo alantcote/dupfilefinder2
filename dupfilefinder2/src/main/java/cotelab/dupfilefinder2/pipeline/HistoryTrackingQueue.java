@@ -8,9 +8,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 /**
  * A {@link LinkedBlockingQueue} that keeps track of the number of puts and
  * takes.
- * @author alantcote
- *
- * @param <E>
+ * 
+ * @param <E> the class of object that will pass through the queue.
  */
 public class HistoryTrackingQueue<E> extends LinkedBlockingQueue<E> {
 	/**
@@ -21,12 +20,12 @@ public class HistoryTrackingQueue<E> extends LinkedBlockingQueue<E> {
 	/**
 	 * The number of objects put into the queue.
 	 */
-	protected SimpleIntegerProperty putCount = new SimpleIntegerProperty(0);
+	protected SimpleIntegerProperty putCount = newSimpleIntegerProperty();
 
 	/**
 	 * The number of objects taken from the queue.
 	 */
-	protected SimpleIntegerProperty takeCount = new SimpleIntegerProperty(0);
+	protected SimpleIntegerProperty takeCount = newSimpleIntegerProperty();
 
 	/**
 	 * {@inheritDoc}
@@ -67,26 +66,13 @@ public class HistoryTrackingQueue<E> extends LinkedBlockingQueue<E> {
 		takeCount.set(takeCount.get() + increment);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * This method increments putCount.
-	 */
 	@Override
-	public void put(E e) throws InterruptedException {
-		super.put(e);
+	public E poll() {
+		E taken = super.poll();
 
-		incrementPutCount(1);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * This method increments takeCount.
-	 */
-	@Override
-	public E take() throws InterruptedException {
-		E taken = super.take();
-
-		incrementTakeCount(1);
+		if (taken != null) {
+			incrementTakeCount(1);
+		}
 
 		return taken;
 	}
@@ -102,15 +88,33 @@ public class HistoryTrackingQueue<E> extends LinkedBlockingQueue<E> {
 		return taken;
 	}
 
+	/**
+	 * {@inheritDoc} This method increments putCount.
+	 */
 	@Override
-	public E poll() {
-		E taken = super.poll();
+	public void put(E e) throws InterruptedException {
+		super.put(e);
 
-		if (taken != null) {
-			incrementTakeCount(1);
-		}
+		incrementPutCount(1);
+	}
+
+	/**
+	 * {@inheritDoc} This method increments takeCount.
+	 */
+	@Override
+	public E take() throws InterruptedException {
+		E taken = super.take();
+
+		incrementTakeCount(1);
 
 		return taken;
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected SimpleIntegerProperty newSimpleIntegerProperty() {
+		return new SimpleIntegerProperty(0);
 	}
 
 }

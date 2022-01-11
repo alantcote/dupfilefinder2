@@ -5,8 +5,6 @@ package cotelab.dupfilefinder2.pipeline;
 
 /**
  * An object that consumes input from one queue and produces output to another.
- * 
- * @author alantcote
  */
 public interface QueueProcessor {
 	/**

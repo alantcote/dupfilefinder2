@@ -16,15 +16,31 @@ import javafx.beans.property.SimpleIntegerProperty;
  * A {@link Phase} designed to group files by size. The input is a single
  * collection containing pathnames of regular files. The output is a stream of
  * collections of pathnames of files with matching lengths.
- * 
- * @author alantcote
- *
  */
 public class GroupBySizePhase extends Phase {
+	/**
+	 * The number of files measured.
+	 */
 	protected SimpleIntegerProperty filesMeasuredCount = new SimpleIntegerProperty(0);
-	protected Hashtable<Long, ArrayList<Path>> size2PathMap = new Hashtable<Long, ArrayList<Path>>();
+
+	/**
+	 * A map from file size to path group.
+	 */
+	protected Hashtable<Long, ArrayList<Path>> size2PathMap = newLongToPathGroupHashtable();
+
+	/**
+	 * The number of file sizes found.
+	 */
 	protected SimpleIntegerProperty sizeCount = new SimpleIntegerProperty(0);
+
+	/**
+	 * The number of unique files discovered.
+	 */
 	protected SimpleIntegerProperty uniqueCount = new SimpleIntegerProperty(0);
+
+	/**
+	 * The number of files that couldn't be measured.
+	 */
 	protected SimpleIntegerProperty unmeasurableCount = new SimpleIntegerProperty(0);
 
 	/**
@@ -53,6 +69,13 @@ public class GroupBySizePhase extends Phase {
 	}
 
 	/**
+	 * @return the uniqueCount
+	 */
+	public SimpleIntegerProperty getUniqueCount() {
+		return uniqueCount;
+	}
+
+	/**
 	 * @return the unmeasurableCount
 	 */
 	public SimpleIntegerProperty getUnmeasurableCount() {
@@ -65,7 +88,7 @@ public class GroupBySizePhase extends Phase {
 
 		try {
 //			System.out.println("GroupBySizePhase.call(): taking");
-			
+
 			Collection<Path> batch;
 
 			// obeying EOF convention
@@ -88,12 +111,19 @@ public class GroupBySizePhase extends Phase {
 
 			publishResults();
 		}
-		
+
 		outputQueue.put(new ArrayList<Path>()); // EOF convention
 
 //		System.out.println("GroupBySizePhase.call(): method completed");
 
 		return null;
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected Hashtable<Long, ArrayList<Path>> newLongToPathGroupHashtable() {
+		return new Hashtable<Long, ArrayList<Path>>();
 	}
 
 	protected void processBatch(Collection<Path> batch) {
@@ -129,18 +159,18 @@ public class GroupBySizePhase extends Phase {
 		if (isCancelled()) {
 			return;
 		}
-		
+
 		Collection<ArrayList<Path>> groups = size2PathMap.values();
 
 		for (ArrayList<Path> group : groups) {
 			if (isCancelled()) {
 				break;
 			}
-			
+
 			int groupSize = group.size();
-			
+
 			// if a group is empty, one can only wonder how it came to be
-			
+
 			if (groupSize == 1) {
 				// if there's only 1 in the group, it's a unique file
 				uniqueCount.set(uniqueCount.get() + 1);
@@ -156,13 +186,6 @@ public class GroupBySizePhase extends Phase {
 			}
 
 		}
-	}
-
-	/**
-	 * @return the uniqueCount
-	 */
-	public SimpleIntegerProperty getUniqueCount() {
-		return uniqueCount;
 	}
 
 }
