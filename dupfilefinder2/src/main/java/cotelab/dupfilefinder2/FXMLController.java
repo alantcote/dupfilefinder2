@@ -670,6 +670,179 @@ public class FXMLController implements Initializable {
 	}
 
 	/**
+	 * @param line the pipeline.
+	 */
+	protected void setUpGroupByContent2MatchingSubtreeIdentificationQueueListeners(Pipeline line) {
+		gbc2msiQueueName.setText(line.getGBC2MSIQueueName().get());
+
+		line.getGBC2MSIQueuePutCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(gbc2msiPutCount, newValue);
+			}
+
+		});
+
+		line.getGBC2MSIQueueTakeCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(gbc2msiTakeCount, newValue);
+			}
+
+		});
+	}
+
+	/**
+	 * @param line the pipeline.
+	 */
+	protected void setUpGroupByContentPhaseListeners(Pipeline line) {
+		gbcName.setText(line.getGBCPhaseName().get());
+
+		line.getGBCUniqueCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(gbcUniqueCount, newValue);
+			}
+
+		});
+
+		line.getGBCBytesComparedCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(gbcBytesCompared, newValue);
+			}
+
+		});
+
+		line.getGBCFilesComparedCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(gbcFilesCompared, newValue);
+			}
+
+		});
+
+		gbsState.setText(line.gbsStateProperty().get().toString());
+		line.gbcStateProperty().addListener(new ChangeListener<State>() {
+
+			@Override
+			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+				updateInFXThread(gbcState, newValue);
+			}
+
+		});
+	}
+
+	/**
+	 * @param line the pipeline.
+	 */
+	protected void setUpGroupBySize2GroupByContentQueueListeners(Pipeline line) {
+		gbs2gbcQueueName.setText(line.getGBS2GBCQueueName().get());
+
+		line.getGBS2GBCQueuePutCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(gbs2gbcPutCount, newValue);
+			}
+
+		});
+
+		line.getGBS2GBCQueueTakeCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(gbs2gbcTakeCount, newValue);
+			}
+
+		});
+	}
+
+	/**
+	 * @param line the pipeline.
+	 */
+	protected void setUpGroupBySizePhaseListeners(Pipeline line) {
+		gbsName.setText(line.getGBSPhaseName().get());
+
+		line.getGBSFilesMeasuredCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(gbsFilesMeasuredCount, newValue);
+			}
+
+		});
+
+		line.getGBSSizeCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(gbsSizeCount, newValue);
+			}
+
+		});
+
+		gbsState.setText(line.gbsStateProperty().get().toString());
+		line.gbsStateProperty().addListener(new ChangeListener<State>() {
+
+			@Override
+			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+				updateInFXThread(gbsState, newValue);
+			}
+
+		});
+
+		line.getGBSUniqueCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(gbsUniqueCount, newValue);
+			}
+
+		});
+
+		line.getGBSUnmeasurableCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(gbsUnmeasurableCount, newValue);
+			}
+
+		});
+	}
+
+	/**
+	 * @param line the pipeline.
+	 */
+	protected void setUpMatchingSubtreeIdentificationPhaseListeners(Pipeline line) {
+		msiName.setText(line.getMSIPhaseName().get());
+
+		line.getMSIPathGroupsConsideredProperty().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(msiPathGroupsConsidered, newValue);
+			}
+
+		});
+
+		msiState.setText(line.msiStateProperty().get().toString());
+		line.msiStateProperty().addListener(new ChangeListener<State>() {
+
+			@Override
+			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+				updateInFXThread(msiState, newValue);
+			}
+
+		});
+	}
+
+	/**
 	 * Set up a pipeline.
 	 * 
 	 * @return a new object.
@@ -707,17 +880,10 @@ public class FXMLController implements Initializable {
 		return result;
 	}
 
-	/*
-	 * This method is entirely too long, and needs to be refactored for better
-	 * readability and testability.
-	 */
 	/**
-	 * Set up the pipeline listeners.
-	 * 
 	 * @param line the pipeline.
 	 */
-	protected void setUpPipelineListeners(Pipeline line) {
-
+	protected void setUpPipelineInputQueueListeners(Pipeline line) {
 		pipelineInputQueueName.setText(line.getInputName().get());
 
 		pipelineInputPutCount.setText(Integer.toString(line.getInputPutCount().get()));
@@ -738,9 +904,99 @@ public class FXMLController implements Initializable {
 			}
 
 		});
+	}
 
+	/**
+	 * Set up the pipeline listeners.
+	 * 
+	 * @param line the pipeline.
+	 */
+	protected void setUpPipelineListeners(Pipeline line) {
 		pipelineName.setText(line.getPhaseName().get());
 
+		pipelineState.setText(line.stateProperty().get().toString());
+		line.stateProperty().addListener(new ChangeListener<State>() {
+
+			@Override
+			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+				updateInFXThread(pipelineState, newValue);
+
+				// take appropriate action when pipeline has finished
+				if ((newValue == State.CANCELLED) || (newValue == State.FAILED) || (newValue == State.SUCCEEDED)) {
+					cancelButton.setDisable(true);
+					startButton.setDisable(false);
+
+					showResults();
+				}
+			}
+
+		});
+
+		setUpPipelineInputQueueListeners(line);
+		setUpSubtreeSearchPhaseListeners(line);
+		setUpSubtreeSearch2GroupBySizeQueueListeners(line);
+		setUpGroupBySizePhaseListeners(line);
+		setUpGroupBySize2GroupByContentQueueListeners(line);
+		setUpGroupByContentPhaseListeners(line);
+		setUpGroupByContent2MatchingSubtreeIdentificationQueueListeners(line);
+		setUpMatchingSubtreeIdentificationPhaseListeners(line);
+		setUpPipelineOutputQueueListeners(line);
+	}
+
+	/**
+	 * @param line the pipeline.
+	 */
+	protected void setUpPipelineOutputQueueListeners(Pipeline line) {
+		pipelineOutputQueueName.setText(line.getOutputName().get());
+
+		line.getOutputPutCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(pipelineOutputPutCount, newValue);
+			}
+
+		});
+
+		line.getOutputTakeCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(pipelineOutputTakeCount, newValue);
+			}
+
+		});
+	}
+
+	/**
+	 * @param line the pipeline.
+	 */
+	protected void setUpSubtreeSearch2GroupBySizeQueueListeners(Pipeline line) {
+		ss2gbsQueueName.setText(line.getSS2GBSQueueName().get());
+
+		line.getSS2GBSQueuePutCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(ss2gbsPutCount, newValue);
+			}
+
+		});
+
+		line.getSS2GBSQueueTakeCount().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				updateInFXThread(ss2gbsTakeCount, newValue);
+			}
+
+		});
+	}
+
+	/**
+	 * @param line the pipeline.
+	 */
+	protected void setUpSubtreeSearchPhaseListeners(Pipeline line) {
 		sspName.setText(line.getSSPPhaseName().get());
 
 		line.getSSPDirectoryCount().addListener(new ChangeListener<Number>() {
@@ -806,213 +1062,6 @@ public class FXMLController implements Initializable {
 			}
 
 		});
-
-		pipelineState.setText(line.stateProperty().get().toString());
-		line.stateProperty().addListener(new ChangeListener<State>() {
-
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-				updateInFXThread(pipelineState, newValue);
-
-				// take appropriate action when pipeline has finished
-				if ((newValue == State.CANCELLED) || (newValue == State.FAILED) || (newValue == State.SUCCEEDED)) {
-					cancelButton.setDisable(true);
-					startButton.setDisable(false);
-
-					showResults();
-				}
-			}
-
-		});
-
-		ss2gbsQueueName.setText(line.getSS2GBSQueueName().get());
-
-		line.getSS2GBSQueuePutCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(ss2gbsPutCount, newValue);
-			}
-
-		});
-
-		line.getSS2GBSQueueTakeCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(ss2gbsTakeCount, newValue);
-			}
-
-		});
-
-		gbsName.setText(line.getGBSPhaseName().get());
-
-		line.getGBSFilesMeasuredCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbsFilesMeasuredCount, newValue);
-			}
-
-		});
-
-		line.getGBSSizeCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbsSizeCount, newValue);
-			}
-
-		});
-
-		gbsState.setText(line.gbsStateProperty().get().toString());
-		line.gbsStateProperty().addListener(new ChangeListener<State>() {
-
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-				updateInFXThread(gbsState, newValue);
-			}
-
-		});
-
-		line.getGBSUniqueCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbsUniqueCount, newValue);
-			}
-
-		});
-
-		line.getGBSUnmeasurableCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbsUnmeasurableCount, newValue);
-			}
-
-		});
-
-		gbs2gbcQueueName.setText(line.getGBS2GBCQueueName().get());
-
-		line.getGBS2GBCQueuePutCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbs2gbcPutCount, newValue);
-			}
-
-		});
-
-		line.getGBS2GBCQueueTakeCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbs2gbcTakeCount, newValue);
-			}
-
-		});
-
-		gbcName.setText(line.getGBCPhaseName().get());
-
-		line.getGBCUniqueCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbcUniqueCount, newValue);
-			}
-
-		});
-
-		line.getGBCBytesComparedCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbcBytesCompared, newValue);
-			}
-
-		});
-
-		line.getGBCFilesComparedCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbcFilesCompared, newValue);
-			}
-
-		});
-
-		gbsState.setText(line.gbsStateProperty().get().toString());
-		line.gbcStateProperty().addListener(new ChangeListener<State>() {
-
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-				updateInFXThread(gbcState, newValue);
-			}
-
-		});
-
-		gbc2msiQueueName.setText(line.getGBC2MSIQueueName().get());
-
-		line.getGBC2MSIQueuePutCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbc2msiPutCount, newValue);
-			}
-
-		});
-
-		line.getGBC2MSIQueueTakeCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbc2msiTakeCount, newValue);
-			}
-
-		});
-
-		msiName.setText(line.getMSIPhaseName().get());
-
-		line.getMSIPathGroupsConsideredProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(msiPathGroupsConsidered, newValue);
-			}
-
-		});
-
-		msiState.setText(line.msiStateProperty().get().toString());
-		line.msiStateProperty().addListener(new ChangeListener<State>() {
-
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-				updateInFXThread(msiState, newValue);
-			}
-
-		});
-
-		pipelineOutputQueueName.setText(line.getOutputName().get());
-
-		line.getOutputPutCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(pipelineOutputPutCount, newValue);
-			}
-
-		});
-
-		line.getOutputTakeCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(pipelineOutputTakeCount, newValue);
-			}
-
-		});
-
 	}
 
 	/**
