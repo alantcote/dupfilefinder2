@@ -1,17 +1,15 @@
 package cotelab.dupfilefinder2.treeview;
 
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
 import java.util.Map;
 
 import cotelab.dupfilefinder2.FXMLController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Dialog;
@@ -19,7 +17,6 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 
 public class DupItemsDialog extends Dialog<Void> {
@@ -32,21 +29,25 @@ public class DupItemsDialog extends Dialog<Void> {
 	 * The collection of duplicate path groups.
 	 */
 	protected Collection<Collection<Path>> dupCollections = null;
-	
-	protected Path path;
 
 	/**
-	 * @return a new object.
+	 * The path of interest.
 	 */
-	protected ButtonType newOKButtonType() {
-		return new ButtonType("OK", ButtonData.OK_DONE);
-	}
+	protected Path path;
 
 	/**
 	 * The map from path to duplicate paths.
 	 */
 	protected Map<Path, Collection<Path>> pathToDupCollMap = null;
 
+	/**
+	 * Construct a new object.
+	 * 
+	 * @param aPath             a path of interest.
+	 * @param aPathToDupCollMap a map from path to duplicate paths.
+	 * @param aDupCollections   a collection of duplicate path groups.
+	 * @param aController       a controller.
+	 */
 	public DupItemsDialog(Path aPath, Map<Path, Collection<Path>> aPathToDupCollMap,
 			Collection<Collection<Path>> aDupCollections, FXMLController aController) {
 		path = aPath;
@@ -64,39 +65,26 @@ public class DupItemsDialog extends Dialog<Void> {
 		thePopupPane.setContent(scrollPane);
 		thePopupPane.getButtonTypes().add(okButtonType);
 	}
-	
+
 	/**
 	 * Delete a subtree from the file system.
 	 * 
 	 * @param aPath the subtree's root path.
 	 */
 	protected void doDelete(Path aPath) {
-		// TODO find a way to make this testable
 		try {
-			Files.walkFileTree(aPath, new SimpleFileVisitor<Path>() {
-				@Override
-				public FileVisitResult postVisitDirectory(Path dir, IOException e) throws IOException {
-					if (e == null) {
-						Files.delete(dir);
-						return FileVisitResult.CONTINUE;
-					} else {
-						// directory iteration failed
-						throw e;
-					}
-				}
-
-				@Override
-				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-					Files.delete(file);
-					return FileVisitResult.CONTINUE;
-				}
-			});
+			Files.walkFileTree(aPath, newPathDeletionVisitor());
 		} catch (IOException e) {
 			System.err.println("DecoratedFileTreeCell.doDelete(): caught" + e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Make the pane that will be the main content of the dialog.
+	 * 
+	 * @return the pane that will be the main content of the dialog.
+	 */
 	protected GridPane makeGridPane() {
 		GridPane gridPane = newGridPane();
 		Collection<Path> memberPaths = pathToDupCollMap.get(path);
@@ -155,7 +143,7 @@ public class DupItemsDialog extends Dialog<Void> {
 
 			++row;
 		}
-		
+
 		return gridPane;
 	}
 
@@ -179,6 +167,20 @@ public class DupItemsDialog extends Dialog<Void> {
 	 */
 	protected GridPane newGridPane() {
 		return new GridPane();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected ButtonType newOKButtonType() {
+		return new ButtonType("OK", ButtonData.OK_DONE);
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected PathDeletionVisitor newPathDeletionVisitor() {
+		return new PathDeletionVisitor();
 	}
 
 	/**

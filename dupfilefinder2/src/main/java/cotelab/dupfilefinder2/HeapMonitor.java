@@ -4,26 +4,39 @@ import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 
+/**
+ * A monitor for the Java heap.
+ */
 public class HeapMonitor implements Runnable {
 	/**
 	 * Number of milliseconds between updates.
 	 */
 	protected static final long DELAY_MILLIS = 500;
-	
+
 	/**
 	 * Number of bytes in a gigabyte.
 	 */
 	protected static final long GIG = 1024 * 1024 * 1024;
-	
+
 	/**
 	 * Number of bytes in a kilobyte.
 	 */
 	protected static final long KILO = 1024;
-	
+
 	/**
 	 * Number of bytes in a megabyte.
 	 */
 	protected static final long MEG = 1024 * 1024;
+
+	/**
+	 * The message {@link Label}.
+	 */
+	protected Label heapMessage;
+
+	/**
+	 * The {@link ProgressBar}.
+	 */
+	protected ProgressBar heapProgressBar;
 
 	/**
 	 * an instance of {@link Runtime}.
@@ -31,19 +44,8 @@ public class HeapMonitor implements Runnable {
 	protected Runtime runtime = getRuntime();
 
 	/**
-	 * @return an instance of {@link Runtime}.
-	 */
-	protected Runtime getRuntime() {
-		return Runtime.getRuntime();
-	}
-	
-	/**
-	 * The {@link ProgressBar}.
-	 */
-	protected ProgressBar heapProgressBar;
-	
-	/**
 	 * Construct a new object.
+	 * 
 	 * @param aProgressBar
 	 * @param aHeapMessage
 	 */
@@ -51,11 +53,6 @@ public class HeapMonitor implements Runnable {
 		heapProgressBar = aProgressBar;
 		heapMessage = aHeapMessage;
 	}
-	
-	/**
-	 * The message {@link Label}.
-	 */
-	protected Label heapMessage;
 
 	/**
 	 * {@inheritDoc}
@@ -77,6 +74,7 @@ public class HeapMonitor implements Runnable {
 
 	/**
 	 * Format a heap size value.
+	 * 
 	 * @param val a heap size value.
 	 * @return the formatted value.
 	 */
@@ -94,6 +92,13 @@ public class HeapMonitor implements Runnable {
 		}
 
 		return result;
+	}
+
+	/**
+	 * @return an instance of {@link Runtime}.
+	 */
+	protected Runtime getRuntime() {
+		return Runtime.getRuntime();
 	}
 
 	/**
