@@ -17,6 +17,7 @@ import cotelab.dupfilefinder2.pipeline.Phase;
 import cotelab.dupfilefinder2.pipeline.Pipeline;
 import cotelab.dupfilefinder2.pipeline.PipelineQueue;
 import cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase;
+import cotelab.dupfilefinder2.treeview.DecoratedFileTreeView;
 import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -414,6 +415,13 @@ public class FXMLController implements Initializable {
 	 * The subtree selection tree view.
 	 */
 	protected FileTreeView subtreeSelectionTreeView;
+
+	/**
+	 * @return the resultsTreeView
+	 */
+	public TreeView<File> getResultsTreeView() {
+		return resultsTreeView;
+	}
 
 	/**
 	 * {@inheritDoc}

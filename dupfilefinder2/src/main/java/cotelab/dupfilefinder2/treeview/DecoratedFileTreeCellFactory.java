@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cotelab.dupfilefinder2;
+package cotelab.dupfilefinder2.treeview;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
 
+import cotelab.dupfilefinder2.FXMLController;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeView;
 import net.sf.cotelab.util.javafx.tree.FileIconFactory;

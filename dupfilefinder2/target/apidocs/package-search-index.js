@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"cotelab","l":"cotelab.dupfilefinder2"},{"m":"cotelab","l":"cotelab.dupfilefinder2.pipeline"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"cotelab","l":"cotelab.dupfilefinder2"},{"m":"cotelab","l":"cotelab.dupfilefinder2.pipeline"},{"m":"cotelab","l":"cotelab.dupfilefinder2.treeview"}];updateSearchResults();

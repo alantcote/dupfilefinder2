@@ -12,4 +12,5 @@ module cotelab {
     
     exports cotelab.dupfilefinder2;
     exports cotelab.dupfilefinder2.pipeline;
+    exports cotelab.dupfilefinder2.treeview;
 }
