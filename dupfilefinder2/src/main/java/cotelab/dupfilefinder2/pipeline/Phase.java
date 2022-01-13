@@ -120,8 +120,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	 */
 	@Override
 	public PipelineQueue getInputQueue() {
-		// TODO Auto-generated method stub
-		return null;
+		return inputQueue;
 	}
 
 	/**
@@ -153,8 +152,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	 */
 	@Override
 	public PipelineQueue getOutputQueue() {
-		// TODO Auto-generated method stub
-		return null;
+		return outputQueue;
 	}
 
 	/**
@@ -196,11 +194,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	@Override
 	protected Void call() throws Exception {
 		try {
-//			System.out.println("Phase.call(): starting child phases");
-
 			startChildren();
-
-//			System.out.println("Phase.call(): waiting for child phases to end");
 
 			waitForChildrenDone();
 		} catch (Exception e) {
@@ -208,8 +202,6 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 			e.printStackTrace();
 			cancel();
 		}
-
-//		System.out.println("Phase.call(): method complete");
 
 		return null;
 	}
@@ -219,6 +211,14 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	 */
 	protected ArrayList<Phase> newPhaseArrayList() {
 		return new ArrayList<Phase>();
+	}
+
+	/**
+	 * @param child
+	 * @return a new object.
+	 */
+	protected Thread newThread(Phase child) {
+		return new Thread(child);
 	}
 
 	/**
@@ -234,15 +234,20 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 			}
 
 			for (Phase child : children) {
-				Thread th = new Thread(child);
+				Thread th = newThread(child);
 
 				th.setDaemon(true);
-
-//				System.out.println("Phase.startChildren(): starting child " + child.getPhaseName().get());
 
 				th.start();
 			}
 		}
+	}
+
+	/**
+	 * @throws InterruptedException
+	 */
+	protected void threadSleep() throws InterruptedException {
+		Thread.sleep(10);
 	}
 
 	/**
@@ -259,7 +264,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 
 		do {
 			try {
-				Thread.sleep(10);
+				threadSleep();
 			} catch (InterruptedException e) {
 				// e.printStackTrace();
 			}

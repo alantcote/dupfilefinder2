@@ -115,7 +115,7 @@ public class PathSearchVisitor extends SimpleFileVisitor<Path> {
 	 */
 	@Override
 	public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-		if (!Files.isReadable(dir)) {
+		if (!isReadableFile(dir)) {
 			unreadableCount.set(unreadableCount.get() + 1);
 
 			return FileVisitResult.SKIP_SUBTREE;
@@ -131,15 +131,7 @@ public class PathSearchVisitor extends SimpleFileVisitor<Path> {
 	 */
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-//		if (isCancelled()) {
-//			return FileVisitResult.TERMINATE;
-//		}
-
-//		if (((++filesVisited) % 1000) == 0) {
-//			System.out.println("SubtreeSearchPhase.SearchVisitor.visitFile: filesVisited = " + filesVisited);
-//		}
-
-		if (Files.isReadable(file)) {
+		if (isReadableFile(file)) {
 			if (attrs.isRegularFile()) {
 				files.add(file);
 				regularFileCount.set(regularFileCount.get() + 1);
@@ -165,12 +157,17 @@ public class PathSearchVisitor extends SimpleFileVisitor<Path> {
 	 */
 	@Override
 	public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-//		System.err.println("SubtreeSearchPhase.SearchVisitor.visitFileFailed: file = " + file);
-//		System.err.println("SubtreeSearchPhase.SearchVisitor.visitFileFailed: mssg = " + exc.getClass());
-
 		failedAccessCount.set(failedAccessCount.get() + 1);
 
 		return FileVisitResult.SKIP_SUBTREE;
+	}
+
+	/**
+	 * @param file
+	 * @return
+	 */
+	protected boolean isReadableFile(Path file) {
+		return Files.isReadable(file);
 	}
 
 	/**

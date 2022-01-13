@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cotelab.dupfilefinder2.pipeline;
 
 import java.nio.file.Files;
@@ -123,7 +120,7 @@ public class SubtreeSearchPhase extends Phase {
 					break;
 				}
 
-				PathSearchVisitor pathSearchVisitor = new PathSearchVisitor();
+				PathSearchVisitor pathSearchVisitor = newPathSearchVisitor();
 
 				Files.walkFileTree(aPath, pathSearchVisitor);
 
@@ -146,10 +143,17 @@ public class SubtreeSearchPhase extends Phase {
 	}
 
 	/**
-	 * @return
+	 * @return a new object.
 	 */
 	protected ArrayList<Path> newPathArrayList() {
 		return new ArrayList<Path>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected PathSearchVisitor newPathSearchVisitor() {
+		return new PathSearchVisitor();
 	}
 
 	/**

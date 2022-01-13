@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cotelab.dupfilefinder2.pipeline;
 
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -63,15 +60,13 @@ public class Pipeline extends Phase {
 		// if any phase finishes with no output, remaining phases could be
 		// cancelled
 
-//		System.out.println("Pipeline.Pipeline(): creating inter-phase queues");
-
+		// create queues
 		subtreeSearch2GroupBySizeQueue = newPipelineQueue(Integer.MAX_VALUE, "SubtreeSearch to GroupBySize");
 		groupBySize2GroupByContentQueue = newPipelineQueue(Integer.MAX_VALUE, "GroupBySize to GroupByContent");
 		groupByContent2MatchingSubtreeIdentificationQueue = newPipelineQueue(Integer.MAX_VALUE,
 				"GroupByContent to MatchingSubtreeIdentification");
 
-//		System.out.println("Pipeline.Pipeline(): creating phases");
-
+		// create phases and link them together
 		subtreeSearchPhase = newSubtreeSearchPhase("Subtree Search Phase", inputQueue, subtreeSearch2GroupBySizeQueue);
 		groupBySizePhase = newGroupBySizePhase("Group By Size Phase", subtreeSearch2GroupBySizeQueue,
 				groupBySize2GroupByContentQueue);
@@ -81,14 +76,11 @@ public class Pipeline extends Phase {
 				"Matching Subtree Identification Phase", groupByContent2MatchingSubtreeIdentificationQueue,
 				outputQueue);
 
-//		System.out.println("Pipeline.Pipeline(): registering phases");
-
+		// put the phases where the superclass can find and start them
 		children.add(subtreeSearchPhase);
 		children.add(groupBySizePhase);
 		children.add(groupByContentPhase);
 		children.add(matchingSubtreeIdentificationPhase);
-
-//		System.out.println("Pipeline.Pipeline(): method complete");
 	}
 
 	/**

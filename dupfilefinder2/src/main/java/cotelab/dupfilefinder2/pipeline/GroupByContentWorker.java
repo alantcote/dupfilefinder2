@@ -88,63 +88,15 @@ public class GroupByContentWorker extends Phase {
 	 */
 	@Override
 	protected Void call() throws Exception {
-		// TODO refactor for readability and testability
 		try {
-//			String printlnPrefix = phaseName.get() + ": call(): ";
-
-//			System.out.println(printlnPrefix + "taking batch from " + inputQueue.getName().get());
-
 			Collection<Path> batch = inputQueue.take();
 
 			while (!isCancelled() && (batch != null) && !batch.isEmpty()) { // EOF convention
-				int nbrPaths = batch.size();
-				Path firstPath = (Path) (batch.toArray()[0]);
-				long fileLen = 1;
-
-				try {
-					fileLen = Files.size(firstPath);
-				} catch (NoSuchFileException e) {
-					if (nbrPaths < 3) {
-						return null;
-					} else {
-						batch.remove(firstPath);
-					}
-				}
-
-//				System.out.println(printlnPrefix + "processing " + nbrPaths + " files @ " + fileLen + " bytes");
-
-//				System.out.println(printlnPrefix + "calling nWayCompareEqualPaths(batch)");
-
-				Collection<Collection<Path>> pathCollColl = nWayCompareEqualPaths(batch);
+				processBatch(batch);
 
 				if (isCancelled()) {
 					break;
 				}
-
-//				System.out.println(printlnPrefix + "producing results");
-
-				for (Collection<Path> pathColl : pathCollColl) {
-					int size = pathColl.size();
-
-					if (isCancelled()) {
-						break;
-					}
-
-					if (size >= 2) {
-						outputQueue.put(pathColl);
-					} else {
-						uniqueCount.increment(1);
-					}
-				}
-
-				filesComparedCount.increment(nbrPaths);
-				bytesComparedCount.increment(fileLen * nbrPaths);
-
-				if (isCancelled()) {
-					break;
-				}
-
-//				System.out.println(printlnPrefix + "polling for new batch");
 
 				batch = inputQueue.poll();
 			}
@@ -153,9 +105,11 @@ public class GroupByContentWorker extends Phase {
 			e.printStackTrace();
 		}
 
-//		System.out.println(printlnPrefix + "method completed");
-
 		return null;
+	}
+
+	protected long fileSize(Path path) throws IOException {
+		return Files.size(path);
 	}
 
 	/**
@@ -165,7 +119,7 @@ public class GroupByContentWorker extends Phase {
 	 * @throws IOException if thrown by the underlying code.
 	 */
 	protected BufferedInputStream newBufferedInputStream(Path aPath, int bufferSize) throws IOException {
-		return new BufferedInputStream(Files.newInputStream(aPath), bufferSize);
+		return new BufferedInputStream(newPathInputStream(aPath), bufferSize);
 	}
 
 	/**
@@ -235,6 +189,15 @@ public class GroupByContentWorker extends Phase {
 	}
 
 	/**
+	 * @param aPath the path to open.
+	 * @return a new object.
+	 * @throws IOException if any is thrown by the underlying code.
+	 */
+	protected InputStream newPathInputStream(Path aPath) throws IOException {
+		return Files.newInputStream(aPath);
+	}
+
+	/**
 	 * @return a new object.
 	 */
 	protected LinkedList<Path> newPathLinkedList() {
@@ -264,8 +227,7 @@ public class GroupByContentWorker extends Phase {
 		String printlnPrefix = phaseName.get() + ": nWayCompareEqualPaths(): ";
 		ArrayList<Path> missingFilePaths = newPathArrayList();
 
-//		System.out.println(printlnPrefix + "opening files");
-
+		// assemble inputStream2Path, inputStreams and missingFilePaths
 		for (Path aPath : pathColl) {
 
 			if (isCancelled()) {
@@ -273,7 +235,7 @@ public class GroupByContentWorker extends Phase {
 			}
 
 			try {
-				long fileLen = Files.size(aPath);
+				long fileLen = fileSize(aPath);
 				int bisBufferSize = BIS_BUFFER_SIZE;
 				BufferedInputStream is = null;
 
@@ -281,13 +243,10 @@ public class GroupByContentWorker extends Phase {
 					bisBufferSize = (int) fileLen + 1;
 				}
 
-//				is = new BufferedInputStream(new FileInputStream(aPath.toFile()), bisBufferSize);
 				is = newBufferedInputStream(aPath, bisBufferSize);
 				inputStream2Path.put(is, aPath);
 				inputStreams.add(is);
 			} catch (NoSuchFileException e) {
-//              output.getUnreadableFilesIdentified().add(aPath);
-//              output.getRegularFiles().remove(aPath);
 				missingFilePaths.add(aPath);
 //				System.err.println(printlnPrefix + "caught: " + e.getMessage());
 //				e.printStackTrace();
@@ -305,6 +264,7 @@ public class GroupByContentWorker extends Phase {
 			return retValue;
 		}
 
+		// eliminate paths flagged as missing from the path collection
 		if (!missingFilePaths.isEmpty()) {
 			for (Path bPath : missingFilePaths) {
 				pathColl.remove(bPath);
@@ -315,15 +275,14 @@ public class GroupByContentWorker extends Phase {
 			return retValue;
 		}
 
-//		System.out.println(printlnPrefix + "calling nWayCompareEqualStreams()");
-
-//        nwcesRC = Streams.nWayCompareEqualStreams(inputStreams);
+		// bucket the streams by equality
 		nwcesRC = nWayCompareEqualStreams(inputStreams);
 
 		if (isCancelled()) {
 			return retValue;
 		}
 
+		// close the input streams and assemble the path list
 		for (Collection<BufferedInputStream> isColl : nwcesRC) {
 			LinkedList<Path> pathList = newPathLinkedList();
 
@@ -346,8 +305,6 @@ public class GroupByContentWorker extends Phase {
 			retValue.add(pathList);
 		}
 
-//		System.out.println(printlnPrefix + "method completed");
-
 		return retValue;
 	}
 
@@ -365,7 +322,6 @@ public class GroupByContentWorker extends Phase {
 		int srcSize = src.size();
 		Collection<Collection<BufferedInputStream>> recursiveResult;
 		BufferedInputStream srcArray[] = src.<BufferedInputStream>toArray(newBufferedInputStreamArray(src));
-//		String printlnPrefix = phaseName.get() + ": nWayCompareEqualStreams(): ";
 
 		if (srcSize == 0) {
 			return retValue;
@@ -383,8 +339,6 @@ public class GroupByContentWorker extends Phase {
 
 		// skip over the matching prefixes.
 
-//		System.out.println(printlnPrefix + "calling streamsMatch()");
-
 		if (streamsMatch(src)) {
 			retValue.add(src);
 
@@ -399,22 +353,16 @@ public class GroupByContentWorker extends Phase {
 
 		// OK. So they're not identical. Back up and analyze byte for byte.
 
-//		System.out.println(printlnPrefix + "resetting streams");
-
 		for (BufferedInputStream bis : srcArray) {
 			try {
 				bis.reset();
 			} catch (IOException ex) {
-//                Logger.getLogger(Streams.class.getName()).log(
-//                        Level.SEVERE, null, ex);
 				System.err.println(phaseName.get() + ": nWayCompareEqualStreams(): caught ...");
 				ex.printStackTrace();
 
 				return retValue;
 			}
 		}
-
-//		System.out.println(printlnPrefix + "comparing byte by byte");
 
 		while (true) {
 			int theByte = 0;
@@ -456,21 +404,45 @@ public class GroupByContentWorker extends Phase {
 
 		// if we get here, there are multiple groups in stepResult
 
-//		System.out.println(printlnPrefix + "comparing byte by byte split the groups");
-
 		for (Integer key : stepResult.keySet()) {
 			if (isCancelled()) {
 				return retValue;
 			}
 
-//			System.out.println(printlnPrefix + "recursing");
 			recursiveResult = nWayCompareEqualStreams(stepResult.get(key));
 			retValue.addAll(recursiveResult);
 		}
 
-//		System.out.println(printlnPrefix + "method completed");
-
 		return retValue;
+	}
+
+	protected void processBatch(Collection<Path> batch) throws Exception {
+		int nbrPaths = batch.size();
+		Path firstPath = (Path) (batch.toArray()[0]);
+		long fileLen = fileSize(firstPath);
+
+		Collection<Collection<Path>> pathCollColl = nWayCompareEqualPaths(batch);
+
+		if (isCancelled()) {
+			return;
+		}
+
+		for (Collection<Path> pathColl : pathCollColl) {
+			int size = pathColl.size();
+
+			if (isCancelled()) {
+				break;
+			}
+
+			if (size > 1) {
+				outputQueue.put(pathColl);
+			} else {
+				uniqueCount.increment(1);
+			}
+		}
+
+		filesComparedCount.increment(nbrPaths);
+		bytesComparedCount.increment(fileLen * nbrPaths);
 	}
 
 	/**
@@ -491,9 +463,6 @@ public class GroupByContentWorker extends Phase {
 		BufferedInputStream srcArray[] = src.<BufferedInputStream>toArray(newBufferedInputStreamArray(srcSize));
 		byte[] masterBuffer = newByteBuffer();
 		boolean buffersMatch = true;
-//		String printlnPrefix = phaseName.get() + ": streamsMatch(): ";
-
-//		System.out.println(printlnPrefix + "entry");
 
 		do {
 			int masterCount = 0;
@@ -522,12 +491,9 @@ public class GroupByContentWorker extends Phase {
 				// there has been no mismatch to this point.
 				// thus, the streams have matched, entirely.
 
-//				System.out.println(printlnPrefix + "method completed - streams matched");
-
 				return true;
 			}
 
-//			System.out.println(printlnPrefix + "checking a piece");
 			for (int i = 1; buffersMatch && (i < srcArray.length); ++i) {
 				int slaveCount = 0;
 				byte[] slaveBuffer = newByteBuffer();
@@ -549,8 +515,6 @@ public class GroupByContentWorker extends Phase {
 
 			}
 		} while (buffersMatch);
-
-//		System.out.println(printlnPrefix + "method completed - streams did not match");
 
 		return false;
 	}

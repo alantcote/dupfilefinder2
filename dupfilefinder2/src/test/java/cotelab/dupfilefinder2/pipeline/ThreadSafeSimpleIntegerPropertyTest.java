@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cotelab.dupfilefinder2.pipeline;
 
 import static org.junit.Assert.assertEquals;
@@ -182,6 +179,7 @@ public class ThreadSafeSimpleIntegerPropertyTest {
 	public void testRemoveListenerChangeListenerOfQsuperNumber() {
 		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class,
 				"mockSimpleIntegerProperty");
+		@SuppressWarnings("unchecked")
 		final ChangeListener<? super Number> mockChangeListener = context.mock(ChangeListener.class,
 				"mockChangeListener");
 

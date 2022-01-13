@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cotelab.dupfilefinder2.pipeline;
 
 import java.nio.file.Path;
@@ -95,28 +92,16 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 		Collection<Collection<Path>> subtreeGroups = newPathGroupArrayList();
 		Collection<Collection<Path>> duplicateSetGroup;
 
-//		System.out.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): entry");
-
 		while ((duplicateSetGroup = findDuplicateSets(candidateGroups)).size() > 1) {
 			// not sure the right criterion is being used here
 			if (isCancelled()) {
 				return subtreeGroups;
 			}
 
-//			System.out.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): duplicateSetGroup.size() = "
-//					+ duplicateSetGroup.size());
-
-//			for (Collection<Path> duplicateSet : duplicateSetGroup) {
-//				System.out
-//						.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): duplicateSet = " + duplicateSet);
-//			}
-
 			subtreeGroups.addAll(duplicateSetGroup);
 
 			candidateGroups = duplicateSetGroup;
 		}
-
-//		System.out.println("MatchingSubtreeIdentificationPhase.buildSubtrees(): method completed.");
 
 		return subtreeGroups;
 	}
@@ -130,16 +115,11 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 			// gather input and capture the information
 			Collection<Collection<Path>> groups = gatherInputGroups();
 
-//			System.out.println("MatchingSubtreeIdentificationPhase.call(): " + groups.size() + " input groups");
-
 			if (isCancelled()) {
 				return null;
 			}
 
 			Collection<Collection<Path>> subtreeGroups = buildSubtrees(groups);
-
-//			System.out.println(
-//					"MatchingSubtreeIdentificationPhase.call(): publishing" + subtreeGroups.size() + " subtree groups");
 
 			// publish results
 			for (Collection<Path> subtreeGroup : subtreeGroups) {
@@ -156,8 +136,6 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 
 		outputQueue.put(newPathArrayList()); // EOF convention
 
-//		System.out.println("MatchingSubtreeIdentificationPhase.call(): method completed");
-
 		return null;
 	}
 
@@ -170,8 +148,6 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	protected Collection<Collection<Path>> findDuplicateSets(Collection<Collection<Path>> candidateGroups) {
 		Collection<Collection<Path>> duplicateSetGroup = newPathGroupArrayList();
 
-//		System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): entry");
-
 		Map<Integer, Collection<Collection<Path>>> sizeToGroupMap = groupBySize(candidateGroups);
 
 		for (Integer size : sizeToGroupMap.keySet()) {
@@ -179,28 +155,17 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 				return duplicateSetGroup;
 			}
 
-//			System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): size = " + size);
-
 			Collection<Collection<Path>> equalSizedGroups = sizeToGroupMap.get(size);
 			Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap = buildParent2CandidateGroupMap(
 					equalSizedGroups);
 			Collection<Collection<Path>> dupParentGroups = nWayCompare(parent2CandidateGroupMap,
 					parent2CandidateGroupMap.keySet());
 
-//			System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): dupParentGroups.size() = "
-//					+ dupParentGroups.size());
-
 			Collection<Collection<Path>> validatedDupParentGroups = validateGroupsOnFileSystem(parent2CandidateGroupMap,
 					dupParentGroups);
 
-//			System.out.println(
-//					"MatchingSubtreeIdentificationPhase.findDuplicateSets(): validatedDupParentGroups.size() = "
-//							+ validatedDupParentGroups.size());
-
 			duplicateSetGroup.addAll(validatedDupParentGroups);
 		}
-
-//		System.out.println("MatchingSubtreeIdentificationPhase.findDuplicateSets(): method completed.");
 
 		return duplicateSetGroup;
 	}

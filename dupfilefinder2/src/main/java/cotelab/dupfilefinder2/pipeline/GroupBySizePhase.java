@@ -84,40 +84,29 @@ public class GroupBySizePhase extends Phase {
 
 	@Override
 	protected Void call() throws Exception {
-		// TODO refactor for readability and testability
-//		System.out.println("GroupBySizePhase.call(): entry");
-
 		try {
-//			System.out.println("GroupBySizePhase.call(): taking");
-
 			Collection<Path> batch;
 
 			// obeying EOF convention
 			while (((batch = inputQueue.take()) != null) && !batch.isEmpty()) {
-//				System.out.println("GroupBySizePhase.call(): calling processBatch()");
 
 				processBatch(batch);
-
-//				System.out.println("GroupBySizePhase.call(): batch processed");
 			}
 		} catch (InterruptedException e) {
 			// if cancelled, it'll be discovered later
-//			System.out.println("GroupBySizePhase.call(): caught exception");
 		}
 
-//		System.out.println("GroupBySizePhase.call(): checking cancellation");
-
 		if (!isCancelled()) {
-//			System.out.println("GroupBySizePhase.call(): publishing results");
-
 			publishResults();
 		}
 
 		outputQueue.put(new ArrayList<Path>()); // EOF convention
 
-//		System.out.println("GroupBySizePhase.call(): method completed");
-
 		return null;
+	}
+
+	protected long fileSize(Path path) throws IOException {
+		return Files.size(path);
 	}
 
 	/**
@@ -126,7 +115,7 @@ public class GroupBySizePhase extends Phase {
 	protected Hashtable<Long, ArrayList<Path>> newLongToPathGroupHashtable() {
 		return new Hashtable<Long, ArrayList<Path>>();
 	}
-
+	
 	protected void processBatch(Collection<Path> batch) {
 		for (Path path : batch) {
 			if (isCancelled()) {
@@ -134,7 +123,7 @@ public class GroupBySizePhase extends Phase {
 			}
 
 			try {
-				long size = Files.size(path);
+				long size = fileSize(path);
 				ArrayList<Path> pathColl = size2PathMap.get(size);
 
 				if (pathColl == null) {
