@@ -2,6 +2,7 @@ C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefin
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\treeview\DecoratedFileTreeCellFactory.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\treeview\CellContextMenuRequestHandler.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\HistoryTrackingQueue.java
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\LongRollupListener.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\treeview\DecoratedFileTreeView.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\treeview\DupItemsDialog.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase.java
@@ -25,4 +26,5 @@ C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefin
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\MatchingSubtreeIdentificationPhase.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\Phase.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleIntegerProperty.java
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\IntegerRollupListener.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\treeview\DecoratedFileTreeCell.java

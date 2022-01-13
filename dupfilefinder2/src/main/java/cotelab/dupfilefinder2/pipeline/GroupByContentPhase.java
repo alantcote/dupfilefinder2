@@ -1,13 +1,7 @@
-/**
- * 
- */
 package cotelab.dupfilefinder2.pipeline;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 
 /**
  * A {@link Phase} designed to group files by content. The input is a sequence
@@ -38,11 +32,6 @@ public class GroupByContentPhase extends Phase {
 	protected ThreadSafeSimpleIntegerProperty uniqueCount = newThreadSafeSimpleIntegerProperty();
 
 	/**
-	 * The workers.
-	 */
-	protected GroupByContentWorker workers[] = new GroupByContentWorker[WORKER_COUNT];
-
-	/**
 	 * Construct a new object.
 	 * 
 	 * @param name      a name for this object.
@@ -50,60 +39,17 @@ public class GroupByContentPhase extends Phase {
 	 * @param theOutput the output queue.
 	 */
 	public GroupByContentPhase(String name, PipelineQueue theInput, PipelineQueue theOutput) {
-		// TODO clean this up for readability and testability
 		super(name, theInput, theOutput);
 
-//		System.out.println("GroupByContentPhase.GroupByContentPhase(): creating workers");
-
 		for (int i = 0; i < WORKER_COUNT; ++i) {
-			workers[i] = newGroupByContentWorker("GroupByContentWorker " + (i + 1), theInput, theOutput);
+			GroupByContentWorker worker = newGroupByContentWorker("GroupByContentWorker " + (i + 1), theInput,
+					theOutput);
 
-			workers[i].getBytesComparedCount().addListener(new ChangeListener<Number>() {
+			worker.getBytesComparedCount().addListener(newLongRollupListener(bytesComparedCount));
+			worker.getFilesComparedCount().addListener(newIntegerRollupListener(filesComparedCount));
+			worker.getUniqueCount().addListener(newIntegerRollupListener(uniqueCount));
 
-				@Override
-				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-					long rollup = 0;
-
-					for (GroupByContentWorker worker : workers) {
-						rollup += worker.getBytesComparedCount().get();
-					}
-
-					bytesComparedCount.set(rollup);
-				}
-
-			});
-
-			workers[i].getFilesComparedCount().addListener(new ChangeListener<Number>() {
-
-				@Override
-				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-					int rollup = 0;
-
-					for (GroupByContentWorker worker : workers) {
-						rollup += worker.getFilesComparedCount().get();
-					}
-
-					filesComparedCount.set(rollup);
-				}
-
-			});
-
-			workers[i].getUniqueCount().addListener(new ChangeListener<Number>() {
-
-				@Override
-				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-					int rollup = 0;
-
-					for (GroupByContentWorker worker : workers) {
-						rollup += worker.getUniqueCount().get();
-					}
-
-					uniqueCount.set(rollup);
-				}
-
-			});
-
-			children.add(workers[i]);
+			children.add(worker);
 		}
 	}
 
@@ -133,9 +79,9 @@ public class GroupByContentPhase extends Phase {
 	 */
 	@Override
 	protected Void call() throws Exception {
-		Void result = super.call();
+		Void result = superCall();
 
-		outputQueue.put(new ArrayList<Path>()); // EOF convention
+		outputQueue.put(newPathArrayList()); // EOF convention
 
 		return result;
 	}
@@ -150,6 +96,27 @@ public class GroupByContentPhase extends Phase {
 	/**
 	 * @return a new object.
 	 */
+	protected IntegerRollupListener newIntegerRollupListener(ThreadSafeSimpleIntegerProperty prop) {
+		return new IntegerRollupListener(prop);
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected LongRollupListener newLongRollupListener(ThreadSafeSimpleLongProperty prop) {
+		return new LongRollupListener(prop);
+	}
+
+	/**
+	 * @return
+	 */
+	protected ArrayList<Path> newPathArrayList() {
+		return new ArrayList<Path>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
 	protected ThreadSafeSimpleIntegerProperty newThreadSafeSimpleIntegerProperty() {
 		return new ThreadSafeSimpleIntegerProperty(0);
 	}
@@ -159,6 +126,14 @@ public class GroupByContentPhase extends Phase {
 	 */
 	protected ThreadSafeSimpleLongProperty newThreadSafeSimpleLongProperty() {
 		return new ThreadSafeSimpleLongProperty(0);
+	}
+
+	/**
+	 * @return
+	 * @throws Exception
+	 */
+	protected Void superCall() throws Exception {
+		return super.call();
 	}
 
 }

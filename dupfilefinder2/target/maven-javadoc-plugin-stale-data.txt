@@ -31,21 +31,21 @@ cotelab.dupfilefinder2
 cotelab.dupfilefinder2.pipeline
 cotelab.dupfilefinder2.treeview
 'C:/Users/TEST/git/dupfilefinder2/dupfilefinder2/src/main/java/module-info.java'
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\allclasses-index.html = 1642084891544
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\allpackages-index.html = 1642084891548
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\constant-values.html = 1642084891311
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\element-list = 1642084891240
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\help-doc.html = 1642084891636
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\index-all.html = 1642084891624
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\index.html = 1642084891628
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\jquery-ui.overrides.css = 1642084891694
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\member-search-index.js = 1642084891558
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\module-search-index.js = 1642084891551
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\overview-tree.html = 1642084891502
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\package-search-index.js = 1642084891554
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\script.js = 1642084891643
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\search.js = 1642084891647
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\serialized-form.html = 1642084891325
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\stylesheet.css = 1642084891640
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\tag-search-index.js = 1642084891560
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\type-search-index.js = 1642084891556
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\allclasses-index.html = 1642097008813
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\allpackages-index.html = 1642097008817
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\constant-values.html = 1642097008554
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\element-list = 1642097008482
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\help-doc.html = 1642097008915
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\index-all.html = 1642097008905
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\index.html = 1642097008909
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\jquery-ui.overrides.css = 1642097008963
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\member-search-index.js = 1642097008829
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\module-search-index.js = 1642097008821
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\overview-tree.html = 1642097008759
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\package-search-index.js = 1642097008823
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\script.js = 1642097008921
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\search.js = 1642097008925
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\serialized-form.html = 1642097008564
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\stylesheet.css = 1642097008918
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\tag-search-index.js = 1642097008832
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\target\apidocs\type-search-index.js = 1642097008825

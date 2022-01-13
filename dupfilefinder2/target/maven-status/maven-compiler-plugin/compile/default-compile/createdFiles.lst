@@ -1,7 +1,6 @@
 cotelab\dupfilefinder2\pipeline\Pipeline.class
 cotelab\dupfilefinder2\pipeline\QueueProcessor.class
 cotelab\dupfilefinder2\pipeline\GroupByContentPhase.class
-cotelab\dupfilefinder2\pipeline\GroupByContentPhase$2.class
 cotelab\dupfilefinder2\NumberPropToLabelBinder.class
 cotelab\dupfilefinder2\treeview\ShowDuplicatesMenuItemEventHandler.class
 cotelab\dupfilefinder2\pipeline\Phase.class
@@ -32,7 +31,6 @@ cotelab\dupfilefinder2\FXMLController$2.class
 cotelab\dupfilefinder2\StatePropToLabelBinder$1.class
 module-info.class
 cotelab\dupfilefinder2\HeapMonitor$1.class
-cotelab\dupfilefinder2\pipeline\GroupByContentPhase$3.class
 cotelab\dupfilefinder2\pipeline\PipelineQueue.class
 cotelab\dupfilefinder2\DupFileFinder2.class
 cotelab\dupfilefinder2\PopupBrowserLauncher.class
@@ -41,10 +39,11 @@ cotelab\dupfilefinder2\treeview\DupItemsDialog$1.class
 cotelab\dupfilefinder2\treeview\PathDeletionVisitor.class
 cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleIntegerProperty$1.class
 cotelab\dupfilefinder2\FXMLController$6.class
-cotelab\dupfilefinder2\pipeline\GroupByContentPhase$1.class
 cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleIntegerProperty.class
+cotelab\dupfilefinder2\pipeline\LongRollupListener.class
 cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleLongProperty$2.class
 cotelab\dupfilefinder2\treeview\DecoratedFileTreeView.class
 cotelab\dupfilefinder2\treeview\DecoratedFileTreeCellFactory.class
 cotelab\dupfilefinder2\treeview\CellContextMenuRequestHandler.class
 cotelab\dupfilefinder2\FXMLController$3.class
+cotelab\dupfilefinder2\pipeline\IntegerRollupListener.class
