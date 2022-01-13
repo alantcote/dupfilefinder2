@@ -88,6 +88,7 @@ public class GroupByContentWorker extends Phase {
 	 */
 	@Override
 	protected Void call() throws Exception {
+		// TODO refactor for readability and testability
 		try {
 //			String printlnPrefix = phaseName.get() + ": call(): ";
 
@@ -255,6 +256,7 @@ public class GroupByContentWorker extends Phase {
 	}
 
 	protected Collection<Collection<Path>> nWayCompareEqualPaths(Collection<Path> pathColl) {
+		// TODO refactor for readability and testability
 		List<Collection<Path>> retValue = newPathGroupArrayList();
 		HashMap<BufferedInputStream, Path> inputStream2Path = newBufferedInputStreamToPathHashMap();
 		ArrayList<BufferedInputStream> inputStreams = newBufferedInputStreamArrayList();
@@ -356,6 +358,7 @@ public class GroupByContentWorker extends Phase {
 	 * @return a group of groups of input streams that match each other.
 	 */
 	protected Collection<Collection<BufferedInputStream>> nWayCompareEqualStreams(Collection<BufferedInputStream> src) {
+		// TODO refactor for readability and testability
 		ArrayList<Collection<BufferedInputStream>> retValue = newBufferedInputStreamGroupArrayList();
 		HashMultiMap<Integer, BufferedInputStream> stepResult = newIntegerToBufferedInputStreamHashMultiMap();
 		Set<Integer> stepKeys;
@@ -483,6 +486,7 @@ public class GroupByContentWorker extends Phase {
 	 *         data".
 	 */
 	protected boolean streamsMatch(Collection<BufferedInputStream> src) {
+		// TODO refactor for readability and testability
 		int srcSize = src.size();
 		BufferedInputStream srcArray[] = src.<BufferedInputStream>toArray(newBufferedInputStreamArray(srcSize));
 		byte[] masterBuffer = newByteBuffer();

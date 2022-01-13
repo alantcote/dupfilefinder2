@@ -8,6 +8,7 @@ C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefin
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\GroupBySizePhase.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\PopupBrowserLauncher.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\Pipeline.java
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\treeview\PathDeletionVisitor.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\PathSearchVisitor.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\PipelineQueue.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\GroupByContentWorker.java
@@ -19,7 +20,6 @@ C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefin
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\FXMLController.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\QueueProcessor.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\DupFileFinder2.java
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\String2StringConverter.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\MatchingSubtreeIdentificationPhase.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\Phase.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleIntegerProperty.java

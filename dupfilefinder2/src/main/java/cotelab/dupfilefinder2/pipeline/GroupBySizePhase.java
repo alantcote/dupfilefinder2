@@ -84,6 +84,7 @@ public class GroupBySizePhase extends Phase {
 
 	@Override
 	protected Void call() throws Exception {
+		// TODO refactor for readability and testability
 //		System.out.println("GroupBySizePhase.call(): entry");
 
 		try {

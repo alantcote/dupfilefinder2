@@ -66,6 +66,9 @@ public class HistoryTrackingQueue<E> extends LinkedBlockingQueue<E> {
 		takeCount.set(takeCount.get() + increment);
 	}
 
+	/**
+	 * {@inheritDoc} This method counts the taken items.
+	 */
 	@Override
 	public E poll() {
 		E taken = super.poll();
@@ -77,6 +80,9 @@ public class HistoryTrackingQueue<E> extends LinkedBlockingQueue<E> {
 		return taken;
 	}
 
+	/**
+	 * {@inheritDoc} This method counts the taken items.
+	 */
 	@Override
 	public E poll(long timeout, TimeUnit unit) throws InterruptedException {
 		E taken = super.poll(timeout, unit);

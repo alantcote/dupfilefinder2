@@ -50,6 +50,7 @@ public class GroupByContentPhase extends Phase {
 	 * @param theOutput the output queue.
 	 */
 	public GroupByContentPhase(String name, PipelineQueue theInput, PipelineQueue theOutput) {
+		// TODO clean this up for readability and testability
 		super(name, theInput, theOutput);
 
 //		System.out.println("GroupByContentPhase.GroupByContentPhase(): creating workers");

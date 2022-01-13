@@ -41,7 +41,7 @@ import net.sf.cotelab.util.javafx.tree.FileIconFactory;
 import net.sf.cotelab.util.javafx.tree.FileTreeItem;
 import net.sf.cotelab.util.javafx.tree.FileTreeView;
 
-/* This class is way too big; it needs some sort of refactoring to make it more
+/* TODO This class is way too big; it needs some sort of refactoring to make it more
  * understandable and more testable.
  */
 /**
