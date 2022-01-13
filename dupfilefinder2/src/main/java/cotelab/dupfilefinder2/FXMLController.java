@@ -17,9 +17,13 @@ import cotelab.dupfilefinder2.pipeline.Phase;
 import cotelab.dupfilefinder2.pipeline.Pipeline;
 import cotelab.dupfilefinder2.pipeline.PipelineQueue;
 import cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase;
+import cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleIntegerProperty;
+import cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleLongProperty;
 import cotelab.dupfilefinder2.treeview.DecoratedFileTreeView;
 import javafx.application.HostServices;
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -41,9 +45,6 @@ import net.sf.cotelab.util.javafx.tree.FileIconFactory;
 import net.sf.cotelab.util.javafx.tree.FileTreeItem;
 import net.sf.cotelab.util.javafx.tree.FileTreeView;
 
-/* TODO This class is way too big; it needs some sort of refactoring to make it more
- * understandable and more testable.
- */
 /**
  * The GUI controller.
  */
@@ -428,37 +429,29 @@ public class FXMLController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-//		System.out.println("FXMLController.initialize(): switching to proper TreeView");
-
 		subtreeSelectionTreeView = createFileTreeView();
 		subtreeSelectionTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
 		rootPane.setLeft(subtreeSelectionTreeView);
 
 		startHeapMonitor();
 
 		fileCloseMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				System.exit(0);
 			}
-
 		});
 
 		helpUsageMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent arg0) {
 				setupBrowserLauncher();
 
 				browserLauncher.popup(HELP_USAGE_URL);
 			}
-
 		});
 
 		helpAboutMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent arg0) {
 				URL url = getClass().getResource(HELP_ABOUT_RESOURCE);
@@ -469,63 +462,30 @@ public class FXMLController implements Initializable {
 					browserLauncher.openWebViewDialog(url.toExternalForm(), 300, 400);
 				}
 			}
-
 		});
 
-//		System.out.println("FXMLController.initialize(): calling startButton.setOnAction()");
-
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
-//				System.out.println("FXMLController.initialize(): start button handler calling setUpPipeline()");
-
 				startStamp = System.currentTimeMillis();
 
 				pipeline = setUpPipeline();
-
-//				System.out.println("FXMLController.initialize(): start button handler starting pipeline");
-
 				startPhase(pipeline);
 
-//				System.out.println("FXMLController.initialize(): start button handler enabling cancel button");
-
 				cancelButton.setDisable(false);
-
-//				System.out.println("FXMLController.initialize(): start button handler disabling start button");
-
 				startButton.setDisable(true);
-
-//				System.out.println("FXMLController.initialize(): start button handler method complete");
 			}
-
 		});
-
-//		System.out.println("FXMLController.initialize(): calling cancelButton.setOnAction()");
 
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
-//				System.out.println("FXMLController.initialize(): cancel button handler cancelling pipeline");
-
 				pipeline.cancel(true);
 
-//				System.out.println("FXMLController.initialize(): cancel button handler disabling cancel button");
-
 				cancelButton.setDisable(true);
-
-//				System.out.println("FXMLController.initialize(): cancel button handler enabling start button");
-
 				startButton.setDisable(false);
-
-//				System.out.println("FXMLController.initialize(): cancel button handler method complete");
-
 			}
-
 		});
-
-//		System.out.println("FXMLController.initialize(): method complete");
 	}
 
 	/**
@@ -534,6 +494,17 @@ public class FXMLController implements Initializable {
 	public void refreshResultAids() {
 		buildPathToDupCollMap();
 		buildAncestorSet();
+	}
+
+	/**
+	 * Update the elapsed time field.
+	 */
+	public void updateElapsedTime() {
+		long now = System.currentTimeMillis();
+		long elapsedMillis = now - startStamp;
+		String elapsedString = formatElapsed(elapsedMillis);
+
+		elapsedTime.setText(elapsedString);
 	}
 
 	/**
@@ -570,6 +541,50 @@ public class FXMLController implements Initializable {
 		resultsTreeView = new DecoratedFileTreeView(new FileTreeItem(null), fileIconFactory, ancestorSet,
 				dupCollections, pathToDupCollMap, this);
 		resultsTreeView.setShowRoot(false);
+	}
+
+	/**
+	 * Set up a listener to keep a display field updated to reflect changes to a
+	 * property.
+	 * 
+	 * @param roop  the property.
+	 * @param label the display field.
+	 */
+	protected void bind(ReadOnlyObjectProperty<State> roop, Label label) {
+		roop.addListener(new StatePropToLabelBinder(label, this));
+	}
+
+	/**
+	 * Set up a listener to keep a display field updated to reflect changes to a
+	 * property.
+	 * 
+	 * @param sip   the property.
+	 * @param label the display field.
+	 */
+	protected void bind(SimpleIntegerProperty sip, Label label) {
+		sip.addListener(new NumberPropToLabelBinder(label, this));
+	}
+
+	/**
+	 * Set up a listener to keep a display field updated to reflect changes to a
+	 * property.
+	 * 
+	 * @param tssip the property.
+	 * @param label the display field.
+	 */
+	protected void bind(ThreadSafeSimpleIntegerProperty tssip, Label label) {
+		tssip.addListener(new NumberPropToLabelBinder(label, this));
+	}
+
+	/**
+	 * Set up a listener to keep a display field updated to reflect changes to a
+	 * property.
+	 * 
+	 * @param tsslp the property.
+	 * @param label the display field.
+	 */
+	protected void bind(ThreadSafeSimpleLongProperty tsslp, Label label) {
+		tsslp.addListener(new NumberPropToLabelBinder(label, this));
 	}
 
 	/**
@@ -678,176 +693,70 @@ public class FXMLController implements Initializable {
 	}
 
 	/**
+	 * Bind queue properties to display fields.
+	 * 
 	 * @param line the pipeline.
 	 */
 	protected void setUpGroupByContent2MatchingSubtreeIdentificationQueueListeners(Pipeline line) {
 		gbc2msiQueueName.setText(line.getGBC2MSIQueueName().get());
 
-		line.getGBC2MSIQueuePutCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbc2msiPutCount, newValue);
-			}
-
-		});
-
-		line.getGBC2MSIQueueTakeCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbc2msiTakeCount, newValue);
-			}
-
-		});
+		bind(line.getGBC2MSIQueuePutCount(), gbc2msiPutCount);
+		bind(line.getGBC2MSIQueueTakeCount(), gbc2msiTakeCount);
 	}
 
 	/**
+	 * Bind phase properties to display fields.
+	 * 
 	 * @param line the pipeline.
 	 */
 	protected void setUpGroupByContentPhaseListeners(Pipeline line) {
 		gbcName.setText(line.getGBCPhaseName().get());
-
-		line.getGBCUniqueCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbcUniqueCount, newValue);
-			}
-
-		});
-
-		line.getGBCBytesComparedCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbcBytesCompared, newValue);
-			}
-
-		});
-
-		line.getGBCFilesComparedCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbcFilesCompared, newValue);
-			}
-
-		});
-
 		gbsState.setText(line.gbsStateProperty().get().toString());
-		line.gbcStateProperty().addListener(new ChangeListener<State>() {
 
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-				updateInFXThread(gbcState, newValue);
-			}
-
-		});
+		bind(line.gbcStateProperty(), gbcState);
+		bind(line.getGBCUniqueCount(), gbcUniqueCount);
+		bind(line.getGBCBytesComparedCount(), gbcBytesCompared);
 	}
 
 	/**
+	 * Bind queue properties to display fields.
+	 * 
 	 * @param line the pipeline.
 	 */
 	protected void setUpGroupBySize2GroupByContentQueueListeners(Pipeline line) {
 		gbs2gbcQueueName.setText(line.getGBS2GBCQueueName().get());
 
-		line.getGBS2GBCQueuePutCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbs2gbcPutCount, newValue);
-			}
-
-		});
-
-		line.getGBS2GBCQueueTakeCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbs2gbcTakeCount, newValue);
-			}
-
-		});
+		bind(line.getGBS2GBCQueuePutCount(), gbs2gbcPutCount);
+		bind(line.getGBS2GBCQueueTakeCount(), gbs2gbcTakeCount);
 	}
 
 	/**
+	 * Bind phase properties to display fields.
+	 * 
 	 * @param line the pipeline.
 	 */
 	protected void setUpGroupBySizePhaseListeners(Pipeline line) {
 		gbsName.setText(line.getGBSPhaseName().get());
-
-		line.getGBSFilesMeasuredCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbsFilesMeasuredCount, newValue);
-			}
-
-		});
-
-		line.getGBSSizeCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbsSizeCount, newValue);
-			}
-
-		});
-
 		gbsState.setText(line.gbsStateProperty().get().toString());
-		line.gbsStateProperty().addListener(new ChangeListener<State>() {
 
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-				updateInFXThread(gbsState, newValue);
-			}
-
-		});
-
-		line.getGBSUniqueCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbsUniqueCount, newValue);
-			}
-
-		});
-
-		line.getGBSUnmeasurableCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(gbsUnmeasurableCount, newValue);
-			}
-
-		});
+		bind(line.gbsStateProperty(), gbsState);
+		bind(line.getGBSFilesMeasuredCount(), gbsFilesMeasuredCount);
+		bind(line.getGBSSizeCount(), gbsSizeCount);
+		bind(line.getGBSUniqueCount(), gbsUniqueCount);
+		bind(line.getGBSUnmeasurableCount(), gbsUnmeasurableCount);
 	}
 
 	/**
+	 * Bind phase properties to display fields.
+	 * 
 	 * @param line the pipeline.
 	 */
 	protected void setUpMatchingSubtreeIdentificationPhaseListeners(Pipeline line) {
 		msiName.setText(line.getMSIPhaseName().get());
-
-		line.getMSIPathGroupsConsideredProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(msiPathGroupsConsidered, newValue);
-			}
-
-		});
-
 		msiState.setText(line.msiStateProperty().get().toString());
-		line.msiStateProperty().addListener(new ChangeListener<State>() {
 
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-				updateInFXThread(msiState, newValue);
-			}
-
-		});
+		bind(line.msiStateProperty(), msiState);
+		bind(line.getMSIPathGroupsConsideredProperty(), msiPathGroupsConsidered);
 	}
 
 	/**
@@ -860,26 +769,22 @@ public class FXMLController implements Initializable {
 		output = new PipelineQueue(Integer.MAX_VALUE, "Pipeline Output");
 
 		Pipeline result = new Pipeline("Pipeline", input, output);
-//		LinkedList<Path> searchRoots = new LinkedList<Path>();
 		MultipleSelectionModel<TreeItem<File>> selModel = subtreeSelectionTreeView.getSelectionModel();
 		ObservableList<TreeItem<File>> selectedItems = selModel.getSelectedItems();
 
 		try {
 			for (TreeItem<File> rootItem : selectedItems) {
 				File rootFile = rootItem.getValue();
-//				Path rootPath = Paths.get(rootFile.getAbsolutePath());
 				Path rootPath = rootFile.toPath();
 				LinkedList<Path> searchRoots = new LinkedList<Path>();
 
 				searchRoots.add(rootPath);
 				input.put(searchRoots);
-
-//				System.out.println("FXMLController.setupPhase(): root = " + root);
 			}
 
-//			input.put(searchRoots);
 			input.put(new ArrayList<Path>()); // EOF convention
 		} catch (InterruptedException e) {
+			System.err.println("FXMLController.setUpPipeline(): caught " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -889,29 +794,16 @@ public class FXMLController implements Initializable {
 	}
 
 	/**
+	 * Bind queue properties to display fields.
+	 * 
 	 * @param line the pipeline.
 	 */
 	protected void setUpPipelineInputQueueListeners(Pipeline line) {
 		pipelineInputQueueName.setText(line.getInputName().get());
-
 		pipelineInputPutCount.setText(Integer.toString(line.getInputPutCount().get()));
-		line.getInputPutCount().addListener(new ChangeListener<Number>() {
 
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(pipelineInputPutCount, newValue);
-			}
-
-		});
-
-		line.getInputTakeCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(pipelineInputTakeCount, newValue);
-			}
-
-		});
+		bind(line.getInputPutCount(), pipelineInputPutCount);
+		bind(line.getInputTakeCount(), pipelineInputTakeCount);
 	}
 
 	/**
@@ -921,14 +813,13 @@ public class FXMLController implements Initializable {
 	 */
 	protected void setUpPipelineListeners(Pipeline line) {
 		pipelineName.setText(line.getPhaseName().get());
-
 		pipelineState.setText(line.stateProperty().get().toString());
-		line.stateProperty().addListener(new ChangeListener<State>() {
 
+		bind(line.stateProperty(), pipelineState);
+
+		line.stateProperty().addListener(new ChangeListener<State>() {
 			@Override
 			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-				updateInFXThread(pipelineState, newValue);
-
 				// take appropriate action when pipeline has finished
 				if ((newValue == State.CANCELLED) || (newValue == State.FAILED) || (newValue == State.SUCCEEDED)) {
 					cancelButton.setDisable(true);
@@ -937,7 +828,6 @@ public class FXMLController implements Initializable {
 					showResults();
 				}
 			}
-
 		});
 
 		setUpPipelineInputQueueListeners(line);
@@ -952,124 +842,45 @@ public class FXMLController implements Initializable {
 	}
 
 	/**
+	 * Bind queue properties to display fields.
+	 * 
 	 * @param line the pipeline.
 	 */
 	protected void setUpPipelineOutputQueueListeners(Pipeline line) {
 		pipelineOutputQueueName.setText(line.getOutputName().get());
 
-		line.getOutputPutCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(pipelineOutputPutCount, newValue);
-			}
-
-		});
-
-		line.getOutputTakeCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(pipelineOutputTakeCount, newValue);
-			}
-
-		});
+		bind(line.getOutputPutCount(), pipelineOutputPutCount);
+		bind(line.getOutputTakeCount(), pipelineOutputTakeCount);
 	}
 
 	/**
+	 * Bind queue properties to display fields.
+	 * 
 	 * @param line the pipeline.
 	 */
 	protected void setUpSubtreeSearch2GroupBySizeQueueListeners(Pipeline line) {
 		ss2gbsQueueName.setText(line.getSS2GBSQueueName().get());
 
-		line.getSS2GBSQueuePutCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(ss2gbsPutCount, newValue);
-			}
-
-		});
-
-		line.getSS2GBSQueueTakeCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(ss2gbsTakeCount, newValue);
-			}
-
-		});
+		bind(line.getSS2GBSQueuePutCount(), ss2gbsPutCount);
+		bind(line.getSS2GBSQueueTakeCount(), ss2gbsTakeCount);
 	}
 
 	/**
+	 * Bind phase properties to display fields.
+	 * 
 	 * @param line the pipeline.
 	 */
 	protected void setUpSubtreeSearchPhaseListeners(Pipeline line) {
 		sspName.setText(line.getSSPPhaseName().get());
-
-		line.getSSPDirectoryCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(sspDirectoryCount, newValue);
-			}
-
-		});
-
-		line.getSSPFailedAccessCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(sspFailedAccessCount, newValue);
-			}
-
-		});
-
-		line.getSSPOtherCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(sspOtherCount, newValue);
-			}
-
-		});
-
-		line.getSSPRegularFileCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(sspRegularFileCount, newValue);
-			}
-
-		});
-
 		sspState.setText(line.sspStateProperty().get().toString());
-		line.sspStateProperty().addListener(new ChangeListener<State>() {
 
-			@Override
-			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-				updateInFXThread(sspState, newValue);
-			}
-
-		});
-
-		line.getSSPSymbolicLinkCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(sspSymbolicLinkCount, newValue);
-			}
-
-		});
-
-		line.getSSPUnreadableCount().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				updateInFXThread(sspUnreadableCount, newValue);
-			}
-
-		});
+		bind(line.sspStateProperty(), sspState);
+		bind(line.getSSPDirectoryCount(), sspDirectoryCount);
+		bind(line.getSSPFailedAccessCount(), sspFailedAccessCount);
+		bind(line.getSSPOtherCount(), sspOtherCount);
+		bind(line.getSSPRegularFileCount(), sspRegularFileCount);
+		bind(line.getSSPSymbolicLinkCount(), sspSymbolicLinkCount);
+		bind(line.getSSPUnreadableCount(), sspUnreadableCount);
 	}
 
 	/**
@@ -1077,25 +888,14 @@ public class FXMLController implements Initializable {
 	 */
 	protected void showResults() {
 		Platform.runLater(new Runnable() {
-
 			@Override
 			public void run() {
-//				System.out.println("FXMLController.showResults(): calling assembleResults()");
-
 				assembleResults();
 
-//				System.out.println("FXMLController.showResults(): calling assembleResultsTreeView()");
-
 				assembleResultsTreeView();
-
-//				System.out.println("FXMLController.showResults(): calling rootPane.setRight()");
-
 				rootPane.setRight(resultsTreeView);
 				resultsTreeView.setVisible(true);
-
-//				System.out.println("FXMLController.showResults(): method completed.");
 			}
-
 		});
 	}
 
@@ -1112,43 +912,13 @@ public class FXMLController implements Initializable {
 	/**
 	 * Start up a {@link Phase} in a {@link Thread}.
 	 * 
-	 * @param aPhase
+	 * @param aPhase the phase.
 	 */
 	protected void startPhase(Phase aPhase) {
 		Thread th = new Thread(aPhase);
 
 		th.setDaemon(true);
 		th.start();
-	}
-
-	/**
-	 * Update the elapsed time field.
-	 */
-	protected void updateElapsedTime() {
-		long now = System.currentTimeMillis();
-		long elapsedMillis = now - startStamp;
-		String elapsedString = formatElapsed(elapsedMillis);
-
-		elapsedTime.setText(elapsedString);
-	}
-
-	/**
-	 * Update the text of a {@link Label} with a string value of a {@link Number}.
-	 * 
-	 * @param field    the Label.
-	 * @param newValue the Number.
-	 */
-	protected void updateInFXThread(Label field, Number newValue) {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				field.setText(newValue.toString());
-
-				updateElapsedTime();
-			}
-
-		});
 	}
 
 	/**
@@ -1159,14 +929,12 @@ public class FXMLController implements Initializable {
 	 */
 	protected void updateInFXThread(Label field, State newValue) {
 		Platform.runLater(new Runnable() {
-
 			@Override
 			public void run() {
 				field.setText(newValue.toString());
 
 				updateElapsedTime();
 			}
-
 		});
 	}
 }

@@ -11,11 +11,13 @@ C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefin
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\treeview\PathDeletionVisitor.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\PathSearchVisitor.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\PipelineQueue.java
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\StatePropToLabelBinder.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\GroupByContentWorker.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleLongProperty.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\ChildProblemEventHandler.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\HeapMonitor.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\module-info.java
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\NumberPropToLabelBinder.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\GroupByContentPhase.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\FXMLController.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\QueueProcessor.java
