@@ -1,7 +1,6 @@
 package cotelab.dupfilefinder2;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.jmock.Mockery;
 import org.jmock.Sequence;

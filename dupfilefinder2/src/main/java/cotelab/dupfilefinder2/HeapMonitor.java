@@ -28,6 +28,8 @@ public class HeapMonitor implements Runnable {
 	 */
 	protected static final long MEG = 1024 * 1024;
 
+	protected boolean cancelled = false;
+
 	/**
 	 * The message {@link Label}.
 	 */
@@ -55,14 +57,21 @@ public class HeapMonitor implements Runnable {
 	}
 
 	/**
+	 * @return the cancelled
+	 */
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void run() {
-		while (true) {
+		while (!isCancelled()) {
 			try {
-				while (true) {
-					Thread.sleep(DELAY_MILLIS);
+				while (!isCancelled()) {
+					threadSleep(DELAY_MILLIS);
 
 					updateHeapProgressBar();
 				}
@@ -70,6 +79,13 @@ public class HeapMonitor implements Runnable {
 //				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * @param cancelled the cancelled to set
+	 */
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 
 	/**
@@ -102,10 +118,29 @@ public class HeapMonitor implements Runnable {
 	}
 
 	/**
+	 * Call {@link Platform#runLater} to run the parameter.
+	 * 
+	 * @param aRunnable the parameter to runLater().
+	 */
+	protected void platformRunLater(Runnable aRunnable) {
+		Platform.runLater(aRunnable);
+	}
+
+	/**
+	 * Sleep for a given number of milliseconds.
+	 * 
+	 * @param delay the number of milliseconds to sleep.
+	 * @throws InterruptedException if thrown by {@link Thread#sleep}.
+	 */
+	protected void threadSleep(long delay) throws InterruptedException {
+		Thread.sleep(delay);
+	}
+
+	/**
 	 * Update the progress bar and associated message.
 	 */
 	protected void updateHeapProgressBar() {
-		Platform.runLater(new Runnable() {
+		platformRunLater(new Runnable() {
 			@Override
 			public void run() {
 				long totalHeap = runtime.totalMemory();
