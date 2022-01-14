@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cotelab.dupfilefinder2;
 
 import javafx.application.Platform;
@@ -45,6 +42,10 @@ public class StatePropToLabelBinder implements ChangeListener<State> {
 		updateInFXThread(label, newValue);
 	}
 
+	protected void platformRunLater(Runnable aRunnable) {
+		Platform.runLater(aRunnable);
+	}
+
 	/**
 	 * Update the text of a {@link Label} with a string value of a {@link State}.
 	 * 
@@ -52,7 +53,7 @@ public class StatePropToLabelBinder implements ChangeListener<State> {
 	 * @param newValue the State.
 	 */
 	protected void updateInFXThread(Label field, State newValue) {
-		Platform.runLater(new Runnable() {
+		platformRunLater(new Runnable() {
 
 			@Override
 			public void run() {
