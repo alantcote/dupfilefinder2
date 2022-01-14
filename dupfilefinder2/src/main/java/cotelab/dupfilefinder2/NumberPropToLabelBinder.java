@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cotelab.dupfilefinder2;
 
 import javafx.application.Platform;
@@ -18,7 +15,7 @@ public class NumberPropToLabelBinder implements ChangeListener<Number> {
 	 * The {@link FXMLController}.
 	 */
 	protected FXMLController controller;
-	
+
 	/**
 	 * The label to be updated.
 	 */
@@ -27,8 +24,9 @@ public class NumberPropToLabelBinder implements ChangeListener<Number> {
 	/**
 	 * Construct a new object.
 	 * 
-	 * @param aLabel the {@link Label} to be updated when
-	 *               {@link #changed(ObservableValue, Number, Number)} is called.
+	 * @param aLabel         the {@link Label} to be updated when
+	 *                       {@link #changed(ObservableValue, Number, Number)} is
+	 *                       called.
 	 * @param fxmlController the {@link FXMLController}.
 	 */
 	public NumberPropToLabelBinder(Label aLabel, FXMLController fxmlController) {
@@ -44,6 +42,10 @@ public class NumberPropToLabelBinder implements ChangeListener<Number> {
 		updateInFXThread(label, newValue);
 	}
 
+	protected void platformRunLater(Runnable aRunnable) {
+		Platform.runLater(aRunnable);
+	}
+
 	/**
 	 * Update the text of a {@link Label} with a string value of a {@link Number}.
 	 * 
@@ -51,7 +53,7 @@ public class NumberPropToLabelBinder implements ChangeListener<Number> {
 	 * @param newValue the Number.
 	 */
 	protected void updateInFXThread(Label field, Number newValue) {
-		Platform.runLater(new Runnable() {
+		platformRunLater(new Runnable() {
 
 			@Override
 			public void run() {

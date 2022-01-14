@@ -1,9 +1,4 @@
-/**
- * 
- */
 package cotelab.dupfilefinder2.pipeline;
-
-import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -14,7 +9,8 @@ import org.junit.Test;
 public class ChildProblemEventHandlerTest {
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.pipeline.ChildProblemEventHandler#handle(javafx.concurrent.WorkerStateEvent)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.pipeline.ChildProblemEventHandler#handle(javafx.concurrent.WorkerStateEvent)}.
 	 */
 	@Test
 	public void testHandle() {
