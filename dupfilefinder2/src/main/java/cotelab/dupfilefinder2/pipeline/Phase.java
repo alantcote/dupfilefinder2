@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cotelab.dupfilefinder2.pipeline;
 
 import java.util.ArrayList;
