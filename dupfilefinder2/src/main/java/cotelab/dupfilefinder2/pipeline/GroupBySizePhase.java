@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cotelab.dupfilefinder2.pipeline;
 
 import java.io.IOException;
@@ -8,7 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Hashtable;
+import java.util.List;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -115,7 +114,7 @@ public class GroupBySizePhase extends Phase {
 	protected Hashtable<Long, ArrayList<Path>> newLongToPathGroupHashtable() {
 		return new Hashtable<Long, ArrayList<Path>>();
 	}
-	
+
 	protected void processBatch(Collection<Path> batch) {
 		for (Path path : batch) {
 			if (isCancelled()) {

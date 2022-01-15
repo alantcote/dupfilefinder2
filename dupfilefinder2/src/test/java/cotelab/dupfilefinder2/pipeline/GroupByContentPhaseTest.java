@@ -52,7 +52,6 @@ public class GroupByContentPhaseTest {
 
 		context.checking(new Expectations() {
 			{
-				// worker 0
 				oneOf(mockOutput).put(mockPathArrayList);
 			}
 		});
