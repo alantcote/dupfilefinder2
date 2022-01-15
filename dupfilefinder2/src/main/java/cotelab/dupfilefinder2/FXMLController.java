@@ -536,10 +536,9 @@ public class FXMLController implements Initializable {
 	 * Assemble the results display.
 	 */
 	protected void assembleResultsTreeView() {
-		FileIconFactory fileIconFactory = new FileIconFactory();
+		FileIconFactory fileIconFactory = newFileIconFactory();
 
-		resultsTreeView = new DecoratedFileTreeView(new FileTreeItem(null), fileIconFactory, ancestorSet,
-				dupCollections, pathToDupCollMap, this);
+		resultsTreeView = newResultsTreeView(fileIconFactory);
 		resultsTreeView.setShowRoot(false);
 	}
 
@@ -631,7 +630,7 @@ public class FXMLController implements Initializable {
 	 * @return a new object.
 	 */
 	protected FileTreeView createFileTreeView() {
-		TreeItem<File> rootFileTreeItem = new FileTreeItem(null);
+		TreeItem<File> rootFileTreeItem = newRootFileTreeItem();
 		FileTreeView fileTreeView = new FileTreeView(rootFileTreeItem);
 
 		fileTreeView.showRootProperty().set(false);
@@ -653,6 +652,9 @@ public class FXMLController implements Initializable {
 		remnant /= 60;
 
 		long minutes = remnant % 60;
+
+		remnant /= 60;
+		
 		long hours = remnant / 60;
 		String fractionString = "00" + Long.toString(fraction);
 		String secondsString = Long.toString(seconds);
@@ -673,8 +675,33 @@ public class FXMLController implements Initializable {
 	/**
 	 * @return a new object.
 	 */
+	protected FileIconFactory newFileIconFactory() {
+		return new FileIconFactory();
+	}
+
+	/**
+	 * @return a new object.
+	 */
 	protected HashSet<Path> newPathHashSet() {
 		return new HashSet<Path>();
+	}
+
+	/**
+	 * Get a new {@link DecoratedFileTreeView} to present search results.
+	 * @param fileIconFactory the {@link FileIconFactory} to use.
+	 * @return a new object.
+	 */
+	protected DecoratedFileTreeView newResultsTreeView(FileIconFactory fileIconFactory) {
+		return new DecoratedFileTreeView(newRootFileTreeItem(), fileIconFactory, ancestorSet,
+				dupCollections, pathToDupCollMap, this);
+	}
+
+	/**
+	 * Get a new {@link FileTreeItem} that represents the (synthetic) file system root.
+	 * @return a new object.
+	 */
+	protected FileTreeItem newRootFileTreeItem() {
+		return new FileTreeItem(null);
 	}
 
 	/**
@@ -711,7 +738,7 @@ public class FXMLController implements Initializable {
 	 */
 	protected void setUpGroupByContentPhaseListeners(Pipeline line) {
 		gbcName.setText(line.getGBCPhaseName().get());
-		gbsState.setText(line.gbsStateProperty().get().toString());
+		gbcState.setText(line.gbcStateProperty().get().toString());
 
 		bind(line.gbcStateProperty(), gbcState);
 		bind(line.getGBCUniqueCount(), gbcUniqueCount);
