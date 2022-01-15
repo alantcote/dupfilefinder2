@@ -742,6 +742,7 @@ public class FXMLController implements Initializable {
 
 		bind(line.gbcStateProperty(), gbcState);
 		bind(line.getGBCUniqueCount(), gbcUniqueCount);
+		bind(line.getGBCFilesComparedCount(), gbcFilesCompared);
 		bind(line.getGBCBytesComparedCount(), gbcBytesCompared);
 	}
 

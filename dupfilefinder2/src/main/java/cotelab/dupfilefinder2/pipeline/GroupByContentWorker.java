@@ -439,9 +439,10 @@ public class GroupByContentWorker extends Phase {
 			} else {
 				uniqueCount.increment(1);
 			}
+
+			filesComparedCount.increment(size);
 		}
 
-		filesComparedCount.increment(nbrPaths);
 		bytesComparedCount.increment(fileLen * nbrPaths);
 	}
 

@@ -1,5 +1,7 @@
 package cotelab.dupfilefinder2;
 
+import java.text.NumberFormat;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,6 +22,11 @@ public class NumberPropToLabelBinder implements ChangeListener<Number> {
 	 * The label to be updated.
 	 */
 	protected Label label;
+	
+	/**
+	 * The number formatter.
+	 */
+	protected NumberFormat formatter = NumberFormat.getInstance();
 
 	/**
 	 * Construct a new object.
@@ -57,7 +64,7 @@ public class NumberPropToLabelBinder implements ChangeListener<Number> {
 
 			@Override
 			public void run() {
-				field.setText(newValue.toString());
+				field.setText(formatter.format(newValue));
 
 				controller.updateElapsedTime();
 			}

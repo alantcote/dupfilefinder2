@@ -1,6 +1,7 @@
 cotelab\dupfilefinder2\pipeline\Pipeline.class
 cotelab\dupfilefinder2\pipeline\QueueProcessor.class
 cotelab\dupfilefinder2\pipeline\GroupByContentPhase.class
+cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$5.class
 cotelab\dupfilefinder2\NumberPropToLabelBinder.class
 cotelab\dupfilefinder2\treeview\ShowDuplicatesMenuItemEventHandler.class
 cotelab\dupfilefinder2\pipeline\Phase.class
@@ -8,13 +9,16 @@ cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleLongProperty$1.class
 cotelab\dupfilefinder2\pipeline\ChildProblemEventHandler.class
 cotelab\dupfilefinder2\pipeline\GroupBySizePhase.class
 cotelab\dupfilefinder2\pipeline\PathSearchVisitor.class
+cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$2.class
 cotelab\dupfilefinder2\FXMLController$7.class
+cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$6.class
 cotelab\dupfilefinder2\FXMLController$4.class
 cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleIntegerProperty$3.class
 cotelab\dupfilefinder2\NumberPropToLabelBinder$1.class
 cotelab\dupfilefinder2\pipeline\MatchingSubtreeIdentificationPhase.class
 cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleLongProperty$3.class
 cotelab\dupfilefinder2\FXMLController$1.class
+cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$3.class
 cotelab\dupfilefinder2\pipeline\GroupByContentWorker.class
 cotelab\dupfilefinder2\FXMLController$8.class
 cotelab\dupfilefinder2\treeview\DecoratedFileTreeCell.class
@@ -40,6 +44,8 @@ cotelab\dupfilefinder2\treeview\PathDeletionVisitor.class
 cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleIntegerProperty$1.class
 cotelab\dupfilefinder2\FXMLController$6.class
 cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleIntegerProperty.class
+cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$1.class
+cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$4.class
 cotelab\dupfilefinder2\pipeline\LongRollupListener.class
 cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleLongProperty$2.class
 cotelab\dupfilefinder2\treeview\DecoratedFileTreeView.class

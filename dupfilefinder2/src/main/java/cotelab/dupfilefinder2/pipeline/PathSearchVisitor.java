@@ -115,6 +115,9 @@ public class PathSearchVisitor extends SimpleFileVisitor<Path> {
 	 */
 	@Override
 	public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+//		System.out.println("");
+//		System.out.print(dir.toString() + " ");
+
 		if (!isReadableFile(dir)) {
 			unreadableCount.set(unreadableCount.get() + 1);
 
@@ -122,7 +125,7 @@ public class PathSearchVisitor extends SimpleFileVisitor<Path> {
 		}
 
 		directoryCount.set(directoryCount.get() + 1);
-
+		
 		return super.preVisitDirectory(dir, attrs);
 	}
 
@@ -131,6 +134,8 @@ public class PathSearchVisitor extends SimpleFileVisitor<Path> {
 	 */
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+//		System.out.print(".");
+		
 		if (isReadableFile(file)) {
 			if (attrs.isRegularFile()) {
 				files.add(file);

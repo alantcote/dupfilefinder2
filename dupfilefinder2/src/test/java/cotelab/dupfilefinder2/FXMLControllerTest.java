@@ -1,11 +1,14 @@
 package cotelab.dupfilefinder2;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 
 import org.jmock.Expectations;
@@ -22,13 +25,9 @@ import cotelab.dupfilefinder2.pipeline.Pipeline;
 import cotelab.dupfilefinder2.pipeline.PipelineQueue;
 import cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleIntegerProperty;
 import cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleLongProperty;
-import cotelab.dupfilefinder2.treeview.DecoratedFileTreeView;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker.State;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -66,7 +65,8 @@ public class FXMLControllerTest {
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#addAncestors(java.nio.file.Path)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#addAncestors(java.nio.file.Path)}.
 	 */
 	@Test
 	public void testAddAncestors() {
@@ -83,19 +83,20 @@ public class FXMLControllerTest {
 				will(returnValue(null));
 			}
 		});
-		
+
 		fixture.addAncestors(mockPath);
-		
+
 		assertEquals(1, fixture.ancestorSet.size());
 		assertTrue(fixture.ancestorSet.contains(mockParentPath));
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#assembleResults()}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#assembleResults()}.
 	 */
 	@Test
 	public void testAssembleResults() {
-		final SimpleIntegerProperty callCount = new SimpleIntegerProperty(0); 
+		final SimpleIntegerProperty callCount = new SimpleIntegerProperty(0);
 		FXMLController fixture = new FXMLController() {
 
 			@Override
@@ -107,44 +108,47 @@ public class FXMLControllerTest {
 			protected void collectResultsFromPipeline() {
 				callCount.set(1 + callCount.get());
 			}
-			
+
 		};
-		
+
 		fixture.assembleResults();
-		
+
 		assertEquals(2, callCount.get());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#assembleResultsTreeView()}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#assembleResultsTreeView()}.
 	 */
 	@Test
 	public void testAssembleResultsTreeView() {
 		final FileIconFactory mockFileIconFactory = context.mock(FileIconFactory.class, "mockFileIconFactory");
-		final SimpleIntegerProperty callCount = new SimpleIntegerProperty(0); 
+		final SimpleIntegerProperty callCount = new SimpleIntegerProperty(0);
 		FXMLController fixture = new FXMLController() {
 
 			@Override
 			protected FileIconFactory newFileIconFactory() {
 				callCount.set(1 + callCount.get());
-				
+
 				return mockFileIconFactory;
 			}
-			
+
 		};
-		
+
 		fixture.assembleResultsTreeView();
-		
+
 		assertEquals(1, callCount.get());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#bind(javafx.beans.property.ReadOnlyObjectProperty, javafx.scene.control.Label)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#bind(javafx.beans.property.ReadOnlyObjectProperty, javafx.scene.control.Label)}.
 	 */
 	@Test
 	public void testBindReadOnlyObjectPropertyOfStateLabel() {
 		@SuppressWarnings("unchecked")
-		final ReadOnlyObjectProperty<State> mockReadOnlyObjectProperty = context.mock(ReadOnlyObjectProperty.class, "mockReadOnlyObjectProperty");
+		final ReadOnlyObjectProperty<State> mockReadOnlyObjectProperty = context.mock(ReadOnlyObjectProperty.class,
+				"mockReadOnlyObjectProperty");
 		final Label mockLabel = context.mock(Label.class, "mockLabel");
 		FXMLController fixture = new FXMLController();
 
@@ -153,16 +157,18 @@ public class FXMLControllerTest {
 				oneOf(mockReadOnlyObjectProperty).addListener(with(any(StatePropToLabelBinder.class)));
 			}
 		});
-		
+
 		fixture.bind(mockReadOnlyObjectProperty, mockLabel);
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#bind(javafx.beans.property.SimpleIntegerProperty, javafx.scene.control.Label)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#bind(javafx.beans.property.SimpleIntegerProperty, javafx.scene.control.Label)}.
 	 */
 	@Test
 	public void testBindSimpleIntegerPropertyLabel() {
-		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class, "mockSimpleIntegerProperty");
+		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class,
+				"mockSimpleIntegerProperty");
 		final Label mockLabel = context.mock(Label.class, "mockLabel");
 		FXMLController fixture = new FXMLController();
 
@@ -171,16 +177,18 @@ public class FXMLControllerTest {
 				oneOf(mockSimpleIntegerProperty).addListener(with(any(NumberPropToLabelBinder.class)));
 			}
 		});
-		
+
 		fixture.bind(mockSimpleIntegerProperty, mockLabel);
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#bind(cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleIntegerProperty, javafx.scene.control.Label)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#bind(cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleIntegerProperty, javafx.scene.control.Label)}.
 	 */
 	@Test
 	public void testBindThreadSafeSimpleIntegerPropertyLabel() {
-		final ThreadSafeSimpleIntegerProperty mockThreadSafeSimpleIntegerProperty = context.mock(ThreadSafeSimpleIntegerProperty.class, "mockThreadSafeSimpleIntegerProperty");
+		final ThreadSafeSimpleIntegerProperty mockThreadSafeSimpleIntegerProperty = context
+				.mock(ThreadSafeSimpleIntegerProperty.class, "mockThreadSafeSimpleIntegerProperty");
 		final Label mockLabel = context.mock(Label.class, "mockLabel");
 		FXMLController fixture = new FXMLController();
 
@@ -189,16 +197,18 @@ public class FXMLControllerTest {
 				oneOf(mockThreadSafeSimpleIntegerProperty).addListener(with(any(NumberPropToLabelBinder.class)));
 			}
 		});
-		
+
 		fixture.bind(mockThreadSafeSimpleIntegerProperty, mockLabel);
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#bind(cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleLongProperty, javafx.scene.control.Label)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#bind(cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleLongProperty, javafx.scene.control.Label)}.
 	 */
 	@Test
 	public void testBindThreadSafeSimpleLongPropertyLabel() {
-		final ThreadSafeSimpleLongProperty mockThreadSafeSimpleLongProperty = context.mock(ThreadSafeSimpleLongProperty.class, "mockThreadSafeSimpleLongProperty");
+		final ThreadSafeSimpleLongProperty mockThreadSafeSimpleLongProperty = context
+				.mock(ThreadSafeSimpleLongProperty.class, "mockThreadSafeSimpleLongProperty");
 		final Label mockLabel = context.mock(Label.class, "mockLabel");
 		FXMLController fixture = new FXMLController();
 
@@ -207,38 +217,40 @@ public class FXMLControllerTest {
 				oneOf(mockThreadSafeSimpleLongProperty).addListener(with(any(NumberPropToLabelBinder.class)));
 			}
 		});
-		
+
 		fixture.bind(mockThreadSafeSimpleLongProperty, mockLabel);
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#buildAncestorSet()}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#buildAncestorSet()}.
 	 */
 	@Test
 	public void testBuildAncestorSet() {
 		final Path mockPath = context.mock(Path.class, "mockPath");
 		final ArrayList<Collection<Path>> dupCollections = new ArrayList<Collection<Path>>();
 		Collection<Path> pathGroup = new ArrayList<Path>();
-		final SimpleIntegerProperty callCount = new SimpleIntegerProperty(0); 
+		final SimpleIntegerProperty callCount = new SimpleIntegerProperty(0);
 		FXMLController fixture = new FXMLController() {
 			protected void addAncestors(Path path) {
 				assertEquals(mockPath, path);
-				
+
 				callCount.set(1 + callCount.get());
 			}
 		};
-		
+
 		pathGroup.add(mockPath);
 		dupCollections.add(pathGroup);
 		fixture.dupCollections = dupCollections;
-		
+
 		fixture.buildAncestorSet();
-		
+
 		assertEquals(1, callCount.get());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#buildPathToDupCollMap()}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#buildPathToDupCollMap()}.
 	 */
 	@Test
 	public void testBuildPathToDupCollMap() {
@@ -246,18 +258,19 @@ public class FXMLControllerTest {
 		final ArrayList<Collection<Path>> dupCollections = new ArrayList<Collection<Path>>();
 		Collection<Path> pathGroup = new ArrayList<Path>();
 		FXMLController fixture = new FXMLController();
-		
+
 		pathGroup.add(mockPath);
 		dupCollections.add(pathGroup);
 		fixture.dupCollections = dupCollections;
-		
+
 		fixture.buildPathToDupCollMap();
-		
+
 		assertEquals(1, fixture.pathToDupCollMap.size());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#collectResultsFromPipeline()}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#collectResultsFromPipeline()}.
 	 */
 	@Test
 	public void testCollectResultsFromPipeline() {
@@ -275,55 +288,59 @@ public class FXMLControllerTest {
 				will(returnValue(null));
 			}
 		});
-		
+
 		fixture.output = mockPipelineQueue;
 		pathGroup.add(mockPath);
-		
+
 		fixture.collectResultsFromPipeline();
-		
+
 		assertTrue(fixture.dupCollections.isEmpty());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#createFileTreeView()}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#createFileTreeView()}.
 	 */
 	@Test
 	public void testCreateFileTreeView() {
 		FXMLController fixture = new FXMLController();
 		FileTreeView ftv = fixture.createFileTreeView();
-		
+
 		assertNotNull(ftv);
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#formatElapsed(long)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#formatElapsed(long)}.
 	 */
 	@Test
 	public void testFormatElapsed() {
 		FXMLController fixture = new FXMLController();
 		String expected = "4h 16m 14.371s";
 		String actual = fixture.formatElapsed(864974371);
-		
+
 		assertEquals(expected, actual);
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#getResultsTreeView()}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#getResultsTreeView()}.
 	 */
 	@Test
 	public void testGetResultsTreeView() {
 		FXMLController fixture = new FXMLController();
 		final FileTreeView mockFileTreeView = context.mock(FileTreeView.class, "mockFileTreeView");
-		
+
 		fixture.resultsTreeView = mockFileTreeView;
-		
+
 		TreeView<File> actual = fixture.getResultsTreeView();
-		
+
 		assertEquals(mockFileTreeView, actual);
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#initialize(java.net.URL, java.util.ResourceBundle)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#initialize(java.net.URL, java.util.ResourceBundle)}.
 	 */
 	@Test
 	public void testInitialize() {
@@ -337,7 +354,7 @@ public class FXMLControllerTest {
 			protected void startHeapMonitor() {
 				startHeapMonitorCallCount.set(1 + startHeapMonitorCallCount.get());
 			}
-			
+
 		};
 
 		fixture.rootPane = rootPane;
@@ -346,14 +363,15 @@ public class FXMLControllerTest {
 		fixture.helpAboutMenuItem = menuItem;
 		fixture.startButton = button;
 		fixture.cancelButton = button;
-		
+
 		fixture.initialize(null, null);
-		
+
 		assertEquals(1, startHeapMonitorCallCount.get());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#newPathHashSet()}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#newPathHashSet()}.
 	 */
 	@Test
 	public void testNewPathHashSet() {
@@ -364,7 +382,8 @@ public class FXMLControllerTest {
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#refreshResultAids()}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#refreshResultAids()}.
 	 */
 	@Test
 	public void testRefreshResultAids() {
@@ -382,36 +401,40 @@ public class FXMLControllerTest {
 				buildPathToDupCollMapCallCount.set(1 + buildPathToDupCollMapCallCount.get());
 			}
 		};
-		
+
 		fixture.refreshResultAids();
-		
+
 		assertEquals(1, buildAncestorSetCallCount.get());
 		assertEquals(1, buildPathToDupCollMapCallCount.get());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#setupBrowserLauncher()}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#setupBrowserLauncher()}.
 	 */
 	@Test
 	public void testSetupBrowserLauncher() {
 		BorderPane rootPane = new BorderPane();
 		FXMLController fixture = new FXMLController();
-		
+
 		fixture.rootPane = rootPane;
-		
+
 		fixture.setupBrowserLauncher();
-		
+
 		assertNotNull(fixture.browserLauncher);
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#setUpGroupByContent2MatchingSubtreeIdentificationQueueListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#setUpGroupByContent2MatchingSubtreeIdentificationQueueListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
 	 */
 	@Test
 	public void testSetUpGroupByContent2MatchingSubtreeIdentificationQueueListeners() {
 		final Pipeline mockPipeline = context.mock(Pipeline.class, "mockPipeline");
-		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class, "mockSimpleStringProperty");
-		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class, "mockSimpleIntegerProperty");
+		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class,
+				"mockSimpleStringProperty");
+		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class,
+				"mockSimpleIntegerProperty");
 		Label label = new Label();
 		final SimpleIntegerProperty bindCallCount = new SimpleIntegerProperty(0);
 		FXMLController fixture = new FXMLController() {
@@ -420,7 +443,7 @@ public class FXMLControllerTest {
 			protected void bind(SimpleIntegerProperty sip, Label label) {
 				bindCallCount.set(1 + bindCallCount.get());
 			}
-			
+
 		};
 
 		context.checking(new Expectations() {
@@ -438,27 +461,32 @@ public class FXMLControllerTest {
 				will(returnValue(mockSimpleIntegerProperty));
 			}
 		});
-		
+
 		fixture.gbc2msiQueueName = label;
 		fixture.gbc2msiPutCount = label;
 		fixture.gbc2msiTakeCount = label;
-		
+
 		fixture.setUpGroupByContent2MatchingSubtreeIdentificationQueueListeners(mockPipeline);
-		
+
 		assertEquals(2, bindCallCount.get());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#setUpGroupByContentPhaseListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#setUpGroupByContentPhaseListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
 	 */
 	@Test
 	public void testSetUpGroupByContentPhaseListeners() {
 		final Pipeline mockPipeline = context.mock(Pipeline.class, "mockPipeline");
-		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class, "mockSimpleStringProperty");
-		final ReadOnlyObjectProperty<State> mockReadOnlyObjectProperty = context.mock(ReadOnlyObjectProperty.class, "mockReadOnlyObjectProperty");
-		final ThreadSafeSimpleIntegerProperty mockThreadSafeSimpleIntegerProperty = context.mock(ThreadSafeSimpleIntegerProperty.class, "mockThreadSafeSimpleIntegerProperty");
-		final ThreadSafeSimpleLongProperty mockThreadSafeSimpleLongProperty = context.mock(ThreadSafeSimpleLongProperty.class, "mockThreadSafeSimpleLongProperty");
-		final SimpleObjectProperty<State> mockSimpleObjectProperty = context.mock(SimpleObjectProperty.class, "mockSimpleObjectProperty");
+		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class,
+				"mockSimpleStringProperty");
+		@SuppressWarnings("unchecked")
+		final ReadOnlyObjectProperty<State> mockReadOnlyObjectProperty = context.mock(ReadOnlyObjectProperty.class,
+				"mockReadOnlyObjectProperty");
+		final ThreadSafeSimpleIntegerProperty mockThreadSafeSimpleIntegerProperty = context
+				.mock(ThreadSafeSimpleIntegerProperty.class, "mockThreadSafeSimpleIntegerProperty");
+		final ThreadSafeSimpleLongProperty mockThreadSafeSimpleLongProperty = context
+				.mock(ThreadSafeSimpleLongProperty.class, "mockThreadSafeSimpleLongProperty");
 		Label label = new Label();
 		final SimpleIntegerProperty bindTSSIPCallCount = new SimpleIntegerProperty(0);
 		final SimpleIntegerProperty bindSLPCallCount = new SimpleIntegerProperty(0);
@@ -466,20 +494,20 @@ public class FXMLControllerTest {
 		FXMLController fixture = new FXMLController() {
 
 			@Override
-			protected void bind(ThreadSafeSimpleIntegerProperty sip, Label label) {
-				bindTSSIPCallCount.set(1 + bindTSSIPCallCount.get());
+			protected void bind(ReadOnlyObjectProperty<State> roop, Label label) {
+				bindSOPCallCount.set(1 + bindSOPCallCount.get());
 			}
 
 			@Override
-			protected void bind(ReadOnlyObjectProperty<State> roop, Label label) {
-				bindSOPCallCount.set(1 + bindSOPCallCount.get());
+			protected void bind(ThreadSafeSimpleIntegerProperty sip, Label label) {
+				bindTSSIPCallCount.set(1 + bindTSSIPCallCount.get());
 			}
 
 			@Override
 			protected void bind(ThreadSafeSimpleLongProperty tsslp, Label label) {
 				bindSLPCallCount.set(1 + bindSLPCallCount.get());
 			}
-			
+
 		};
 
 		context.checking(new Expectations() {
@@ -502,31 +530,37 @@ public class FXMLControllerTest {
 				oneOf(mockPipeline).getGBCUniqueCount();
 				will(returnValue(mockThreadSafeSimpleIntegerProperty));
 
+				oneOf(mockPipeline).getGBCFilesComparedCount();
+				will(returnValue(mockThreadSafeSimpleIntegerProperty));
+
 				oneOf(mockPipeline).getGBCBytesComparedCount();
 				will(returnValue(mockThreadSafeSimpleLongProperty));
 			}
 		});
-		
+
 		fixture.gbcState = label;
 		fixture.gbcName = label;
 		fixture.gbcUniqueCount = label;
 		fixture.gbcBytesCompared = label;
-		
+
 		fixture.setUpGroupByContentPhaseListeners(mockPipeline);
-		
-		assertEquals(1, bindTSSIPCallCount.get());
+
+		assertEquals(2, bindTSSIPCallCount.get());
 		assertEquals(1, bindSLPCallCount.get());
 		assertEquals(1, bindSOPCallCount.get());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#setUpGroupBySize2GroupByContentQueueListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#setUpGroupBySize2GroupByContentQueueListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
 	 */
 	@Test
 	public void testSetUpGroupBySize2GroupByContentQueueListeners() {
 		final Pipeline mockPipeline = context.mock(Pipeline.class, "mockPipeline");
-		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class, "mockSimpleStringProperty");
-		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class, "mockSimpleIntegerProperty");
+		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class,
+				"mockSimpleStringProperty");
+		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class,
+				"mockSimpleIntegerProperty");
 		Label label = new Label();
 		final SimpleIntegerProperty bindCallCount = new SimpleIntegerProperty(0);
 		FXMLController fixture = new FXMLController() {
@@ -535,7 +569,7 @@ public class FXMLControllerTest {
 			protected void bind(SimpleIntegerProperty sip, Label label) {
 				bindCallCount.set(1 + bindCallCount.get());
 			}
-			
+
 		};
 
 		context.checking(new Expectations() {
@@ -553,43 +587,45 @@ public class FXMLControllerTest {
 				will(returnValue(mockSimpleIntegerProperty));
 			}
 		});
-		
+
 		fixture.gbs2gbcQueueName = label;
 		fixture.gbs2gbcPutCount = label;
 		fixture.gbs2gbcTakeCount = label;
-		
+
 		fixture.setUpGroupBySize2GroupByContentQueueListeners(mockPipeline);
-		
+
 		assertEquals(2, bindCallCount.get());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#setUpGroupBySizePhaseListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#setUpGroupBySizePhaseListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
 	 */
 	@Test
 	public void testSetUpGroupBySizePhaseListeners() {
 		final Pipeline mockPipeline = context.mock(Pipeline.class, "mockPipeline");
-		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class, "mockSimpleStringProperty");
-		final ReadOnlyObjectProperty<State> mockReadOnlyObjectProperty = context.mock(ReadOnlyObjectProperty.class, "mockReadOnlyObjectProperty");
-		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class, "mockSimpleIntegerProperty");
-		final ThreadSafeSimpleLongProperty mockThreadSafeSimpleLongProperty = context.mock(ThreadSafeSimpleLongProperty.class, "mockThreadSafeSimpleLongProperty");
-		final SimpleObjectProperty<State> mockSimpleObjectProperty = context.mock(SimpleObjectProperty.class, "mockSimpleObjectProperty");
+		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class,
+				"mockSimpleStringProperty");
+		@SuppressWarnings("unchecked")
+		final ReadOnlyObjectProperty<State> mockReadOnlyObjectProperty = context.mock(ReadOnlyObjectProperty.class,
+				"mockReadOnlyObjectProperty");
+		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class,
+				"mockSimpleIntegerProperty");
 		Label label = new Label();
 		final SimpleIntegerProperty bindSIPCallCount = new SimpleIntegerProperty(0);
-		final SimpleIntegerProperty bindSLPCallCount = new SimpleIntegerProperty(0);
 		final SimpleIntegerProperty bindSOPCallCount = new SimpleIntegerProperty(0);
 		FXMLController fixture = new FXMLController() {
+
+			@Override
+			protected void bind(ReadOnlyObjectProperty<State> roop, Label label) {
+				bindSOPCallCount.set(1 + bindSOPCallCount.get());
+			}
 
 			@Override
 			protected void bind(SimpleIntegerProperty sip, Label label) {
 				bindSIPCallCount.set(1 + bindSIPCallCount.get());
 			}
 
-			@Override
-			protected void bind(ReadOnlyObjectProperty<State> roop, Label label) {
-				bindSOPCallCount.set(1 + bindSOPCallCount.get());
-			}
-			
 		};
 
 		context.checking(new Expectations() {
@@ -621,46 +657,49 @@ public class FXMLControllerTest {
 				will(returnValue(mockSimpleIntegerProperty));
 			}
 		});
-		
+
 		fixture.gbsState = label;
 		fixture.gbsName = label;
 		fixture.gbsUniqueCount = label;
 		fixture.gbsFilesMeasuredCount = label;
 		fixture.gbsSizeCount = label;
 		fixture.gbsUnmeasurableCount = label;
-		
+
 		fixture.setUpGroupBySizePhaseListeners(mockPipeline);
-		
+
 		assertEquals(4, bindSIPCallCount.get());
 		assertEquals(1, bindSOPCallCount.get());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#setUpMatchingSubtreeIdentificationPhaseListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#setUpMatchingSubtreeIdentificationPhaseListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
 	 */
 	@Test
 	public void testSetUpMatchingSubtreeIdentificationPhaseListeners() {
 		final Pipeline mockPipeline = context.mock(Pipeline.class, "mockPipeline");
-		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class, "mockSimpleStringProperty");
-		final ReadOnlyObjectProperty<State> mockReadOnlyObjectProperty = context.mock(ReadOnlyObjectProperty.class, "mockReadOnlyObjectProperty");
-		final ThreadSafeSimpleIntegerProperty mockThreadSafeSimpleIntegerProperty = context.mock(ThreadSafeSimpleIntegerProperty.class, "mockThreadSafeSimpleIntegerProperty");
-		final ThreadSafeSimpleLongProperty mockThreadSafeSimpleLongProperty = context.mock(ThreadSafeSimpleLongProperty.class, "mockThreadSafeSimpleLongProperty");
-		final SimpleObjectProperty<State> mockSimpleObjectProperty = context.mock(SimpleObjectProperty.class, "mockSimpleObjectProperty");
+		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class,
+				"mockSimpleStringProperty");
+		@SuppressWarnings("unchecked")
+		final ReadOnlyObjectProperty<State> mockReadOnlyObjectProperty = context.mock(ReadOnlyObjectProperty.class,
+				"mockReadOnlyObjectProperty");
+		final ThreadSafeSimpleIntegerProperty mockThreadSafeSimpleIntegerProperty = context
+				.mock(ThreadSafeSimpleIntegerProperty.class, "mockThreadSafeSimpleIntegerProperty");
 		Label label = new Label();
 		final SimpleIntegerProperty bindSIPCallCount = new SimpleIntegerProperty(0);
 		final SimpleIntegerProperty bindSOPCallCount = new SimpleIntegerProperty(0);
 		FXMLController fixture = new FXMLController() {
 
 			@Override
+			protected void bind(ReadOnlyObjectProperty<State> roop, Label label) {
+				bindSOPCallCount.set(1 + bindSOPCallCount.get());
+			}
+
+			@Override
 			protected void bind(ThreadSafeSimpleIntegerProperty sip, Label label) {
 				bindSIPCallCount.set(1 + bindSIPCallCount.get());
 			}
 
-			@Override
-			protected void bind(ReadOnlyObjectProperty<State> roop, Label label) {
-				bindSOPCallCount.set(1 + bindSOPCallCount.get());
-			}
-			
 		};
 
 		context.checking(new Expectations() {
@@ -684,33 +723,48 @@ public class FXMLControllerTest {
 				will(returnValue(mockThreadSafeSimpleIntegerProperty));
 			}
 		});
-		
+
 		fixture.msiState = label;
 		fixture.msiName = label;
 		fixture.msiPathGroupsConsidered = label;
-		
+
 		fixture.setUpMatchingSubtreeIdentificationPhaseListeners(mockPipeline);
-		
+
 		assertEquals(1, bindSIPCallCount.get());
 		assertEquals(1, bindSOPCallCount.get());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#setUpPipeline()}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#setUpPipeline()}.
 	 */
 	@Test
 	public void testSetUpPipeline() {
-		fail("Not yet implemented");
+		FXMLController fixture = new FXMLController() {
+			@Override
+			protected void setUpPipelineListeners(Pipeline line) {
+				// just a stub
+			}
+		};
+		fixture.subtreeSelectionTreeView = fixture.createFileTreeView();
+		fixture.subtreeSelectionTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+		Pipeline pipeline = fixture.setUpPipeline();
+
+		assertNotNull(pipeline);
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#setUpPipelineInputQueueListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#setUpPipelineInputQueueListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
 	 */
 	@Test
 	public void testSetUpPipelineInputQueueListeners() {
 		final Pipeline mockPipeline = context.mock(Pipeline.class, "mockPipeline");
-		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class, "mockSimpleStringProperty");
-		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class, "mockSimpleIntegerProperty");
+		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class,
+				"mockSimpleStringProperty");
+		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class,
+				"mockSimpleIntegerProperty");
 		Label label = new Label();
 		final SimpleIntegerProperty bindCallCount = new SimpleIntegerProperty(0);
 		FXMLController fixture = new FXMLController() {
@@ -719,7 +773,7 @@ public class FXMLControllerTest {
 			protected void bind(SimpleIntegerProperty sip, Label label) {
 				bindCallCount.set(1 + bindCallCount.get());
 			}
-			
+
 		};
 
 		context.checking(new Expectations() {
@@ -743,26 +797,22 @@ public class FXMLControllerTest {
 				will(returnValue(mockSimpleIntegerProperty));
 			}
 		});
-		
+
 		fixture.pipelineInputQueueName = label;
 		fixture.pipelineInputPutCount = label;
 		fixture.pipelineInputTakeCount = label;
-		
+
 		fixture.setUpPipelineInputQueueListeners(mockPipeline);
-		
+
 		assertEquals(2, bindCallCount.get());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#setUpPipelineListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#setUpPipelineListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
 	 */
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testSetUpPipelineListeners() {
-		final Pipeline mockPipeline = context.mock(Pipeline.class, "mockPipeline");
-		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class, "mockSimpleStringProperty");
-		final ReadOnlyObjectProperty<State> mockReadOnlyObjectProperty = context.mock(ReadOnlyObjectProperty.class, "mockReadOnlyObjectProperty");
-		final ThreadSafeSimpleIntegerProperty mockThreadSafeSimpleIntegerProperty = context.mock(ThreadSafeSimpleIntegerProperty.class, "mockThreadSafeSimpleIntegerProperty");
 		Label label = new Label();
 		final SimpleIntegerProperty setUpCallCount = new SimpleIntegerProperty(0);
 		final SimpleIntegerProperty bindSOPCallCount = new SimpleIntegerProperty(0);
@@ -817,46 +867,199 @@ public class FXMLControllerTest {
 			protected void setUpSubtreeSearchPhaseListeners(Pipeline line) {
 				setUpCallCount.set(1 + setUpCallCount.get());
 			}
-			
+
 		};
-		
+
 		fixture.pipelineName = label;
 		fixture.pipelineState = label;
-		
+
 		// semi-integration test to sidestep weird jmock behavior
 		fixture.subtreeSelectionTreeView = fixture.createFileTreeView();
 		fixture.subtreeSelectionTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		fixture.pipeline = fixture.setUpPipeline();
-		
+
 //		fixture.setUpPipelineListeners(mockPipeline);
 		fixture.setUpPipelineListeners(fixture.pipeline);
-		
+
 		assertEquals(18, setUpCallCount.get());
 		assertEquals(2, bindSOPCallCount.get());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#setUpPipelineOutputQueueListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#setUpPipelineOutputQueueListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
 	 */
 	@Test
 	public void testSetUpPipelineOutputQueueListeners() {
-		fail("Not yet implemented");
+		final Pipeline mockPipeline = context.mock(Pipeline.class, "mockPipeline");
+		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class,
+				"mockSimpleStringProperty");
+		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class,
+				"mockSimpleIntegerProperty");
+		Label label = new Label();
+		final SimpleIntegerProperty bindCallCount = new SimpleIntegerProperty(0);
+		FXMLController fixture = new FXMLController() {
+
+			@Override
+			protected void bind(SimpleIntegerProperty sip, Label label) {
+				bindCallCount.set(1 + bindCallCount.get());
+			}
+
+		};
+
+		context.checking(new Expectations() {
+			{
+				oneOf(mockPipeline).getOutputName();
+				will(returnValue(mockSimpleStringProperty));
+
+				oneOf(mockSimpleStringProperty).get();
+				will(returnValue("boo"));
+
+				oneOf(mockPipeline).getOutputPutCount();
+				will(returnValue(mockSimpleIntegerProperty));
+
+				oneOf(mockPipeline).getOutputTakeCount();
+				will(returnValue(mockSimpleIntegerProperty));
+			}
+		});
+
+		fixture.pipelineOutputQueueName = label;
+		fixture.pipelineOutputPutCount = label;
+		fixture.pipelineOutputTakeCount = label;
+
+		fixture.setUpPipelineOutputQueueListeners(mockPipeline);
+
+		assertEquals(2, bindCallCount.get());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#setUpSubtreeSearch2GroupBySizeQueueListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#setUpSubtreeSearch2GroupBySizeQueueListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
 	 */
 	@Test
 	public void testSetUpSubtreeSearch2GroupBySizeQueueListeners() {
-		fail("Not yet implemented");
+		final Pipeline mockPipeline = context.mock(Pipeline.class, "mockPipeline");
+		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class,
+				"mockSimpleStringProperty");
+		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class,
+				"mockSimpleIntegerProperty");
+		Label label = new Label();
+		final SimpleIntegerProperty bindCallCount = new SimpleIntegerProperty(0);
+		FXMLController fixture = new FXMLController() {
+
+			@Override
+			protected void bind(SimpleIntegerProperty sip, Label label) {
+				bindCallCount.set(1 + bindCallCount.get());
+			}
+
+		};
+
+		context.checking(new Expectations() {
+			{
+				oneOf(mockPipeline).getSS2GBSQueueName();
+				will(returnValue(mockSimpleStringProperty));
+
+				oneOf(mockSimpleStringProperty).get();
+				will(returnValue("boo"));
+
+				oneOf(mockPipeline).getSS2GBSQueuePutCount();
+				will(returnValue(mockSimpleIntegerProperty));
+
+				oneOf(mockPipeline).getSS2GBSQueueTakeCount();
+				will(returnValue(mockSimpleIntegerProperty));
+			}
+		});
+
+		fixture.ss2gbsQueueName = label;
+		fixture.ss2gbsPutCount = label;
+		fixture.ss2gbsTakeCount = label;
+
+		fixture.setUpSubtreeSearch2GroupBySizeQueueListeners(mockPipeline);
+
+		assertEquals(2, bindCallCount.get());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#setUpSubtreeSearchPhaseListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#setUpSubtreeSearchPhaseListeners(cotelab.dupfilefinder2.pipeline.Pipeline)}.
 	 */
 	@Test
 	public void testSetUpSubtreeSearchPhaseListeners() {
-		fail("Not yet implemented");
+		final Pipeline mockPipeline = context.mock(Pipeline.class, "mockPipeline");
+		final SimpleStringProperty mockSimpleStringProperty = context.mock(SimpleStringProperty.class,
+				"mockSimpleStringProperty");
+		@SuppressWarnings("unchecked")
+		final ReadOnlyObjectProperty<State> mockReadOnlyObjectProperty = context.mock(ReadOnlyObjectProperty.class,
+				"mockReadOnlyObjectProperty");
+		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class,
+				"mockSimpleIntegerProperty");
+		Label label = new Label();
+		final SimpleIntegerProperty bindSIPCallCount = new SimpleIntegerProperty(0);
+		final SimpleIntegerProperty bindSOPCallCount = new SimpleIntegerProperty(0);
+		FXMLController fixture = new FXMLController() {
+
+			@Override
+			protected void bind(ReadOnlyObjectProperty<State> roop, Label label) {
+				bindSOPCallCount.set(1 + bindSOPCallCount.get());
+			}
+
+			@Override
+			protected void bind(SimpleIntegerProperty sip, Label label) {
+				bindSIPCallCount.set(1 + bindSIPCallCount.get());
+			}
+
+		};
+
+		context.checking(new Expectations() {
+			{
+				oneOf(mockPipeline).getSSPPhaseName();
+				will(returnValue(mockSimpleStringProperty));
+
+				oneOf(mockSimpleStringProperty).get();
+				will(returnValue("boo"));
+
+				oneOf(mockPipeline).sspStateProperty();
+				will(returnValue(mockReadOnlyObjectProperty));
+
+				oneOf(mockReadOnlyObjectProperty).get();
+				will(returnValue(State.RUNNING));
+
+				oneOf(mockPipeline).sspStateProperty();
+				will(returnValue(mockReadOnlyObjectProperty));
+
+				oneOf(mockPipeline).getSSPDirectoryCount();
+				will(returnValue(mockSimpleIntegerProperty));
+
+				oneOf(mockPipeline).getSSPFailedAccessCount();
+				will(returnValue(mockSimpleIntegerProperty));
+
+				oneOf(mockPipeline).getSSPOtherCount();
+				will(returnValue(mockSimpleIntegerProperty));
+
+				oneOf(mockPipeline).getSSPRegularFileCount();
+				will(returnValue(mockSimpleIntegerProperty));
+
+				oneOf(mockPipeline).getSSPSymbolicLinkCount();
+				will(returnValue(mockSimpleIntegerProperty));
+
+				oneOf(mockPipeline).getSSPUnreadableCount();
+				will(returnValue(mockSimpleIntegerProperty));
+			}
+		});
+
+		fixture.sspName = label;
+		fixture.sspState = label;
+		fixture.sspDirectoryCount = label;
+		fixture.sspFailedAccessCount = label;
+		fixture.sspOtherCount = label;
+		fixture.sspRegularFileCount = label;
+		fixture.sspSymbolicLinkCount = label;
+		fixture.sspUnreadableCount = label;
+
+		fixture.setUpSubtreeSearchPhaseListeners(mockPipeline);
+
+		assertEquals(6, bindSIPCallCount.get());
+		assertEquals(1, bindSOPCallCount.get());
 	}
 
 	/**
@@ -864,39 +1067,51 @@ public class FXMLControllerTest {
 	 */
 	@Test
 	public void testShowResults() {
-		fail("Not yet implemented");
+		// don't know how to write a meaningful unit test of this method
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#startHeapMonitor()}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#startHeapMonitor()}.
 	 */
 	@Test
 	public void testStartHeapMonitor() {
-		fail("Not yet implemented");
+		// don't know how to make a meaningful test of this method
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#startPhase(cotelab.dupfilefinder2.pipeline.Phase)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#startPhase(cotelab.dupfilefinder2.pipeline.Phase)}.
 	 */
 	@Test
 	public void testStartPhase() {
-		fail("Not yet implemented");
+		// don't know how to write a meaningful unit test of this method
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#updateElapsedTime()}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#updateElapsedTime()}.
 	 */
 	@Test
 	public void testUpdateElapsedTime() {
-		fail("Not yet implemented");
+		final Label mockLabel = new Label("");
+		FXMLController fixture = new FXMLController();
+
+		fixture.startStamp = new Date().getTime();
+		fixture.elapsedTime = mockLabel;
+
+		fixture.updateElapsedTime();
+
+		assertTrue(0 < mockLabel.getText().length());
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.FXMLController#updateInFXThread(javafx.scene.control.Label, javafx.concurrent.Worker.State)}.
+	 * Test method for
+	 * {@link cotelab.dupfilefinder2.FXMLController#updateInFXThread(javafx.scene.control.Label, javafx.concurrent.Worker.State)}.
 	 */
 	@Test
 	public void testUpdateInFXThread() {
-		fail("Not yet implemented");
+		// don't know how to make a meaningful test of this
 	}
 
 }

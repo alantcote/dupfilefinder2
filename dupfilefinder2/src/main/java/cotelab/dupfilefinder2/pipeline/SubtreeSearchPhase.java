@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 /**
  * A {@link Phase} designed to enumerate the files in designated subtrees of the
@@ -121,15 +123,70 @@ public class SubtreeSearchPhase extends Phase {
 				}
 
 				PathSearchVisitor pathSearchVisitor = newPathSearchVisitor();
+				
+				pathSearchVisitor.getDirectoryCount().addListener(new ChangeListener<Number>() {
+					@Override
+					public void changed(ObservableValue<? extends Number> observable, Number oldValue,
+							Number newValue) {
+						int delta = newValue.intValue() - oldValue.intValue();
+						
+						directoryCount.set(directoryCount.get() + delta);
+					}
+				});
+				pathSearchVisitor.getFailedAccessCount().addListener(new ChangeListener<Number>() {
+					@Override
+					public void changed(ObservableValue<? extends Number> observable, Number oldValue,
+							Number newValue) {
+						int delta = newValue.intValue() - oldValue.intValue();
+						
+						failedAccessCount.set(failedAccessCount.get() + delta);
+					}
+				});
+				pathSearchVisitor.getOtherCount().addListener(new ChangeListener<Number>() {
+					@Override
+					public void changed(ObservableValue<? extends Number> observable, Number oldValue,
+							Number newValue) {
+						int delta = newValue.intValue() - oldValue.intValue();
+						
+						otherCount.set(otherCount.get() + delta);
+					}
+				});
+				pathSearchVisitor.getRegularFileCount().addListener(new ChangeListener<Number>() {
+					@Override
+					public void changed(ObservableValue<? extends Number> observable, Number oldValue,
+							Number newValue) {
+						int delta = newValue.intValue() - oldValue.intValue();
+						
+						regularFileCount.set(regularFileCount.get() + delta);
+					}
+				});
+				pathSearchVisitor.getSymbolicLinkCount().addListener(new ChangeListener<Number>() {
+					@Override
+					public void changed(ObservableValue<? extends Number> observable, Number oldValue,
+							Number newValue) {
+						int delta = newValue.intValue() - oldValue.intValue();
+						
+						symbolicLinkCount.set(symbolicLinkCount.get() + delta);
+					}
+				});
+				pathSearchVisitor.getUnreadableCount().addListener(new ChangeListener<Number>() {
+					@Override
+					public void changed(ObservableValue<? extends Number> observable, Number oldValue,
+							Number newValue) {
+						int delta = newValue.intValue() - oldValue.intValue();
+						
+						unreadableCount.set(unreadableCount.get() + delta);
+					}
+				});
 
 				Files.walkFileTree(aPath, pathSearchVisitor);
 
-				directoryCount.set(directoryCount.get() + pathSearchVisitor.getDirectoryCount().get());
-				failedAccessCount.set(failedAccessCount.get() + pathSearchVisitor.getFailedAccessCount().get());
-				otherCount.set(otherCount.get() + pathSearchVisitor.getOtherCount().get());
-				regularFileCount.set(regularFileCount.get() + pathSearchVisitor.getRegularFileCount().get());
-				symbolicLinkCount.set(symbolicLinkCount.get() + pathSearchVisitor.getSymbolicLinkCount().get());
-				unreadableCount.set(unreadableCount.get() + pathSearchVisitor.getUnreadableCount().get());
+//				directoryCount.set(directoryCount.get() + pathSearchVisitor.getDirectoryCount().get());
+//				failedAccessCount.set(failedAccessCount.get() + pathSearchVisitor.getFailedAccessCount().get());
+//				otherCount.set(otherCount.get() + pathSearchVisitor.getOtherCount().get());
+//				regularFileCount.set(regularFileCount.get() + pathSearchVisitor.getRegularFileCount().get());
+//				symbolicLinkCount.set(symbolicLinkCount.get() + pathSearchVisitor.getSymbolicLinkCount().get());
+//				unreadableCount.set(unreadableCount.get() + pathSearchVisitor.getUnreadableCount().get());
 
 				if (pathSearchVisitor.getFiles().size() > 0) {
 					outputQueue.put(pathSearchVisitor.getFiles());
