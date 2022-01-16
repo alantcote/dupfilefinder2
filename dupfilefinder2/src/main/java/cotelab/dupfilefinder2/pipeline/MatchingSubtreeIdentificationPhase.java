@@ -380,28 +380,31 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	protected Collection<Path> validateOnFileSystem(Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap,
 			Collection<Path> candidateParentGroup) {
 		Collection<Path> validatedParentGroup = newPathArrayList();
-		Path sampleParent = (Path) candidateParentGroup.toArray()[0];
-		Collection<Collection<Path>> sampleGroups = parent2CandidateGroupMap.get(sampleParent);
-		@SuppressWarnings("unchecked")
-		Collection<Path> sampleGroup = (Collection<Path>) sampleGroups.toArray()[0];
-		int desiredSize = sampleGroup.size();
-		Collection<Path> badParents = newPathArrayList();
+		
+		if (!candidateParentGroup.isEmpty()) {
+			Path sampleParent = (Path) candidateParentGroup.toArray()[0];
+			Collection<Collection<Path>> sampleGroups = parent2CandidateGroupMap.get(sampleParent);
+			@SuppressWarnings("unchecked")
+			Collection<Path> sampleGroup = (Collection<Path>) sampleGroups.toArray()[0];
+			int desiredSize = sampleGroup.size();
+			Collection<Path> badParents = newPathArrayList();
 
-		for (Path parent : candidateParentGroup) {
-			if (isCancelled()) {
-				return validatedParentGroup;
+			for (Path parent : candidateParentGroup) {
+				if (isCancelled()) {
+					return validatedParentGroup;
+				}
+
+				String[] dirListing = parent.toFile().list();
+				int actualSize = dirListing.length;
+
+				if (actualSize != desiredSize) {
+					badParents.add(parent);
+				}
 			}
 
-			String[] dirListing = parent.toFile().list();
-			int actualSize = dirListing.length;
-
-			if (actualSize != desiredSize) {
-				badParents.add(parent);
-			}
+			validatedParentGroup.addAll(candidateParentGroup);
+			validatedParentGroup.removeAll(badParents);
 		}
-
-		validatedParentGroup.addAll(candidateParentGroup);
-		validatedParentGroup.removeAll(badParents);
 
 		return validatedParentGroup;
 	}
