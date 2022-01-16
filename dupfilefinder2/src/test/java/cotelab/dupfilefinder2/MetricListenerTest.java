@@ -3,11 +3,10 @@
  */
 package cotelab.dupfilefinder2;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.prefs.Preferences;
 
-import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.imposters.ByteBuddyClassImposteriser;

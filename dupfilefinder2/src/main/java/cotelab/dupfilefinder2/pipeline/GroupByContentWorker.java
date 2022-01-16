@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cotelab.dupfilefinder2.pipeline;
 
 import java.io.BufferedInputStream;
@@ -113,13 +110,13 @@ public class GroupByContentWorker extends Phase {
 	}
 
 	/**
-	 * @param aPath      the path to open.
+	 * @param is         the raw {@link InputStream}.
 	 * @param bufferSize the buffer size.
 	 * @return a new object.
 	 * @throws IOException if thrown by the underlying code.
 	 */
-	protected BufferedInputStream newBufferedInputStream(Path aPath, int bufferSize) throws IOException {
-		return new BufferedInputStream(newPathInputStream(aPath), bufferSize);
+	protected BufferedInputStream newBufferedInputStream(InputStream is, int bufferSize) throws IOException {
+		return new BufferedInputStream(is, bufferSize);
 	}
 
 	/**
@@ -219,13 +216,16 @@ public class GroupByContentWorker extends Phase {
 	}
 
 	protected Collection<Collection<Path>> nWayCompareEqualPaths(Collection<Path> pathColl) {
-		// TODO refactor for readability and testability
 		List<Collection<Path>> retValue = newPathGroupArrayList();
 		HashMap<BufferedInputStream, Path> inputStream2Path = newBufferedInputStreamToPathHashMap();
 		ArrayList<BufferedInputStream> inputStreams = newBufferedInputStreamArrayList();
 		Collection<Collection<BufferedInputStream>> nwcesRC;
 		String printlnPrefix = phaseName.get() + ": nWayCompareEqualPaths(): ";
 		ArrayList<Path> missingFilePaths = newPathArrayList();
+
+		if (pathColl.size() < 2) {
+			return retValue;
+		}
 
 		// assemble inputStream2Path, inputStreams and missingFilePaths
 		for (Path aPath : pathColl) {
@@ -243,7 +243,7 @@ public class GroupByContentWorker extends Phase {
 					bisBufferSize = (int) fileLen + 1;
 				}
 
-				is = newBufferedInputStream(aPath, bisBufferSize);
+				is = newBufferedInputStream(newPathInputStream(aPath), bisBufferSize);
 				inputStream2Path.put(is, aPath);
 				inputStreams.add(is);
 			} catch (NoSuchFileException e) {
@@ -315,7 +315,6 @@ public class GroupByContentWorker extends Phase {
 	 * @return a group of groups of input streams that match each other.
 	 */
 	protected Collection<Collection<BufferedInputStream>> nWayCompareEqualStreams(Collection<BufferedInputStream> src) {
-		// TODO refactor for readability and testability
 		ArrayList<Collection<BufferedInputStream>> retValue = newBufferedInputStreamGroupArrayList();
 		HashMultiMap<Integer, BufferedInputStream> stepResult = newIntegerToBufferedInputStreamHashMultiMap();
 		Set<Integer> stepKeys;
@@ -459,11 +458,14 @@ public class GroupByContentWorker extends Phase {
 	 *         data".
 	 */
 	protected boolean streamsMatch(Collection<BufferedInputStream> src) {
-		// TODO refactor for readability and testability
 		int srcSize = src.size();
 		BufferedInputStream srcArray[] = src.<BufferedInputStream>toArray(newBufferedInputStreamArray(srcSize));
 		byte[] masterBuffer = newByteBuffer();
 		boolean buffersMatch = true;
+
+		if (src.size() < 2) {
+			return false;
+		}
 
 		do {
 			int masterCount = 0;
