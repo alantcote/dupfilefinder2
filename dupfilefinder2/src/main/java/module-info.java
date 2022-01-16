@@ -1,4 +1,4 @@
-module cotelab {
+module cotelab.dupfilefinder2 {
 	requires transitive clutilities;
 	requires java.desktop;
 	requires transitive javafx.base;
@@ -7,6 +7,7 @@ module cotelab {
 	requires transitive javafx.graphics;
     requires javafx.media;
 	requires javafx.web;
+	requires java.prefs;
 	
     opens cotelab.dupfilefinder2 to javafx.fxml;
     

@@ -9,6 +9,7 @@ cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleLongProperty$1.class
 cotelab\dupfilefinder2\pipeline\ChildProblemEventHandler.class
 cotelab\dupfilefinder2\pipeline\GroupBySizePhase.class
 cotelab\dupfilefinder2\pipeline\PathSearchVisitor.class
+cotelab\dupfilefinder2\WindowPrefs$2.class
 cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$2.class
 cotelab\dupfilefinder2\FXMLController$7.class
 cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$6.class
@@ -27,12 +28,14 @@ cotelab\dupfilefinder2\treeview\DupItemsDialog.class
 cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleIntegerProperty$2.class
 cotelab\dupfilefinder2\FXMLController.class
 cotelab\dupfilefinder2\HeapMonitor.class
+cotelab\dupfilefinder2\WindowPrefs$1.class
 cotelab\dupfilefinder2\FXMLController$5.class
 cotelab\dupfilefinder2\StatePropToLabelBinder.class
 cotelab\dupfilefinder2\pipeline\HistoryTrackingQueue.class
 cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase.class
 cotelab\dupfilefinder2\FXMLController$2.class
 cotelab\dupfilefinder2\StatePropToLabelBinder$1.class
+cotelab\dupfilefinder2\WindowPrefs$4.class
 module-info.class
 cotelab\dupfilefinder2\HeapMonitor$1.class
 cotelab\dupfilefinder2\pipeline\PipelineQueue.class
@@ -40,6 +43,7 @@ cotelab\dupfilefinder2\DupFileFinder2.class
 cotelab\dupfilefinder2\PopupBrowserLauncher.class
 cotelab\dupfilefinder2\DupFileFinder2$1.class
 cotelab\dupfilefinder2\treeview\DupItemsDialog$1.class
+cotelab\dupfilefinder2\WindowPrefs.class
 cotelab\dupfilefinder2\treeview\PathDeletionVisitor.class
 cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleIntegerProperty$1.class
 cotelab\dupfilefinder2\FXMLController$6.class
@@ -49,6 +53,7 @@ cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$4.class
 cotelab\dupfilefinder2\pipeline\LongRollupListener.class
 cotelab\dupfilefinder2\pipeline\ThreadSafeSimpleLongProperty$2.class
 cotelab\dupfilefinder2\treeview\DecoratedFileTreeView.class
+cotelab\dupfilefinder2\WindowPrefs$3.class
 cotelab\dupfilefinder2\treeview\DecoratedFileTreeCellFactory.class
 cotelab\dupfilefinder2\treeview\CellContextMenuRequestHandler.class
 cotelab\dupfilefinder2\FXMLController$3.class

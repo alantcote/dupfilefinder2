@@ -1,6 +1,7 @@
 package cotelab.dupfilefinder2;
 
 import java.io.IOException;
+import java.util.prefs.BackingStoreException;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -18,7 +19,6 @@ public class DupFileFinder2 extends Application {
 	 * The {@link Stage}.
 	 */
 	private static Stage stage;
-
 	/**
 	 * The program entry point.
 	 * 
@@ -73,13 +73,18 @@ public class DupFileFinder2 extends Application {
 		stage.show();
 	}
 
+	protected WindowPrefs windowPrefs = null;
+
 	/**
 	 * {@inheritDoc}
+	 * @throws BackingStoreException if thrown.
 	 */
 	@Override
-	public void start(Stage s) throws IOException {
+	public void start(Stage s) throws IOException, BackingStoreException {
 		stage = s;
 		setRoot("primary", "dupfilefinder2");
+
+		windowPrefs = new WindowPrefs(getClass(), stage);
 	}
 
 }
