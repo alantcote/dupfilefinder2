@@ -3,14 +3,10 @@ package cotelab.dupfilefinder2;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.stage.Stage;
 
 /**
- * Persistent application preferences
- * 
- * @author TEST
+ * Persistent application preferences.
  */
 public class WindowPrefs {
 	public static final String KEY_WINDOW_HEIGHT = "WINDOW_HEIGHT";
@@ -38,14 +34,16 @@ public class WindowPrefs {
 
 	/**
 	 * Set up the {@link Preferences} node, {@link #prefs}.
+	 * 
 	 * @throws BackingStoreException if thrown by the underlying code.
 	 */
 	protected void establishPreferencesNode() throws BackingStoreException {
 		String path = "/" + clazz.getPackageName().replace('.', '/') + "/" + clazz.getSimpleName();
+		Preferences base = userRoot();
+		
+		prefs = prefsNode(path, base);
 
-		prefs = userRoot().node(path);
-
-		prefs.sync();
+		prefsSync();
 	}
 
 	/**
@@ -65,21 +63,7 @@ public class WindowPrefs {
 			stage.setHeight(prefs.getDouble(KEY_WINDOW_HEIGHT, 0));
 		}
 
-		stage.heightProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				prefs.putDouble(KEY_WINDOW_HEIGHT, stage.getHeight());
-				try {
-					prefs.sync();
-				} catch (BackingStoreException e) {
-					System.err.println("AppPrefs.inizGeometryPrefs() height observer: caught . . .");
-					e.printStackTrace();
-					System.err.println("AppPrefs.inizGeometryPrefs() height observer: proceeding.");
-				}
-			}
-
-		});
+		stage.heightProperty().addListener(newMetricListener(KEY_WINDOW_HEIGHT));
 
 		if (prefs.getDouble(KEY_WINDOW_WIDTH, 0) == 0) {
 			prefs.putDouble(KEY_WINDOW_WIDTH, stage.getWidth());
@@ -87,21 +71,7 @@ public class WindowPrefs {
 			stage.setWidth(prefs.getDouble(KEY_WINDOW_WIDTH, 0));
 		}
 
-		stage.widthProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				prefs.putDouble(KEY_WINDOW_WIDTH, stage.getWidth());
-				try {
-					prefs.sync();
-				} catch (BackingStoreException e) {
-					System.err.println("AppPrefs.inizGeometryPrefs() width observer: caught . . .");
-					e.printStackTrace();
-					System.err.println("AppPrefs.inizGeometryPrefs() width observer: proceeding.");
-				}
-			}
-
-		});
+		stage.widthProperty().addListener(newMetricListener(KEY_WINDOW_WIDTH));
 
 		if (prefs.getDouble(KEY_WINDOW_X, 0) == 0) {
 			prefs.putDouble(KEY_WINDOW_X, stage.getX());
@@ -109,21 +79,7 @@ public class WindowPrefs {
 			stage.setX(prefs.getDouble(KEY_WINDOW_X, 0));
 		}
 
-		stage.xProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				prefs.putDouble(KEY_WINDOW_X, stage.getX());
-				try {
-					prefs.sync();
-				} catch (BackingStoreException e) {
-					System.err.println("AppPrefs.inizGeometryPrefs() x observer: caught . . .");
-					e.printStackTrace();
-					System.err.println("AppPrefs.inizGeometryPrefs() x observer: proceeding.");
-				}
-			}
-
-		});
+		stage.xProperty().addListener(newMetricListener(KEY_WINDOW_X));
 
 		if (prefs.getDouble(KEY_WINDOW_Y, 0) == 0) {
 			prefs.putDouble(KEY_WINDOW_Y, stage.getY());
@@ -131,29 +87,42 @@ public class WindowPrefs {
 			stage.setY(prefs.getDouble(KEY_WINDOW_Y, 0));
 		}
 
-		stage.yProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				prefs.putDouble(KEY_WINDOW_Y, stage.getY());
-				try {
-					prefs.sync();
-				} catch (BackingStoreException e) {
-					System.err.println("AppPrefs.inizGeometryPrefs() y observer: caught . . .");
-					e.printStackTrace();
-					System.err.println("AppPrefs.inizGeometryPrefs() y observer: proceeding.");
-				}
-			}
-
-		});
+		stage.yProperty().addListener(newMetricListener(KEY_WINDOW_Y));
 
 		try {
-			prefs.sync();
+			prefsSync();
 		} catch (BackingStoreException e) {
 			System.err.println("AppPrefs.inizGeometryPrefs(): caught . . .");
 			e.printStackTrace();
 			System.err.println("AppPrefs.inizGeometryPrefs(): proceeding.");
 		}
+	}
+
+	/**
+	 * Create a {@link MetricListener} to maintain preference info with a given key.
+	 * 
+	 * @param aKey the key under which to record changes.
+	 * @return a new object.
+	 */
+	protected MetricListener newMetricListener(String aKey) {
+		return new MetricListener(prefs, aKey);
+	}
+
+	/**
+	 * Call <code>base.node(path)</code>.
+	 * @param path the desired node's path.
+	 * @param base the base node to be asked for the desired node.
+	 * @return the desired node.
+	 */
+	protected Preferences prefsNode(String path, Preferences base) {
+		return base.node(path);
+	}
+
+	/**
+	 * @throws BackingStoreException
+	 */
+	protected void prefsSync() throws BackingStoreException {
+		prefs.sync();
 	}
 
 	/**
