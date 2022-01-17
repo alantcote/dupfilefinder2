@@ -123,13 +123,13 @@ public class SubtreeSearchPhase extends Phase {
 				}
 
 				PathSearchVisitor pathSearchVisitor = newPathSearchVisitor();
-				
+
 				pathSearchVisitor.getDirectoryCount().addListener(new ChangeListener<Number>() {
 					@Override
 					public void changed(ObservableValue<? extends Number> observable, Number oldValue,
 							Number newValue) {
 						int delta = newValue.intValue() - oldValue.intValue();
-						
+
 						directoryCount.set(directoryCount.get() + delta);
 					}
 				});
@@ -138,7 +138,7 @@ public class SubtreeSearchPhase extends Phase {
 					public void changed(ObservableValue<? extends Number> observable, Number oldValue,
 							Number newValue) {
 						int delta = newValue.intValue() - oldValue.intValue();
-						
+
 						failedAccessCount.set(failedAccessCount.get() + delta);
 					}
 				});
@@ -147,7 +147,7 @@ public class SubtreeSearchPhase extends Phase {
 					public void changed(ObservableValue<? extends Number> observable, Number oldValue,
 							Number newValue) {
 						int delta = newValue.intValue() - oldValue.intValue();
-						
+
 						otherCount.set(otherCount.get() + delta);
 					}
 				});
@@ -156,7 +156,7 @@ public class SubtreeSearchPhase extends Phase {
 					public void changed(ObservableValue<? extends Number> observable, Number oldValue,
 							Number newValue) {
 						int delta = newValue.intValue() - oldValue.intValue();
-						
+
 						regularFileCount.set(regularFileCount.get() + delta);
 					}
 				});
@@ -165,7 +165,7 @@ public class SubtreeSearchPhase extends Phase {
 					public void changed(ObservableValue<? extends Number> observable, Number oldValue,
 							Number newValue) {
 						int delta = newValue.intValue() - oldValue.intValue();
-						
+
 						symbolicLinkCount.set(symbolicLinkCount.get() + delta);
 					}
 				});
@@ -174,7 +174,7 @@ public class SubtreeSearchPhase extends Phase {
 					public void changed(ObservableValue<? extends Number> observable, Number oldValue,
 							Number newValue) {
 						int delta = newValue.intValue() - oldValue.intValue();
-						
+
 						unreadableCount.set(unreadableCount.get() + delta);
 					}
 				});
