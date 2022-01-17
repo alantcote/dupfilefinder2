@@ -152,7 +152,7 @@ public class PathSearchVisitor extends SimpleFileVisitor<Path> {
 		} else {
 			unreadableCount.set(unreadableCount.get() + 1);
 
-			return FileVisitResult.SKIP_SUBTREE;
+			return FileVisitResult.CONTINUE;
 		}
 
 	}
@@ -164,7 +164,7 @@ public class PathSearchVisitor extends SimpleFileVisitor<Path> {
 	public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
 		failedAccessCount.set(failedAccessCount.get() + 1);
 
-		return FileVisitResult.SKIP_SUBTREE;
+		return FileVisitResult.CONTINUE;
 	}
 
 	/**
