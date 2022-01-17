@@ -59,7 +59,7 @@ public class CellContextMenuRequestHandler implements EventHandler<ContextMenuEv
 			Node source = (Node) sourceObj;
 			double x = event.getScreenX();
 			double y = event.getScreenY();
-			MenuItem popupMenuItem = new MenuItem("Show Duplicates");
+			MenuItem popupMenuItem = newMenuItem();
 			ContextMenu menu = newContextMenu(popupMenuItem);
 
 			popupMenuItem.onActionProperty()
@@ -75,5 +75,12 @@ public class CellContextMenuRequestHandler implements EventHandler<ContextMenuEv
 	 */
 	protected ContextMenu newContextMenu(MenuItem menuItem) {
 		return new ContextMenu(menuItem);
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected MenuItem newMenuItem() {
+		return new MenuItem("Show Duplicates");
 	}
 }
