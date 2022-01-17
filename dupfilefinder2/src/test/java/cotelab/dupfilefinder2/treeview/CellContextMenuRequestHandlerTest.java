@@ -29,7 +29,6 @@ import net.sf.cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 @RunWith(JavaFxJUnit4ClassRunner.class)
 public class CellContextMenuRequestHandlerTest {
 	protected Mockery context;
-
 	protected Sequence sequence;
 
 	@After

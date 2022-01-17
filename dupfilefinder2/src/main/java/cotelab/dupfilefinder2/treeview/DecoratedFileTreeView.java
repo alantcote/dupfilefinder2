@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cotelab.dupfilefinder2.treeview;
 
 import java.io.File;
@@ -33,8 +30,6 @@ public class DecoratedFileTreeView extends FileTreeView {
 			ArrayList<Collection<Path>> aDupCollections, Hashtable<Path, Collection<Path>> aPathToDupCollMap,
 			FXMLController aController) {
 		super(root);
-
-//		FileIconFactory fileIconFactory = new FileIconFactory();
 
 		setCellFactory(new DecoratedFileTreeCellFactory(aFileIconFactory, anAncestorSet, aDupCollections,
 				aPathToDupCollMap, aController));
