@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cotelab.dupfilefinder2.treeview;
 
 import java.io.File;
@@ -68,8 +65,6 @@ public class DecoratedFileTreeCellFactory extends FileTreeCellFactory {
 	 */
 	@Override
 	public TreeCell<File> call(TreeView<File> param) {
-//		System.out.println("DecoratedFileTreeCellFactory.call(): hello, world!");
-
 		return new DecoratedFileTreeCell(fileIconFactory, ancestorSet, dupCollections, pathToDupCollMap, controller);
 	}
 
