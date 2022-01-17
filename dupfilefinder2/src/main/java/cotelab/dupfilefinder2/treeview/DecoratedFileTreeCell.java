@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cotelab.dupfilefinder2.treeview;
 
 import java.io.File;
