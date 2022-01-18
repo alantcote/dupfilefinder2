@@ -22,7 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import net.sf.cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
+import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 
 /**
  * Test method for {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker}.

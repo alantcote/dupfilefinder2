@@ -18,9 +18,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.dupfilefinder2.FXMLController;
+import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.ContextMenuEvent;
-import net.sf.cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 
 /**
  * Test case for

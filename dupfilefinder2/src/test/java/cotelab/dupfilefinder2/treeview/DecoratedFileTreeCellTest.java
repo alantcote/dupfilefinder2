@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.dupfilefinder2.FXMLController;
-import net.sf.cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
+import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import net.sf.cotelab.util.javafx.tree.FileIconFactory;
 
 /**

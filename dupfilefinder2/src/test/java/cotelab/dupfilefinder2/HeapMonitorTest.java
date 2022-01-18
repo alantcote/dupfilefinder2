@@ -11,10 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import net.sf.cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 
 /**
  * Test case for {@link HeapMonitor}.

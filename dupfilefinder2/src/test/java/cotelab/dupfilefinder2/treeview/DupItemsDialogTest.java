@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.dupfilefinder2.FXMLController;
-import net.sf.cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
+import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 
 /**
  * Test case for {@link cotelab.dupfilefinder2.treeview.DupItemsDialog}.

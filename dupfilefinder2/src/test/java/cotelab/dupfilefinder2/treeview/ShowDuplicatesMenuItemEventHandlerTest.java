@@ -19,9 +19,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.dupfilefinder2.FXMLController;
+import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
-import net.sf.cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 
 /**
  * Test case for

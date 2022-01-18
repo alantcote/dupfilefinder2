@@ -25,6 +25,7 @@ import cotelab.dupfilefinder2.pipeline.Pipeline;
 import cotelab.dupfilefinder2.pipeline.PipelineQueue;
 import cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleIntegerProperty;
 import cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleLongProperty;
+import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -35,7 +36,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
-import net.sf.cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import net.sf.cotelab.util.javafx.tree.FileIconFactory;
 import net.sf.cotelab.util.javafx.tree.FileTreeView;
 
