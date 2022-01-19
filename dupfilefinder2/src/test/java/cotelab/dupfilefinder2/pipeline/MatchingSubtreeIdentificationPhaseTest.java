@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.apache.commons.collections4.MultiValuedMap;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
@@ -60,7 +61,7 @@ public class MatchingSubtreeIdentificationPhaseTest {
 				mockOutput);
 		Collection<Collection<Path>> candidateGroupGroup = new ArrayList<Collection<Path>>();
 
-		Map<Path, Collection<Collection<Path>>> result = fixture.buildParent2CandidateGroupMap(candidateGroupGroup);
+		MultiValuedMap<Path, Collection<Path>> result = fixture.buildParent2CandidateGroupMap(candidateGroupGroup);
 
 		assertTrue(result.isEmpty());
 	}
@@ -186,7 +187,7 @@ public class MatchingSubtreeIdentificationPhaseTest {
 				mockOutput);
 		Collection<Collection<Path>> candidateGroupGroup = new ArrayList<Collection<Path>>();
 
-		Map<Integer, Collection<Collection<Path>>> result = fixture.groupBySize(candidateGroupGroup);
+		MultiValuedMap<Integer, Collection<Path>> result = fixture.groupBySize(candidateGroupGroup);
 
 		assertTrue(result.isEmpty());
 	}
@@ -209,7 +210,7 @@ public class MatchingSubtreeIdentificationPhaseTest {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.MatchingSubtreeIdentificationPhase#newIntegerToPathGroupGroupHashtable()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.MatchingSubtreeIdentificationPhase#newIntegerToPathGroupMultiValuedMap()}.
 	 */
 	@Test
 	public void testNewIntegerToPathGroupGroupHashtable() {
@@ -218,7 +219,7 @@ public class MatchingSubtreeIdentificationPhaseTest {
 		MatchingSubtreeIdentificationPhase fixture = new MatchingSubtreeIdentificationPhase("phase", mockInput,
 				mockOutput);
 
-		assertNotNull(fixture.newIntegerToPathGroupGroupHashtable());
+		assertNotNull(fixture.newIntegerToPathGroupMultiValuedMap());
 	}
 
 	/**
@@ -265,7 +266,7 @@ public class MatchingSubtreeIdentificationPhaseTest {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.MatchingSubtreeIdentificationPhase#newPathToPathGroupGroupHashtable()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.MatchingSubtreeIdentificationPhase#newPathToPathGroupMultiValuedMap()}.
 	 */
 	@Test
 	public void testNewPathToPathGroupGroupHashtable() {
@@ -274,7 +275,7 @@ public class MatchingSubtreeIdentificationPhaseTest {
 		MatchingSubtreeIdentificationPhase fixture = new MatchingSubtreeIdentificationPhase("phase", mockInput,
 				mockOutput);
 
-		assertNotNull(fixture.newPathToPathGroupGroupHashtable());
+		assertNotNull(fixture.newPathToPathGroupMultiValuedMap());
 	}
 
 	/**
@@ -301,7 +302,7 @@ public class MatchingSubtreeIdentificationPhaseTest {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		MatchingSubtreeIdentificationPhase fixture = new MatchingSubtreeIdentificationPhase("phase", mockInput,
 				mockOutput);
-		Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap = fixture.newPathToPathGroupGroupHashtable();
+		MultiValuedMap<Path, Collection<Path>> parent2CandidateGroupMap = fixture.newPathToPathGroupMultiValuedMap();
 		Collection<Path> candidateParentGroup = fixture.newPathArrayList();
 
 		Collection<Collection<Path>> dupParentGroups = fixture.nWayCompare(parent2CandidateGroupMap,
@@ -320,7 +321,7 @@ public class MatchingSubtreeIdentificationPhaseTest {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		MatchingSubtreeIdentificationPhase fixture = new MatchingSubtreeIdentificationPhase("phase", mockInput,
 				mockOutput);
-		Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap = fixture.newPathToPathGroupGroupHashtable();
+		MultiValuedMap<Path, Collection<Path>> parent2CandidateGroupMap = fixture.newPathToPathGroupMultiValuedMap();
 		Collection<Collection<Path>> candidateParentGroup = fixture.newPathGroupArrayList();
 
 		Collection<Collection<Path>> result = fixture.validateGroupsOnFileSystem(parent2CandidateGroupMap,
@@ -339,7 +340,7 @@ public class MatchingSubtreeIdentificationPhaseTest {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		MatchingSubtreeIdentificationPhase fixture = new MatchingSubtreeIdentificationPhase("phase", mockInput,
 				mockOutput);
-		Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap = fixture.newPathToPathGroupGroupHashtable();
+		MultiValuedMap<Path, Collection<Path>> parent2CandidateGroupMap = fixture.newPathToPathGroupMultiValuedMap();
 		Collection<Path> candidateParentGroup = fixture.newPathArrayList();
 
 		Collection<Path> result = fixture.validateOnFileSystem(parent2CandidateGroupMap, candidateParentGroup);

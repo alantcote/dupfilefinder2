@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Map;
 
+import org.apache.commons.collections4.MultiMapUtils;
+import org.apache.commons.collections4.MultiValuedMap;
+
 /**
  * A {@link Phase} designed to identify matching subtrees. The input is a
  * sequence of collections of pathnames to be examined. The output is ...
@@ -52,9 +55,9 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	 * @param candidateGroupGroup a collection of child groups.
 	 * @return the map.
 	 */
-	protected Map<Path, Collection<Collection<Path>>> buildParent2CandidateGroupMap(
+	protected MultiValuedMap<Path, Collection<Path>> buildParent2CandidateGroupMap(
 			Collection<Collection<Path>> candidateGroupGroup) {
-		Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap = newPathToPathGroupGroupHashtable();
+		MultiValuedMap<Path, Collection<Path>> parent2CandidateGroupMap = newPathToPathGroupMultiValuedMap();
 
 		for (Collection<Path> candidateGroup : candidateGroupGroup) {
 			for (Path candidate : candidateGroup) {
@@ -64,15 +67,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 
 				Path parent = candidate.getParent();
 
-				Collection<Collection<Path>> aGroupGroup = parent2CandidateGroupMap.get(parent);
-
-				if (aGroupGroup == null) {
-					aGroupGroup = newPathGroupArrayList();
-
-					parent2CandidateGroupMap.put(parent, aGroupGroup);
-				}
-
-				aGroupGroup.add(candidateGroup);
+				parent2CandidateGroupMap.put(parent, candidateGroup);
 			}
 
 			pathGroupsConsideredProperty.increment(1);
@@ -148,7 +143,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	protected Collection<Collection<Path>> findDuplicateSets(Collection<Collection<Path>> candidateGroups) {
 		Collection<Collection<Path>> duplicateSetGroup = newPathGroupArrayList();
 
-		Map<Integer, Collection<Collection<Path>>> sizeToGroupMap = groupBySize(candidateGroups);
+		MultiValuedMap<Integer, Collection<Path>> sizeToGroupMap = groupBySize(candidateGroups);
 
 		for (Integer size : sizeToGroupMap.keySet()) {
 			if (isCancelled()) {
@@ -156,7 +151,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 			}
 
 			Collection<Collection<Path>> equalSizedGroups = sizeToGroupMap.get(size);
-			Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap = buildParent2CandidateGroupMap(
+			MultiValuedMap<Path, Collection<Path>> parent2CandidateGroupMap = buildParent2CandidateGroupMap(
 					equalSizedGroups);
 			Collection<Collection<Path>> dupParentGroups = nWayCompare(parent2CandidateGroupMap,
 					parent2CandidateGroupMap.keySet());
@@ -219,8 +214,8 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	 * @param candidateGroups The candidate groups.
 	 * @return The map.
 	 */
-	protected Map<Integer, Collection<Collection<Path>>> groupBySize(Collection<Collection<Path>> candidateGroups) {
-		Map<Integer, Collection<Collection<Path>>> sizeToGroupMap = newIntegerToPathGroupGroupHashtable();
+	protected MultiValuedMap<Integer, Collection<Path>> groupBySize(Collection<Collection<Path>> candidateGroups) {
+		MultiValuedMap<Integer, Collection<Path>> sizeToGroupMap = newIntegerToPathGroupMultiValuedMap();
 
 		for (Collection<Path> candidateGroup : candidateGroups) {
 			if (isCancelled()) {
@@ -229,15 +224,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 
 			Integer size = candidateGroup.size();
 
-			Collection<Collection<Path>> collections = sizeToGroupMap.get(size);
-
-			if (collections == null) {
-				collections = newPathGroupArrayList();
-
-				sizeToGroupMap.put(size, collections);
-			}
-
-			collections.add(candidateGroup);
+			sizeToGroupMap.put(size, candidateGroup);
 		}
 
 		return sizeToGroupMap;
@@ -246,8 +233,8 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	/**
 	 * @return a new object.
 	 */
-	protected Hashtable<Integer, Collection<Collection<Path>>> newIntegerToPathGroupGroupHashtable() {
-		return new Hashtable<Integer, Collection<Collection<Path>>>();
+	protected MultiValuedMap<Integer, Collection<Path>> newIntegerToPathGroupMultiValuedMap() {
+		return MultiMapUtils.newListValuedHashMap();
 	}
 
 	/**
@@ -274,8 +261,8 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	/**
 	 * @return a new object.
 	 */
-	protected Hashtable<Path, Collection<Collection<Path>>> newPathToPathGroupGroupHashtable() {
-		return new Hashtable<Path, Collection<Collection<Path>>>();
+	protected MultiValuedMap<Path, Collection<Path>> newPathToPathGroupMultiValuedMap() {
+		return MultiMapUtils.newListValuedHashMap();
 	}
 
 	/**
@@ -295,7 +282,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	 * @param candidateParentGroup     the candidate parents.
 	 * @return
 	 */
-	protected Collection<Collection<Path>> nWayCompare(Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap,
+	protected Collection<Collection<Path>> nWayCompare(MultiValuedMap<Path, Collection<Path>> parent2CandidateGroupMap,
 			Collection<Path> candidateParentGroup) {
 		Collection<Collection<Path>> dupParentGroups = newPathGroupArrayList();
 
@@ -345,7 +332,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	 * @return the subset of candidateParentGroups that conform.
 	 */
 	protected Collection<Collection<Path>> validateGroupsOnFileSystem(
-			Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap,
+			MultiValuedMap<Path, Collection<Path>> parent2CandidateGroupMap,
 			Collection<Collection<Path>> candidateParentGroups) {
 		Collection<Collection<Path>> validatedDupParentGroups = newPathGroupArrayList();
 
@@ -377,7 +364,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	 * @param candidateParentGroup     a group of parents.
 	 * @return the subset.
 	 */
-	protected Collection<Path> validateOnFileSystem(Map<Path, Collection<Collection<Path>>> parent2CandidateGroupMap,
+	protected Collection<Path> validateOnFileSystem(MultiValuedMap<Path, Collection<Path>> parent2CandidateGroupMap,
 			Collection<Path> candidateParentGroup) {
 		Collection<Path> validatedParentGroup = newPathArrayList();
 		

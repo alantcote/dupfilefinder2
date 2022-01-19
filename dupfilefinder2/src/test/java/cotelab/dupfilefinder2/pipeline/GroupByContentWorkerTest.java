@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -172,7 +171,7 @@ public class GroupByContentWorkerTest {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
-		final Collection<BufferedInputStream> mockCollection = new ArrayList<BufferedInputStream>();
+		final Collection<InputStream> mockCollection = new ArrayList<InputStream>();
 
 		assertNotNull(fixture.newBufferedInputStreamArray(mockCollection));
 	}
@@ -192,7 +191,7 @@ public class GroupByContentWorkerTest {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newBufferedInputStreamArrayList()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newInputStreamCollection()}.
 	 */
 	@Test
 	public void testNewBufferedInputStreamArrayList() {
@@ -200,12 +199,12 @@ public class GroupByContentWorkerTest {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
 
-		assertNotNull(fixture.newBufferedInputStreamArrayList());
+		assertNotNull(fixture.newInputStreamCollection());
 	}
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newBufferedInputStreamGroupArrayList()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newInputStreamGroupCollection()}.
 	 */
 	@Test
 	public void testNewBufferedInputStreamGroupArrayList() {
@@ -213,7 +212,7 @@ public class GroupByContentWorkerTest {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
 
-		assertNotNull(fixture.newBufferedInputStreamGroupArrayList());
+		assertNotNull(fixture.newInputStreamGroupCollection());
 	}
 
 	/**
@@ -244,7 +243,7 @@ public class GroupByContentWorkerTest {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newIntegerToBufferedInputStreamHashMultiMap()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newIntegerToInputStreamMultiValuedMap()}.
 	 */
 	@Test
 	public void testNewIntegerToBufferedInputStreamHashMultiMap() {
@@ -252,7 +251,7 @@ public class GroupByContentWorkerTest {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
 
-		assertNotNull(fixture.newIntegerToBufferedInputStreamHashMultiMap());
+		assertNotNull(fixture.newIntegerToInputStreamMultiValuedMap());
 	}
 
 	/**
@@ -352,9 +351,9 @@ public class GroupByContentWorkerTest {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
-		Collection<BufferedInputStream> bufferedInputStreamCollection = new ArrayList<BufferedInputStream>();
+		Collection<InputStream> InputStreamCollection = new ArrayList<InputStream>();
 
-		assertNotNull(fixture.nWayCompareEqualStreams(bufferedInputStreamCollection));
+		assertNotNull(fixture.nWayCompareEqualStreams(InputStreamCollection));
 	}
 
 	/**
@@ -396,9 +395,9 @@ public class GroupByContentWorkerTest {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
-		Collection<BufferedInputStream> bufferedInputStreamCollection = new ArrayList<BufferedInputStream>();
+		Collection<InputStream> inputStreamCollection = new ArrayList<InputStream>();
 
-		assertFalse(fixture.streamsMatch(bufferedInputStreamCollection));
+		assertFalse(fixture.streamsMatch(inputStreamCollection));
 	}
 
 }

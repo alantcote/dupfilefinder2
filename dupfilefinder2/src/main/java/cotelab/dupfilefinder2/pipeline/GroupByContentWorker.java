@@ -15,7 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import net.sf.cotelab.util.collections.HashMultiMap;
+import org.apache.commons.collections4.MultiMapUtils;
+import org.apache.commons.collections4.MultiValuedMap;
 
 /**
  * A {@link Phase} designed to group files by content. The input is a sequence
@@ -120,12 +121,12 @@ public class GroupByContentWorker extends Phase {
 	}
 
 	/**
-	 * @param src a group of input streams, the count of which will be the array
-	 *            dimension.
+	 * @param collection a group of input streams, the count of which will be the
+	 *                   array dimension.
 	 * @return a new object.
 	 */
-	protected BufferedInputStream[] newBufferedInputStreamArray(Collection<BufferedInputStream> src) {
-		return new BufferedInputStream[src.size()];
+	protected BufferedInputStream[] newBufferedInputStreamArray(Collection<InputStream> collection) {
+		return new BufferedInputStream[collection.size()];
 	}
 
 	/**
@@ -134,20 +135,6 @@ public class GroupByContentWorker extends Phase {
 	 */
 	protected BufferedInputStream[] newBufferedInputStreamArray(int size) {
 		return new BufferedInputStream[size];
-	}
-
-	/**
-	 * @return a new object.
-	 */
-	protected ArrayList<BufferedInputStream> newBufferedInputStreamArrayList() {
-		return new ArrayList<BufferedInputStream>();
-	}
-
-	/**
-	 * @return a new object.
-	 */
-	protected ArrayList<Collection<BufferedInputStream>> newBufferedInputStreamGroupArrayList() {
-		return new ArrayList<Collection<BufferedInputStream>>();
 	}
 
 	/**
@@ -167,8 +154,22 @@ public class GroupByContentWorker extends Phase {
 	/**
 	 * @return a new object.
 	 */
-	protected HashMultiMap<Integer, BufferedInputStream> newIntegerToBufferedInputStreamHashMultiMap() {
-		return new HashMultiMap<Integer, BufferedInputStream>();
+	protected Collection<InputStream> newInputStreamCollection() {
+		return new ArrayList<InputStream>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected Collection<Collection<InputStream>> newInputStreamGroupCollection() {
+		return new ArrayList<Collection<InputStream>>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected MultiValuedMap<Integer, InputStream> newIntegerToInputStreamMultiValuedMap() {
+		return MultiMapUtils.newListValuedHashMap();
 	}
 
 	/**
@@ -218,8 +219,8 @@ public class GroupByContentWorker extends Phase {
 	protected Collection<Collection<Path>> nWayCompareEqualPaths(Collection<Path> pathColl) {
 		List<Collection<Path>> retValue = newPathGroupArrayList();
 		HashMap<BufferedInputStream, Path> inputStream2Path = newBufferedInputStreamToPathHashMap();
-		ArrayList<BufferedInputStream> inputStreams = newBufferedInputStreamArrayList();
-		Collection<Collection<BufferedInputStream>> nwcesRC;
+		Collection<InputStream> inputStreams = newInputStreamCollection();
+		Collection<Collection<InputStream>> nwcesRC;
 		String printlnPrefix = phaseName.get() + ": nWayCompareEqualPaths(): ";
 		ArrayList<Path> missingFilePaths = newPathArrayList();
 
@@ -283,7 +284,7 @@ public class GroupByContentWorker extends Phase {
 		}
 
 		// close the input streams and assemble the path list
-		for (Collection<BufferedInputStream> isColl : nwcesRC) {
+		for (Collection<InputStream> isColl : nwcesRC) {
 			LinkedList<Path> pathList = newPathLinkedList();
 
 			if (isCancelled()) {
@@ -311,23 +312,23 @@ public class GroupByContentWorker extends Phase {
 	/**
 	 * Compare a collection of input streams for equality.
 	 * 
-	 * @param src the input streams to compare.
+	 * @param collection the input streams to compare.
 	 * @return a group of groups of input streams that match each other.
 	 */
-	protected Collection<Collection<BufferedInputStream>> nWayCompareEqualStreams(Collection<BufferedInputStream> src) {
-		ArrayList<Collection<BufferedInputStream>> retValue = newBufferedInputStreamGroupArrayList();
-		HashMultiMap<Integer, BufferedInputStream> stepResult = newIntegerToBufferedInputStreamHashMultiMap();
+	protected Collection<Collection<InputStream>> nWayCompareEqualStreams(Collection<InputStream> collection) {
+		Collection<Collection<InputStream>> retValue = newInputStreamGroupCollection();
+		MultiValuedMap<Integer, InputStream> stepResult = newIntegerToInputStreamMultiValuedMap();
 		Set<Integer> stepKeys;
-		int srcSize = src.size();
-		Collection<Collection<BufferedInputStream>> recursiveResult;
-		BufferedInputStream srcArray[] = src.<BufferedInputStream>toArray(newBufferedInputStreamArray(src));
+		int srcSize = collection.size();
+		Collection<Collection<InputStream>> recursiveResult;
+		InputStream srcArray[] = collection.<InputStream>toArray(newBufferedInputStreamArray(collection));
 
 		if (srcSize == 0) {
 			return retValue;
 		}
 
 		if (srcSize == 1) {
-			retValue.add(src);
+			retValue.add(collection);
 
 			return retValue;
 		}
@@ -338,8 +339,8 @@ public class GroupByContentWorker extends Phase {
 
 		// skip over the matching prefixes.
 
-		if (streamsMatch(src)) {
-			retValue.add(src);
+		if (streamsMatch(collection)) {
+			retValue.add(collection);
 
 //			System.out.println(printlnPrefix + "streams match - method completed");
 
@@ -352,7 +353,7 @@ public class GroupByContentWorker extends Phase {
 
 		// OK. So they're not identical. Back up and analyze byte for byte.
 
-		for (BufferedInputStream bis : srcArray) {
+		for (InputStream bis : srcArray) {
 			try {
 				bis.reset();
 			} catch (IOException ex) {
@@ -368,7 +369,7 @@ public class GroupByContentWorker extends Phase {
 
 			stepResult.clear();
 
-			for (BufferedInputStream is : srcArray) {
+			for (InputStream is : srcArray) {
 				Integer theInteger;
 
 				if (isCancelled()) {
@@ -395,7 +396,7 @@ public class GroupByContentWorker extends Phase {
 			}
 
 			if (theByte < 0) {
-				retValue.add(src);
+				retValue.add(collection);
 
 				return retValue;
 			}
@@ -453,17 +454,17 @@ public class GroupByContentWorker extends Phase {
 	 * they match, and the streams are marked at suitable points at which to begin
 	 * byte-by-byte comparison, if they don't match.
 	 * 
-	 * @param src the collection of equal-length streams.
+	 * @param collection the collection of equal-length streams.
 	 * @return the truth-value of the expression, "the streams contain identical
 	 *         data".
 	 */
-	protected boolean streamsMatch(Collection<BufferedInputStream> src) {
-		int srcSize = src.size();
-		BufferedInputStream srcArray[] = src.<BufferedInputStream>toArray(newBufferedInputStreamArray(srcSize));
+	protected boolean streamsMatch(Collection<InputStream> collection) {
+		int srcSize = collection.size();
+		BufferedInputStream srcArray[] = collection.<BufferedInputStream>toArray(newBufferedInputStreamArray(srcSize));
 		byte[] masterBuffer = newByteBuffer();
 		boolean buffersMatch = true;
 
-		if (src.size() < 2) {
+		if (collection.size() < 2) {
 			return false;
 		}
 
