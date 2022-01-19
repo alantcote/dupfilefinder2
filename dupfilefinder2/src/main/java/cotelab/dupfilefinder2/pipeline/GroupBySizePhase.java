@@ -5,9 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.collections4.MultiMapUtils;
+import org.apache.commons.collections4.MultiValuedMap;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -25,7 +26,7 @@ public class GroupBySizePhase extends Phase {
 	/**
 	 * A map from file size to path group.
 	 */
-	protected Hashtable<Long, ArrayList<Path>> size2PathMap = newLongToPathGroupHashtable();
+	protected MultiValuedMap<Long, Path> size2PathMap = newMultiValuedMapLongPath();
 
 	/**
 	 * The number of file sizes found.
@@ -111,8 +112,8 @@ public class GroupBySizePhase extends Phase {
 	/**
 	 * @return a new object.
 	 */
-	protected Hashtable<Long, ArrayList<Path>> newLongToPathGroupHashtable() {
-		return new Hashtable<Long, ArrayList<Path>>();
+	protected MultiValuedMap<Long, Path> newMultiValuedMapLongPath() {
+		return MultiMapUtils.newListValuedHashMap();
 	}
 
 	protected void processBatch(Collection<Path> batch) {
@@ -123,19 +124,7 @@ public class GroupBySizePhase extends Phase {
 
 			try {
 				long size = fileSize(path);
-				ArrayList<Path> pathColl = size2PathMap.get(size);
-
-				if (pathColl == null) {
-					pathColl = new ArrayList<Path>();
-
-					pathColl.add(path);
-
-					size2PathMap.put(size, pathColl);
-
-					sizeCount.set(size2PathMap.size());
-				} else {
-					pathColl.add(path);
-				}
+				size2PathMap.put(size, path);
 
 				filesMeasuredCount.set(filesMeasuredCount.get() + 1);
 			} catch (IOException e) {
@@ -149,14 +138,15 @@ public class GroupBySizePhase extends Phase {
 			return;
 		}
 
-		Collection<ArrayList<Path>> groups = size2PathMap.values();
+		Set<Long> sizes = size2PathMap.keySet();
 
-		for (ArrayList<Path> group : groups) {
+		for (Long size : sizes) {
+			Collection<Path> group = size2PathMap.get(size);
+			int groupSize = group.size();
+
 			if (isCancelled()) {
 				break;
 			}
-
-			int groupSize = group.size();
 
 			// if a group is empty, one can only wonder how it came to be
 
@@ -173,7 +163,6 @@ public class GroupBySizePhase extends Phase {
 					}
 				}
 			}
-
 		}
 	}
 

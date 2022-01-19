@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>cotelab</groupId>
-    <artifactId>dupfilefinder2</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+	<groupId>cotelab</groupId>
+	<artifactId>dupfilefinder2</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<description>A program to seek out duplicate files and directories.</description>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -27,16 +27,16 @@
 		</developer>
 	</developers>
 
-    <properties>
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>MM-dd-yyyy HH:mm</maven.build.timestamp.format>
 		<java.version>17</java.version>
-        <javafx.main.class>cotelab.dupfilefinder2.DupFileFinder2</javafx.main.class>
-        <main.class>${javafx.main.class}</main.class>
+		<javafx.main.class>cotelab.dupfilefinder2.DupFileFinder2</javafx.main.class>
+		<main.class>${javafx.main.class}</main.class>
 		<javafx.classifier>win</javafx.classifier>
 		<openjfx.version>18-ea+8</openjfx.version>
-    </properties>
+	</properties>
 
 	<distributionManagement>
 		<snapshotRepository>
@@ -281,7 +281,7 @@
 		</profile>
 	</profiles>
 
-    <dependencies>
+	<dependencies>
 		<dependency>
 			<groupId>net.bytebuddy</groupId>
 			<artifactId>byte-buddy</artifactId>
@@ -307,6 +307,12 @@
 			<groupId>net.sf.cotelab</groupId>
 			<artifactId>CLUtilities</artifactId>
 			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.4</version>
 		</dependency>
 
 		<dependency>
@@ -378,5 +384,5 @@
 			<version>4.13.2</version>
 			<scope>provided</scope>
 		</dependency>
-    </dependencies>
+	</dependencies>
 </project>

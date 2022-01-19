@@ -6,8 +6,8 @@ import static org.junit.Assert.assertNotNull;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable;
 
+import org.apache.commons.collections4.MultiValuedMap;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
@@ -51,11 +51,11 @@ public class GroupBySizePhaseTest {
 	 * 
 	 * @throws Exception if any is thrown by the test.
 	 */
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testCall() throws Exception {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
-		@SuppressWarnings("unchecked")
 		final Collection<Path> mockPathGroup = context.mock(Collection.class, "mockPathGroup");
 		GroupBySizePhase fixture = new GroupBySizePhase("phase", mockInput, mockOutput) {
 			@Override
@@ -157,14 +157,14 @@ public class GroupBySizePhaseTest {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupBySizePhase#newLongToPathGroupHashtable()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupBySizePhase#newMultiValuedMapLongPath()}.
 	 */
 	@Test
-	public void testNewLongToPathGroupHashtable() {
+	public void testNewMultiValuedMapLongPath() {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupBySizePhase fixture = new GroupBySizePhase("phase", mockInput, mockOutput);
-		Hashtable<Long, ArrayList<Path>> result = fixture.newLongToPathGroupHashtable();
+		MultiValuedMap<Long, Path> result = fixture.newMultiValuedMapLongPath();
 
 		assertNotNull(result);
 	}
@@ -192,7 +192,7 @@ public class GroupBySizePhaseTest {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupBySizePhase fixture = new GroupBySizePhase("phase", mockInput, mockOutput);
-		fixture.size2PathMap = fixture.newLongToPathGroupHashtable();
+		fixture.size2PathMap = fixture.newMultiValuedMapLongPath();
 
 		fixture.publishResults();
 	}
