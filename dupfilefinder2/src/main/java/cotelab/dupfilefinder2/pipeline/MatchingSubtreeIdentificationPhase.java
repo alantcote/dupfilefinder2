@@ -171,7 +171,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	 */
 	protected Collection<Collection<Path>> gatherInputGroups() {
 		Collection<Path> inputGroup = null;
-		ArrayList<Collection<Path>> groups = newPathGroupArrayList();
+		Collection<Collection<Path>> groups = newPathGroupArrayList();
 
 		// assuming there will be at least one input group
 		try {
@@ -247,14 +247,14 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	/**
 	 * @return a new object.
 	 */
-	protected ArrayList<Collection<Path>> newPathGroupArrayList() {
+	protected Collection<Collection<Path>> newPathGroupArrayList() {
 		return new ArrayList<Collection<Path>>();
 	}
 
 	/**
 	 * @return a new object.
 	 */
-	protected Hashtable<Collection<Collection<Path>>, Collection<Path>> newPathGroupGroupToPathGroupHashtable() {
+	protected Map<Collection<Collection<Path>>, Collection<Path>> newPathGroupGroupToPathGroupHashtable() {
 		return new Hashtable<Collection<Collection<Path>>, Collection<Path>>();
 	}
 

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Map;
+import java.util.Set;
 
 import cotelab.dupfilefinder2.FXMLController;
 import javafx.scene.control.TreeItem;
@@ -26,8 +28,8 @@ public class DecoratedFileTreeView extends FileTreeView {
 	 * @param aPathToDupCollMap a map from path to group of matching files.
 	 * @param aController       the controller.
 	 */
-	public DecoratedFileTreeView(TreeItem<File> root, FileIconFactory aFileIconFactory, HashSet<Path> anAncestorSet,
-			ArrayList<Collection<Path>> aDupCollections, Hashtable<Path, Collection<Path>> aPathToDupCollMap,
+	public DecoratedFileTreeView(TreeItem<File> root, FileIconFactory aFileIconFactory, Set<Path> anAncestorSet,
+			Collection<Collection<Path>> aDupCollections, Map<Path, Collection<Path>> aPathToDupCollMap,
 			FXMLController aController) {
 		super(root);
 

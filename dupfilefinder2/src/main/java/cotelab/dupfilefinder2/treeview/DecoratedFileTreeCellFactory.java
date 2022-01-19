@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Map;
+import java.util.Set;
 
 import cotelab.dupfilefinder2.FXMLController;
 import javafx.scene.control.TreeCell;
@@ -22,7 +24,7 @@ public class DecoratedFileTreeCellFactory extends FileTreeCellFactory {
 	/**
 	 * The set of ancestors.
 	 */
-	protected HashSet<Path> ancestorSet = null;
+	protected Set<Path> ancestorSet = null;
 
 	/**
 	 * The controller.
@@ -32,12 +34,12 @@ public class DecoratedFileTreeCellFactory extends FileTreeCellFactory {
 	/**
 	 * The collection of duplicate path groups.
 	 */
-	protected ArrayList<Collection<Path>> dupCollections = null;
+	protected Collection<Collection<Path>> dupCollections = null;
 
 	/**
 	 * A map from path to a group of paths of duplicate files.
 	 */
-	protected Hashtable<Path, Collection<Path>> pathToDupCollMap = null;
+	protected Map<Path, Collection<Path>> pathToDupCollMap = null;
 
 	/**
 	 * Construct a new object.
@@ -49,8 +51,8 @@ public class DecoratedFileTreeCellFactory extends FileTreeCellFactory {
 	 *                          files.
 	 * @param aController       the controller.
 	 */
-	public DecoratedFileTreeCellFactory(FileIconFactory aFileIconFactory, HashSet<Path> anAncestorSet,
-			ArrayList<Collection<Path>> aDupCollections, Hashtable<Path, Collection<Path>> aPathToDupCollMap,
+	public DecoratedFileTreeCellFactory(FileIconFactory aFileIconFactory, Set<Path> anAncestorSet,
+			Collection<Collection<Path>> aDupCollections, Map<Path, Collection<Path>> aPathToDupCollMap,
 			FXMLController aController) {
 		super(aFileIconFactory);
 

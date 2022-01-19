@@ -164,7 +164,7 @@ public class GroupByContentWorkerTest {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newBufferedInputStreamArray(java.util.Collection)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newInputStreamArray(java.util.Collection)}.
 	 */
 	@Test
 	public void testNewBufferedInputStreamArrayCollectionOfBufferedInputStream() {
@@ -173,12 +173,12 @@ public class GroupByContentWorkerTest {
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
 		final Collection<InputStream> mockCollection = new ArrayList<InputStream>();
 
-		assertNotNull(fixture.newBufferedInputStreamArray(mockCollection));
+		assertNotNull(fixture.newArrayOfInputStream(mockCollection));
 	}
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newBufferedInputStreamArray(int)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newInputStreamArray(int)}.
 	 */
 	@Test
 	public void testNewBufferedInputStreamArrayInt() {
@@ -186,7 +186,7 @@ public class GroupByContentWorkerTest {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
 
-		assertNotNull(fixture.newBufferedInputStreamArray(42));
+		assertNotNull(fixture.newInputStreamArray(42));
 	}
 
 	/**
@@ -217,7 +217,7 @@ public class GroupByContentWorkerTest {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newBufferedInputStreamToPathHashMap()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newInputStreamToPathMap()}.
 	 */
 	@Test
 	public void testNewBufferedInputStreamToPathHashMap() {
@@ -225,7 +225,7 @@ public class GroupByContentWorkerTest {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
 
-		assertNotNull(fixture.newBufferedInputStreamToPathHashMap());
+		assertNotNull(fixture.newInputStreamToPathMap());
 	}
 
 	/**
@@ -256,7 +256,7 @@ public class GroupByContentWorkerTest {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newPathArrayList()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newPathLinkedList()}.
 	 */
 	@Test
 	public void testNewPathArrayList() {
@@ -264,12 +264,12 @@ public class GroupByContentWorkerTest {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
 
-		assertNotNull(fixture.newPathArrayList());
+		assertNotNull(fixture.newPathLinkedList());
 	}
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newPathGroupArrayList()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#newPathGroupCollection()}.
 	 */
 	@Test
 	public void testNewPathGroupArrayList() {
@@ -277,7 +277,7 @@ public class GroupByContentWorkerTest {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
 
-		assertNotNull(fixture.newPathGroupArrayList());
+		assertNotNull(fixture.newPathGroupCollection());
 	}
 
 	/**

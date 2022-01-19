@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collection;
 import java.util.LinkedList;
 
 import javafx.beans.property.SimpleIntegerProperty;
@@ -27,7 +28,7 @@ public class PathSearchVisitor extends SimpleFileVisitor<Path> {
 	/**
 	 * A list of the paths of the regular files found.
 	 */
-	protected LinkedList<Path> files = newPathLinkedList();
+	protected Collection<Path> files = newPathLinkedList();
 
 	/**
 	 * The number of files visited.
@@ -71,7 +72,7 @@ public class PathSearchVisitor extends SimpleFileVisitor<Path> {
 	/**
 	 * @return the files
 	 */
-	public LinkedList<Path> getFiles() {
+	public Collection<Path> getFiles() {
 		return files;
 	}
 
@@ -178,7 +179,7 @@ public class PathSearchVisitor extends SimpleFileVisitor<Path> {
 	/**
 	 * @return a new object.
 	 */
-	protected LinkedList<Path> newPathLinkedList() {
+	protected Collection<Path> newPathLinkedList() {
 		return new LinkedList<Path>();
 	}
 

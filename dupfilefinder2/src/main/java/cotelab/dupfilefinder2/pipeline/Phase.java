@@ -1,6 +1,7 @@
 package cotelab.dupfilefinder2.pipeline;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,7 +22,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	/**
 	 * The child Phases.
 	 */
-	protected final ArrayList<Phase> children = newPhaseArrayList();
+	protected final Collection<Phase> children = newPhaseArrayList();
 
 	/**
 	 * The input queue.
@@ -62,7 +63,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	@Override
 	public boolean cancel(boolean mayInterruptIfRunning) {
 		boolean success = true;
-		ArrayList<Phase> livingKids = newPhaseArrayList();
+		Collection<Phase> livingKids = newPhaseArrayList();
 
 		System.err.println("Phase.cancel(): cancel entered for " + phaseName.get());
 		Throwable throwable = new Throwable();
@@ -206,7 +207,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	/**
 	 * @return a new object.
 	 */
-	protected ArrayList<Phase> newPhaseArrayList() {
+	protected Collection<Phase> newPhaseArrayList() {
 		return new ArrayList<Phase>();
 	}
 
@@ -251,7 +252,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 	 * Wait for the children to end, whether by cancellation, failure, or success.
 	 */
 	protected void waitForChildrenDone() {
-		ArrayList<Phase> livingKids = newPhaseArrayList();
+		Collection<Phase> livingKids = newPhaseArrayList();
 
 		for (Phase child : children) {
 			if (!child.isDone()) {

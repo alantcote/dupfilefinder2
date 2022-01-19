@@ -181,13 +181,6 @@ public class SubtreeSearchPhase extends Phase {
 
 				Files.walkFileTree(aPath, pathSearchVisitor);
 
-//				directoryCount.set(directoryCount.get() + pathSearchVisitor.getDirectoryCount().get());
-//				failedAccessCount.set(failedAccessCount.get() + pathSearchVisitor.getFailedAccessCount().get());
-//				otherCount.set(otherCount.get() + pathSearchVisitor.getOtherCount().get());
-//				regularFileCount.set(regularFileCount.get() + pathSearchVisitor.getRegularFileCount().get());
-//				symbolicLinkCount.set(symbolicLinkCount.get() + pathSearchVisitor.getSymbolicLinkCount().get());
-//				unreadableCount.set(unreadableCount.get() + pathSearchVisitor.getUnreadableCount().get());
-
 				if (pathSearchVisitor.getFiles().size() > 0) {
 					outputQueue.put(pathSearchVisitor.getFiles());
 				}
@@ -202,7 +195,7 @@ public class SubtreeSearchPhase extends Phase {
 	/**
 	 * @return a new object.
 	 */
-	protected ArrayList<Path> newPathArrayList() {
+	protected Collection<Path> newPathArrayList() {
 		return new ArrayList<Path>();
 	}
 
