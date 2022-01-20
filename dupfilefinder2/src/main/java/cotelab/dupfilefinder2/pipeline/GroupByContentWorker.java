@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -112,6 +111,15 @@ public class GroupByContentWorker extends Phase {
 	}
 
 	/**
+	 * @param collection a group of input streams, the count of which will be the
+	 *                   array dimension.
+	 * @return a new object.
+	 */
+	protected InputStream[] newArrayOfInputStream(Collection<InputStream> collection) {
+		return newInputStreamArray(collection.size());
+	}
+
+	/**
 	 * @param is         the raw {@link InputStream}.
 	 * @param bufferSize the buffer size.
 	 * @return a new object.
@@ -122,12 +130,10 @@ public class GroupByContentWorker extends Phase {
 	}
 
 	/**
-	 * @param collection a group of input streams, the count of which will be the
-	 *                   array dimension.
 	 * @return a new object.
 	 */
-	protected InputStream[] newArrayOfInputStream(Collection<InputStream> collection) {
-		return newInputStreamArray(collection.size());
+	protected byte[] newByteBuffer() {
+		return new byte[NWCES_BUFFER_SIZE];
 	}
 
 	/**
@@ -136,20 +142,6 @@ public class GroupByContentWorker extends Phase {
 	 */
 	protected InputStream[] newInputStreamArray(int size) {
 		return new BufferedInputStream[size];
-	}
-
-	/**
-	 * @return a new object.
-	 */
-	protected Map<InputStream,Path> newInputStreamToPathMap() {
-		return new HashMap<InputStream, Path>();
-	}
-
-	/**
-	 * @return a new object.
-	 */
-	protected byte[] newByteBuffer() {
-		return new byte[NWCES_BUFFER_SIZE];
 	}
 
 	/**
@@ -164,6 +156,13 @@ public class GroupByContentWorker extends Phase {
 	 */
 	protected Collection<Collection<InputStream>> newInputStreamGroupCollection() {
 		return new ArrayList<Collection<InputStream>>();
+	}
+
+	/**
+	 * @return a new object.
+	 */
+	protected Map<InputStream, Path> newInputStreamToPathMap() {
+		return new HashMap<InputStream, Path>();
 	}
 
 	/**

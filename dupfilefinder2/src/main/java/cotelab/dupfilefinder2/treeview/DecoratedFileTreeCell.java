@@ -2,10 +2,7 @@ package cotelab.dupfilefinder2.treeview;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
@@ -44,7 +41,7 @@ public class DecoratedFileTreeCell extends FileTreeCell {
 	 * Construct a new object.
 	 * 
 	 * @param aFileIconFactory  a factory for icons.
-	 * @param ancestorSet2     a set of ancestors.
+	 * @param ancestorSet2      a set of ancestors.
 	 * @param aDupCollections   a collection of duplicate path groups.
 	 * @param aPathToDupCollMap a map from paths to duplicate paths.
 	 * @param aController       a controller.
