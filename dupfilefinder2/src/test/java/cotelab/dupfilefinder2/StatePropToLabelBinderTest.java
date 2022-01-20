@@ -1,21 +1,15 @@
 package cotelab.dupfilefinder2;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import org.jmock.Mockery;
-import org.jmock.Sequence;
-import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.lib.concurrent.Synchroniser;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
-import javafx.scene.control.Label;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
+import javafx.scene.control.Label;
 
 /**
  * Test case for {@link NumberPropToLabelBinder}.

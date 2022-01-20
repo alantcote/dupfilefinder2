@@ -7,12 +7,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.prefs.Preferences;
 
-import org.jmock.Mockery;
-import org.jmock.Sequence;
-import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.lib.concurrent.Synchroniser;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;

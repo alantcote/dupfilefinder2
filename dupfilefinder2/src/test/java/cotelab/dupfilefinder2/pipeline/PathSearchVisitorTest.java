@@ -8,12 +8,6 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
-import org.jmock.Mockery;
-import org.jmock.Sequence;
-import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.lib.concurrent.Synchroniser;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
@@ -182,8 +176,6 @@ public class PathSearchVisitorTest extends TestCaseWithJMockAndByteBuddy {
 
 		};
 		final Path mockPath = context.mock(Path.class, "mockPath");
-		final BasicFileAttributes mockBasicFileAttributes = context.mock(BasicFileAttributes.class,
-				"mockBasicFileAttributes");
 		final IOException mockIOException = context.mock(IOException.class, "mockIOException");
 
 		assertEquals(FileVisitResult.CONTINUE, fixture.visitFileFailed(mockPath, mockIOException));
