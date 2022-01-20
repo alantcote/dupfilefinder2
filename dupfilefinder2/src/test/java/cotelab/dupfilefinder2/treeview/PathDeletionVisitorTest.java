@@ -16,30 +16,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import junit4utils.TestCaseWithJMockAndByteBuddy;
+
 /**
  * Test case for {@link cotelab.dupfilefinder2.treeview.PathDeletionVisitor}.
  */
-public class PathDeletionVisitorTest {
-	protected Mockery context;
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-
+public class PathDeletionVisitorTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.treeview.PathDeletionVisitor#doDelete(java.nio.file.Path)}.

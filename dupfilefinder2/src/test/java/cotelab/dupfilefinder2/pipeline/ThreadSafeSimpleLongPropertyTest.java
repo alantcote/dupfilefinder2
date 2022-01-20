@@ -20,33 +20,14 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for
  * {@link cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleLongProperty}.
  */
 @RunWith(JavaFxJUnit4ClassRunner.class)
-public class ThreadSafeSimpleLongPropertyTest {
-	protected Mockery context;
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-
+public class ThreadSafeSimpleLongPropertyTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleLongProperty#addListener(javafx.beans.value.ChangeListener)}.

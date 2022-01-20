@@ -12,31 +12,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for {@link IntegerRollupListener}.
  */
-public class IntegerRollupListenerTest {
-	protected Mockery context;
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-
+public class IntegerRollupListenerTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.pipeline.IntegerRollupListener#changed(javafx.beans.value.ObservableValue, java.lang.Number, java.lang.Number)}.

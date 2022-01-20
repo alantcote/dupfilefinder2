@@ -22,33 +22,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for
  * {@link cotelab.dupfilefinder2.pipeline.MatchingSubtreeIdentificationPhase}.
  */
 @RunWith(JavaFxJUnit4ClassRunner.class)
-public class MatchingSubtreeIdentificationPhaseTest {
-	protected Mockery context;
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-
+public class MatchingSubtreeIdentificationPhaseTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.pipeline.MatchingSubtreeIdentificationPhase#buildParent2CandidateGroupMap(java.util.Collection)}.

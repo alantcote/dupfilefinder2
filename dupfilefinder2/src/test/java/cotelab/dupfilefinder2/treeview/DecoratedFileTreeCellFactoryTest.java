@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import cotelab.dupfilefinder2.FXMLController;
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import javafx.scene.control.TreeView;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 import net.sf.cotelab.util.javafx.tree.FileIconFactory;
 
 /**
@@ -29,28 +30,7 @@ import net.sf.cotelab.util.javafx.tree.FileIconFactory;
  * {@link cotelab.dupfilefinder2.treeview.DecoratedFileTreeCellFactory}.
  */
 @RunWith(JavaFxJUnit4ClassRunner.class)
-public class DecoratedFileTreeCellFactoryTest {
-	protected Mockery context;
-
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-
+public class DecoratedFileTreeCellFactoryTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.treeview.DecoratedFileTreeCellFactory#call(javafx.scene.control.TreeView)}.

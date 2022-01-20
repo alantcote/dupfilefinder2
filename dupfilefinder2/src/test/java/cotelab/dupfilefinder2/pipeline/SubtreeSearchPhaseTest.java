@@ -16,31 +16,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import junit4utils.TestCaseWithJMockAndByteBuddy;
+
 /**
  * Test case for {@link cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase}.
  */
-public class SubtreeSearchPhaseTest {
-	protected Mockery context;
-
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-
+public class SubtreeSearchPhaseTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase#call()}.

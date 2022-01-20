@@ -21,33 +21,14 @@ import cotelab.dupfilefinder2.FXMLController;
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.ContextMenuEvent;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for
  * {@link cotelab.dupfilefinder2.treeview.CellContextMenuRequestHandler}.
  */
 @RunWith(JavaFxJUnit4ClassRunner.class)
-public class CellContextMenuRequestHandlerTest {
-	protected Mockery context;
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-
+public class CellContextMenuRequestHandlerTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.treeview.CellContextMenuRequestHandler#CellContextMenuRequestHandler(java.nio.file.Path, java.util.Map, java.util.Collection, cotelab.dupfilefinder2.FXMLController)}.

@@ -19,38 +19,18 @@ import org.junit.Test;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for {@link cotelab.dupfilefinder2.pipeline.Phase}.
  */
-public class PhaseTest {
+public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 	protected class ConcretePhase extends Phase {
 
 		public ConcretePhase(String name, PipelineQueue theInput, PipelineQueue theOutput) {
 			super(name, theInput, theOutput);
 		}
 
-	}
-
-	protected Mockery context;
-
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
 	}
 
 	/**

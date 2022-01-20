@@ -2,12 +2,13 @@ package cotelab.dupfilefinder2.pipeline;
 
 import org.junit.Test;
 
-/**
- * @author TEST
- *
- */
-public class ChildProblemEventHandlerTest {
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 
+/**
+ * Test case for
+ * {@link cotelab.dupfilefinder2.pipeline.ChildProblemEventHandler}.
+ */
+public class ChildProblemEventHandlerTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.pipeline.ChildProblemEventHandler#handle(javafx.concurrent.WorkerStateEvent)}.

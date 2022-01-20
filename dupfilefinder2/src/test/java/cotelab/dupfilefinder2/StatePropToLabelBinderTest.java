@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import javafx.scene.control.Label;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
 
@@ -20,27 +21,7 @@ import javafx.concurrent.Worker.State;
  * Test case for {@link NumberPropToLabelBinder}.
  */
 @RunWith(JavaFxJUnit4ClassRunner.class)
-public class StatePropToLabelBinderTest {
-	protected Mockery context;
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-
+public class StatePropToLabelBinderTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for {@link cotelab.dupfilefinder2.StatePropToLabelBinder#StatePropToLabelBinder(javafx.scene.control.Label, cotelab.dupfilefinder2.FXMLController)}.
 	 */

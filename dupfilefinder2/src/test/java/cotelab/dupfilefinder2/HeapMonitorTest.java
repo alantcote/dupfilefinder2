@@ -15,32 +15,13 @@ import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for {@link HeapMonitor}.
  */
 @RunWith(JavaFxJUnit4ClassRunner.class)
-public class HeapMonitorTest {
-	protected Mockery context;
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-
+public class HeapMonitorTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for {@link cotelab.dupfilefinder2.HeapMonitor#conciseFormat(long)}.
 	 */

@@ -20,32 +20,13 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.web.WebView;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for {@link PopupBrowserLauncher}.
  */
 @RunWith(JavaFxJUnit4ClassRunner.class)
-public class PopupBrowserLauncherTest {
-	protected Mockery context;
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-
+public class PopupBrowserLauncherTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.PopupBrowserLauncher#newDialog()}.

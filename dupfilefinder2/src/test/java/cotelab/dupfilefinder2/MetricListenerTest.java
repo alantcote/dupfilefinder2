@@ -16,31 +16,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for {@link MetricListener}.
  */
-public class MetricListenerTest {
-	protected Mockery context;
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-	
+public class MetricListenerTest extends TestCaseWithJMockAndByteBuddy {
 	public static final String KEY = "preference";
 	public static final Preferences NODE = Preferences.userRoot();
 

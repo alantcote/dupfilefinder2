@@ -12,34 +12,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javafx.beans.property.SimpleStringProperty;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for {@link PipelineQueue}.
  */
-public class PipelineQueueTest {
+public class PipelineQueueTest extends TestCaseWithJMockAndByteBuddy {
 	public static final int QUEUE_CAPACITY = 42;
 	public static final String QUEUE_NAME = "test queue name";
-
-	protected Mockery context;
-
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
 
 	/**
 	 * Test method for

@@ -219,6 +219,14 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.3.1</version>
+				<configuration>
+					<detectJavaApiLink />
+					<detectLinks />
+					<links>
+						<link>https://commons.apache.org/proper/commons-collections/javadocs/api-4.4/</link>
+						<link>https://openjfx.io/javadoc/17/</link>
+					</links>
+				</configuration>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>

@@ -12,12 +12,6 @@ import java.util.Date;
 import java.util.HashSet;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.Sequence;
-import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.lib.concurrent.Synchroniser;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -36,6 +30,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 import net.sf.cotelab.util.javafx.tree.FileIconFactory;
 import net.sf.cotelab.util.javafx.tree.FileTreeView;
 
@@ -43,27 +38,7 @@ import net.sf.cotelab.util.javafx.tree.FileTreeView;
  * Test case for {@link FXMLController}.
  */
 @RunWith(JavaFxJUnit4ClassRunner.class)
-public class FXMLControllerTest {
-	protected Mockery context;
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-
+public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.FXMLController#addAncestors(java.nio.file.Path)}.

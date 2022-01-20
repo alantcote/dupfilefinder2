@@ -22,33 +22,14 @@ import cotelab.dupfilefinder2.FXMLController;
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for
  * {@link cotelab.dupfilefinder2.treeview.ShowDuplicatesMenuItemEventHandler}.
  */
 @RunWith(JavaFxJUnit4ClassRunner.class)
-public class ShowDuplicatesMenuItemEventHandlerTest {
-	protected Mockery context;
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-
+public class ShowDuplicatesMenuItemEventHandlerTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.treeview.ShowDuplicatesMenuItemEventHandler#handle(javafx.event.ActionEvent)}.

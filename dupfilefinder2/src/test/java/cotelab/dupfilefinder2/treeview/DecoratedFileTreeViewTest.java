@@ -21,33 +21,14 @@ import org.junit.runner.RunWith;
 import cotelab.dupfilefinder2.FXMLController;
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import javafx.scene.control.TreeItem;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 import net.sf.cotelab.util.javafx.tree.FileIconFactory;
 
 /**
  * Test case for {@link cotelab.dupfilefinder2.treeview.DecoratedFileTreeView}.
  */
 @RunWith(JavaFxJUnit4ClassRunner.class)
-public class DecoratedFileTreeViewTest {
-	protected Mockery context;
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-
+public class DecoratedFileTreeViewTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.treeview.DecoratedFileTreeView#DecoratedFileTreeView(javafx.scene.control.TreeItem, net.sf.cotelab.util.javafx.tree.FileIconFactory, java.util.HashSet, java.util.ArrayList, java.util.Hashtable, cotelab.dupfilefinder2.FXMLController)}.

@@ -21,32 +21,13 @@ import org.junit.runner.RunWith;
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.stage.Stage;
+import junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for {@link cotelab.dupfilefinder2.WindowPrefs#WindowPrefs}.
  */
 @RunWith(JavaFxJUnit4ClassRunner.class)
-public class WindowPrefsTest {
-	protected Mockery context;
-	protected Sequence sequence;
-
-	@After
-	public void runAfterTests() throws Exception {
-		context.assertIsSatisfied();
-	}
-
-	@Before
-	public void runBeforeTests() throws Exception {
-		context = new Mockery() {
-			{
-				setThreadingPolicy(new Synchroniser());
-				setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-			}
-		};
-
-		sequence = context.sequence(getClass().getName());
-	}
-
+public class WindowPrefsTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.WindowPrefs#establishPreferencesNode()}.
