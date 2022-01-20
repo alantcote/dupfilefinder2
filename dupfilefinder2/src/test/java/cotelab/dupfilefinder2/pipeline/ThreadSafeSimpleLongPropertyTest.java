@@ -15,12 +15,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
+import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for

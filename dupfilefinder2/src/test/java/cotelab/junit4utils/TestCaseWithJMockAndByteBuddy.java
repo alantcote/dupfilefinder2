@@ -1,4 +1,4 @@
-package junit4utils;
+package cotelab.junit4utils;
 
 import org.jmock.Mockery;
 import org.jmock.Sequence;

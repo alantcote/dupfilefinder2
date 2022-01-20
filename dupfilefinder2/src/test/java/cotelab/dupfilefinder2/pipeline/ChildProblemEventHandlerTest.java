@@ -2,7 +2,7 @@ package cotelab.dupfilefinder2.pipeline;
 
 import org.junit.Test;
 
-import junit4utils.TestCaseWithJMockAndByteBuddy;
+import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for

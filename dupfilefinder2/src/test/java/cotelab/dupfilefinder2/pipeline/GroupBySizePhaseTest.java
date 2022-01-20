@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
-import junit4utils.TestCaseWithJMockAndByteBuddy;
+import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for {@link GroupBySizePhase}.

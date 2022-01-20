@@ -12,8 +12,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
+import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.scene.control.Label;
-import junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
 

@@ -16,11 +16,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
+import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.web.WebView;
-import junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for {@link PopupBrowserLauncher}.

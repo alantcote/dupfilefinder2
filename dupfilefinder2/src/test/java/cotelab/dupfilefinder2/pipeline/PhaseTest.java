@@ -17,9 +17,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for {@link cotelab.dupfilefinder2.pipeline.Phase}.
