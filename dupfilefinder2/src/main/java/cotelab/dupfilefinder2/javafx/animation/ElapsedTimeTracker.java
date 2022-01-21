@@ -1,4 +1,4 @@
-package cotelab.dupfilefinder2;
+package cotelab.dupfilefinder2.javafx.animation;
 
 import java.time.Duration;
 import java.time.Instant;

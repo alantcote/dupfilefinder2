@@ -1,4 +1,4 @@
-package cotelab.dupfilefinder2;
+package cotelab.dupfilefinder2.beans.value;
 
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;

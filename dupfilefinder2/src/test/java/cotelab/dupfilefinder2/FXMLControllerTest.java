@@ -8,15 +8,13 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
-
-import javax.swing.event.ChangeListener;
 
 import org.jmock.Expectations;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import cotelab.dupfilefinder2.javafx.animation.ElapsedTimeTracker;
 import cotelab.dupfilefinder2.pipeline.Pipeline;
 import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;

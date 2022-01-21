@@ -10,6 +10,8 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 
+import cotelab.dupfilefinder2.javafx.animation.ElapsedTimeTracker;
+import cotelab.dupfilefinder2.javafx.animation.HeapTracker;
 import cotelab.dupfilefinder2.pipeline.GroupByContentPhase;
 import cotelab.dupfilefinder2.pipeline.GroupBySizePhase;
 import cotelab.dupfilefinder2.pipeline.MatchingSubtreeIdentificationPhase;

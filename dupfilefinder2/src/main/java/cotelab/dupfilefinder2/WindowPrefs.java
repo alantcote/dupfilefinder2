@@ -3,6 +3,7 @@ package cotelab.dupfilefinder2;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
+import cotelab.dupfilefinder2.beans.value.MetricListener;
 import javafx.stage.Stage;
 
 /**

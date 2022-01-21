@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cotelab.dupfilefinder2;
+package cotelab.dupfilefinder2.beans.value;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,6 +9,7 @@ import java.util.prefs.Preferences;
 
 import org.junit.Test;
 
+import cotelab.dupfilefinder2.beans.value.MetricListener;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -20,7 +21,7 @@ public class MetricListenerTest extends TestCaseWithJMockAndByteBuddy {
 	public static final Preferences NODE = Preferences.userRoot();
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.MetricListener#MetricListener(java.util.prefs.Preferences, java.lang.String)}.
+	 * Test method for {@link cotelab.dupfilefinder2.beans.value.MetricListener#MetricListener(java.util.prefs.Preferences, java.lang.String)}.
 	 */
 	@Test
 	public void testMetricListener() {
@@ -31,7 +32,7 @@ public class MetricListenerTest extends TestCaseWithJMockAndByteBuddy {
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.MetricListener#changed(javafx.beans.value.ObservableValue, java.lang.Number, java.lang.Number)}.
+	 * Test method for {@link cotelab.dupfilefinder2.beans.value.MetricListener#changed(javafx.beans.value.ObservableValue, java.lang.Number, java.lang.Number)}.
 	 */
 	@Test
 	public void testChanged() {
@@ -56,7 +57,7 @@ public class MetricListenerTest extends TestCaseWithJMockAndByteBuddy {
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.MetricListener#prefsPutDouble(double)}.
+	 * Test method for {@link cotelab.dupfilefinder2.beans.value.MetricListener#prefsPutDouble(double)}.
 	 */
 	@Test
 	public void testPrefsPutDouble() {
@@ -64,7 +65,7 @@ public class MetricListenerTest extends TestCaseWithJMockAndByteBuddy {
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.MetricListener#prefsSync()}.
+	 * Test method for {@link cotelab.dupfilefinder2.beans.value.MetricListener#prefsSync()}.
 	 */
 	@Test
 	public void testPrefsSync() {

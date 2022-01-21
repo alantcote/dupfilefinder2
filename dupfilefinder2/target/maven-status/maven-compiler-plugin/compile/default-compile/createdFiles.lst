@@ -1,10 +1,10 @@
 cotelab\dupfilefinder2\pipeline\Pipeline.class
 cotelab\dupfilefinder2\beans\property\FXThreadIntegerProperty$2.class
 cotelab\dupfilefinder2\pipeline\GroupByContentPhase.class
-cotelab\dupfilefinder2\HeapTracker.class
 cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$5.class
 cotelab\dupfilefinder2\treeview\ShowDuplicatesMenuItemEventHandler.class
 cotelab\dupfilefinder2\pipeline\phase\ChildProblemEventHandler.class
+cotelab\dupfilefinder2\javafx\animation\ElapsedTimeTracker.class
 cotelab\dupfilefinder2\beans\property\FXThreadLongProperty$3.class
 cotelab\dupfilefinder2\pipeline\GroupBySizePhase.class
 cotelab\dupfilefinder2\pipeline\PathSearchVisitor.class
@@ -17,6 +17,7 @@ cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$6.class
 cotelab\dupfilefinder2\FXMLController$4.class
 cotelab\dupfilefinder2\pipeline\queueing\PipelineQueue.class
 cotelab\dupfilefinder2\beans\property\FXThreadLongProperty$1.class
+cotelab\dupfilefinder2\beans\value\MetricListener.class
 cotelab\dupfilefinder2\pipeline\MatchingSubtreeIdentificationPhase.class
 cotelab\dupfilefinder2\pipeline\queueing\HistoryTrackingQueue.class
 cotelab\dupfilefinder2\FXMLController$1.class
@@ -26,13 +27,11 @@ cotelab\dupfilefinder2\treeview\DecoratedFileTreeCell.class
 cotelab\dupfilefinder2\pipeline\phase\Phase.class
 cotelab\dupfilefinder2\treeview\DupItemsDialog.class
 cotelab\dupfilefinder2\FXMLController.class
-cotelab\dupfilefinder2\ElapsedTimeTracker.class
 cotelab\dupfilefinder2\beans\property\FXThreadLongProperty$2.class
 cotelab\dupfilefinder2\FXMLController$5.class
 cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase.class
 cotelab\dupfilefinder2\FXMLController$2.class
 module-info.class
-cotelab\dupfilefinder2\MetricListener.class
 cotelab\dupfilefinder2\DupFileFinder2.class
 cotelab\dupfilefinder2\PopupBrowserLauncher.class
 cotelab\dupfilefinder2\DupFileFinder2$1.class
@@ -46,6 +45,7 @@ cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$4.class
 cotelab\dupfilefinder2\beans\property\FXThreadIntegerProperty$3.class
 cotelab\dupfilefinder2\beans\value\IntegerRollupListener.class
 cotelab\dupfilefinder2\beans\property\FXThreadLongProperty.class
+cotelab\dupfilefinder2\javafx\animation\HeapTracker.class
 cotelab\dupfilefinder2\treeview\DecoratedFileTreeView.class
 cotelab\dupfilefinder2\treeview\DecoratedFileTreeCellFactory.class
 cotelab\dupfilefinder2\treeview\CellContextMenuRequestHandler.class

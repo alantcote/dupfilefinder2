@@ -1,4 +1,4 @@
-package cotelab.dupfilefinder2;
+package cotelab.dupfilefinder2.javafx.animation;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.control.Label;
