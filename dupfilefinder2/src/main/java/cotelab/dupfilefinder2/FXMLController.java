@@ -887,15 +887,18 @@ public class FXMLController implements Initializable {
 			}
 		});
 	}
+	
+	protected HeapTracker heapTracker;
 
 	/**
 	 * Start the heap monitor.
 	 */
 	protected void startHeapMonitor() {
-		Thread t = new Thread(new HeapMonitor(heapProgressBar, heapMessage));
-
-		t.setDaemon(true);
-		t.start();
+//		Thread t = new Thread(new HeapMonitor(heapProgressBar, heapMessage));
+//
+//		t.setDaemon(true);
+//		t.start();
+		heapTracker = new HeapTracker(heapProgressBar, heapMessage);
 	}
 
 	/**

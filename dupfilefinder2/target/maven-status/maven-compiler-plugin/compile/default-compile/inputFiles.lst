@@ -1,5 +1,6 @@
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\FXThreadIntegerProperty.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\treeview\ShowDuplicatesMenuItemEventHandler.java
+C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\HeapTracker.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\treeview\DecoratedFileTreeCellFactory.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\treeview\CellContextMenuRequestHandler.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\MetricListener.java
@@ -17,7 +18,6 @@ C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefin
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\ElapsedTimeTracker.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\GroupByContentWorker.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\ChildProblemEventHandler.java
-C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\HeapMonitor.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\module-info.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\pipeline\GroupByContentPhase.java
 C:\Users\TEST\git\dupfilefinder2\dupfilefinder2\src\main\java\cotelab\dupfilefinder2\FXMLController.java
