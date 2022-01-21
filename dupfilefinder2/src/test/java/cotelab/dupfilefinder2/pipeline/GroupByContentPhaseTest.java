@@ -11,6 +11,8 @@ import org.jmock.Expectations;
 import org.junit.Test;
 
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 
 /**
  * Test case for {@link GroupByContentPhase}.
@@ -19,7 +21,8 @@ public class GroupByContentPhaseTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentPhase#call()}.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	public void testCall() throws Exception {
@@ -36,16 +39,16 @@ public class GroupByContentPhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 		GroupByContentPhase fixture = new GroupByContentPhase("phase", mockInput, mockOutput) {
 			@Override
-			protected Void superCall() throws Exception {
-				return null;
-			}
-
-			@Override
 			protected ArrayList<Path> newPathArrayList() {
 				return mockPathArrayList;
 			}
+
+			@Override
+			protected Void superCall() throws Exception {
+				return null;
+			}
 		};
-		
+
 		assertNull(fixture.call());
 	}
 
@@ -59,9 +62,9 @@ public class GroupByContentPhaseTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 
 		GroupByContentPhase fixture = new GroupByContentPhase("phase", mockInput, mockOutput);
-		
-		ThreadSafeSimpleLongProperty result = fixture.getBytesComparedCount();
-		
+
+		SimpleLongProperty result = fixture.getBytesComparedCount();
+
 		assertEquals(result, fixture.bytesComparedCount);
 	}
 
@@ -75,9 +78,9 @@ public class GroupByContentPhaseTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 
 		GroupByContentPhase fixture = new GroupByContentPhase("phase", mockInput, mockOutput);
-		
-		ThreadSafeSimpleIntegerProperty result = fixture.getFilesComparedCount();
-		
+
+		SimpleIntegerProperty result = fixture.getFilesComparedCount();
+
 		assertEquals(result, fixture.filesComparedCount);
 	}
 
@@ -91,9 +94,9 @@ public class GroupByContentPhaseTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 
 		GroupByContentPhase fixture = new GroupByContentPhase("phase", mockInput, mockOutput);
-		
-		ThreadSafeSimpleIntegerProperty result = fixture.getUniqueCount();
-		
+
+		SimpleIntegerProperty result = fixture.getUniqueCount();
+
 		assertEquals(result, fixture.uniqueCount);
 	}
 
@@ -106,16 +109,15 @@ public class GroupByContentPhaseTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		final GroupByContentWorker mockWorker = context.mock(GroupByContentWorker.class, "mockWorker");
-		final ThreadSafeSimpleLongProperty mockBytesComparedCount = context.mock(ThreadSafeSimpleLongProperty.class,
+		final SimpleLongProperty mockBytesComparedCount = context.mock(SimpleLongProperty.class,
 				"mockBytesComparedCount");
 		final LongRollupListener mockLongRollupListener = context.mock(LongRollupListener.class,
 				"mockLongRollupListener");
-		final ThreadSafeSimpleIntegerProperty mockFilesComparedCount = context
-				.mock(ThreadSafeSimpleIntegerProperty.class, "mockFilesComparedCount");
+		final SimpleIntegerProperty mockFilesComparedCount = context.mock(SimpleIntegerProperty.class,
+				"mockFilesComparedCount");
 		final IntegerRollupListener mockIntegerRollupListener = context.mock(IntegerRollupListener.class,
 				"mockIntegerRollupListener");
-		final ThreadSafeSimpleIntegerProperty mockUniqueCount = context.mock(ThreadSafeSimpleIntegerProperty.class,
-				"mockUniqueCount");
+		final SimpleIntegerProperty mockUniqueCount = context.mock(SimpleIntegerProperty.class, "mockUniqueCount");
 
 		context.checking(new Expectations() {
 			{
@@ -209,12 +211,12 @@ public class GroupByContentPhaseTest extends TestCaseWithJMockAndByteBuddy {
 			}
 
 			@Override
-			protected IntegerRollupListener newIntegerRollupListener(ThreadSafeSimpleIntegerProperty prop) {
+			protected IntegerRollupListener newIntegerRollupListener(FXThreadIntegerProperty prop) {
 				return mockIntegerRollupListener;
 			}
 
 			@Override
-			protected LongRollupListener newLongRollupListener(ThreadSafeSimpleLongProperty prop) {
+			protected LongRollupListener newLongRollupListener(FXThreadLongProperty prop) {
 				return mockLongRollupListener;
 			}
 		};
@@ -232,78 +234,78 @@ public class GroupByContentPhaseTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 
 		GroupByContentPhase fixture = new GroupByContentPhase("phase", mockInput, mockOutput);
-		
+
 		GroupByContentWorker result = fixture.newGroupByContentWorker("worker", mockInput, mockOutput);
-		
+
 		assertTrue((result != null) && (result instanceof GroupByContentWorker));
 	}
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentPhase#newIntegerRollupListener(cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleIntegerProperty)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentPhase#newIntegerRollupListener(cotelab.dupfilefinder2.pipeline.SimpleIntegerProperty)}.
 	 */
 	@Test
 	public void testNewIntegerRollupListener() {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
-		final ThreadSafeSimpleIntegerProperty mockIntegerComparedCount = context.mock(ThreadSafeSimpleIntegerProperty.class,
-				"mockIntegerComparedCount");
+		final FXThreadIntegerProperty mockFXThreadIntegerProperty = context.mock(FXThreadIntegerProperty.class,
+				"FXThreadIntegerProperty");
 
 		GroupByContentPhase fixture = new GroupByContentPhase("phase", mockInput, mockOutput);
-		
-		IntegerRollupListener result = fixture.newIntegerRollupListener(mockIntegerComparedCount);
-		
+
+		IntegerRollupListener result = fixture.newIntegerRollupListener(mockFXThreadIntegerProperty);
+
 		assertTrue((result != null) && (result instanceof IntegerRollupListener));
 	}
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentPhase#newLongRollupListener(cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleLongProperty)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentPhase#newLongRollupListener(cotelab.dupfilefinder2.pipeline.SimpleLongProperty)}.
 	 */
 	@Test
 	public void testNewLongRollupListener() {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
-		final ThreadSafeSimpleLongProperty mockBytesComparedCount = context.mock(ThreadSafeSimpleLongProperty.class,
+		final FXThreadLongProperty mockBytesComparedCount = context.mock(FXThreadLongProperty.class,
 				"mockBytesComparedCount");
 
 		GroupByContentPhase fixture = new GroupByContentPhase("phase", mockInput, mockOutput);
-		
+
 		LongRollupListener result = fixture.newLongRollupListener(mockBytesComparedCount);
-		
+
 		assertTrue((result != null) && (result instanceof LongRollupListener));
 	}
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentPhase#newThreadSafeSimpleIntegerProperty()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentPhase#newSimpleIntegerProperty()}.
 	 */
 	@Test
-	public void testNewThreadSafeSimpleIntegerProperty() {
+	public void testNewSimpleIntegerProperty() {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 
 		GroupByContentPhase fixture = new GroupByContentPhase("phase", mockInput, mockOutput);
-		
-		ThreadSafeSimpleIntegerProperty result = fixture.newThreadSafeSimpleIntegerProperty();
-		
-		assertTrue((result != null) && (result instanceof ThreadSafeSimpleIntegerProperty));
+
+		SimpleIntegerProperty result = fixture.newThreadSafeSimpleIntegerProperty();
+
+		assertTrue((result != null) && (result instanceof SimpleIntegerProperty));
 	}
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentPhase#newThreadSafeSimpleLongProperty()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentPhase#newSimpleLongProperty()}.
 	 */
 	@Test
-	public void testNewThreadSafeSimpleLongProperty() {
+	public void testNewSimpleLongProperty() {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 
 		GroupByContentPhase fixture = new GroupByContentPhase("phase", mockInput, mockOutput);
-		
-		ThreadSafeSimpleLongProperty result = fixture.newThreadSafeSimpleLongProperty();
-		
-		assertTrue((result != null) && (result instanceof ThreadSafeSimpleLongProperty));
+
+		SimpleLongProperty result = fixture.newThreadSafeSimpleLongProperty();
+
+		assertTrue((result != null) && (result instanceof SimpleLongProperty));
 	}
 
 }

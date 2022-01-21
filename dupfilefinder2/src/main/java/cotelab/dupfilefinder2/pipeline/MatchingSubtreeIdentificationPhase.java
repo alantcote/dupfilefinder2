@@ -9,6 +9,8 @@ import java.util.Map;
 import org.apache.commons.collections4.MultiMapUtils;
 import org.apache.commons.collections4.MultiValuedMap;
 
+import javafx.beans.property.SimpleIntegerProperty;
+
 /**
  * A {@link Phase} designed to identify matching subtrees. The input is a
  * sequence of collections of pathnames to be examined. The output is ...
@@ -28,7 +30,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	/**
 	 * The number of path groups considered.
 	 */
-	protected ThreadSafeSimpleIntegerProperty pathGroupsConsideredProperty = newThreadSafeSimpleIntegerProperty();
+	protected FXThreadIntegerProperty pathGroupsConsideredProperty = newThreadSafeSimpleIntegerProperty();
 
 	/**
 	 * Construct a new object.
@@ -44,7 +46,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	/**
 	 * @return the pathGroupsConsideredProperty
 	 */
-	public ThreadSafeSimpleIntegerProperty getPathGroupsConsideredProperty() {
+	public SimpleIntegerProperty getPathGroupsConsideredProperty() {
 		return pathGroupsConsideredProperty;
 	}
 
@@ -268,8 +270,8 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 	/**
 	 * @return a new object.
 	 */
-	protected ThreadSafeSimpleIntegerProperty newThreadSafeSimpleIntegerProperty() {
-		return new ThreadSafeSimpleIntegerProperty();
+	protected FXThreadIntegerProperty newThreadSafeSimpleIntegerProperty() {
+		return new FXThreadIntegerProperty();
 	}
 
 	/**

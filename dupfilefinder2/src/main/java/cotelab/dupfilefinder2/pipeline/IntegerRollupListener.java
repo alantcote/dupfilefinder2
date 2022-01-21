@@ -10,14 +10,14 @@ public class IntegerRollupListener implements ChangeListener<Number> {
 	/**
 	 * The property to update.
 	 */
-	protected ThreadSafeSimpleIntegerProperty prop;
+	protected FXThreadIntegerProperty prop;
 
 	/**
 	 * Construct a new object.
 	 * 
 	 * @param aProp the property to update.
 	 */
-	public IntegerRollupListener(ThreadSafeSimpleIntegerProperty aProp) {
+	public IntegerRollupListener(FXThreadIntegerProperty aProp) {
 		prop = aProp;
 	}
 

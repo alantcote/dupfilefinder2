@@ -10,15 +10,15 @@ public class LongRollupListener implements ChangeListener<Number> {
 	/**
 	 * The property to update.
 	 */
-	protected ThreadSafeSimpleLongProperty prop;
+	protected FXThreadLongProperty prop;
 
 	/**
 	 * Construct a new object.
 	 * 
-	 * @param aProp the property to update.
+	 * @param prop2 the property to update.
 	 */
-	public LongRollupListener(ThreadSafeSimpleLongProperty aProp) {
-		prop = aProp;
+	public LongRollupListener(FXThreadLongProperty prop2) {
+		prop = prop2;
 	}
 
 	/**

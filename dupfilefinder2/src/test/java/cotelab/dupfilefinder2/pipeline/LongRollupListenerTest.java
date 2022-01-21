@@ -18,7 +18,7 @@ public class LongRollupListenerTest extends TestCaseWithJMockAndByteBuddy {
 	 */
 	@Test
 	public void testChanged() {
-		final ThreadSafeSimpleLongProperty mockProp = context.mock(ThreadSafeSimpleLongProperty.class, "mockProp");
+		final FXThreadLongProperty mockProp = context.mock(FXThreadLongProperty.class, "mockProp");
 		LongRollupListener fixture = new LongRollupListener(mockProp);
 		final SimpleLongProperty mockSimpleLongProperty = context.mock(SimpleLongProperty.class,
 				"mockSimpleLongProperty");
@@ -38,7 +38,7 @@ public class LongRollupListenerTest extends TestCaseWithJMockAndByteBuddy {
 	 */
 	@Test
 	public void testLongRollupListener() {
-		final ThreadSafeSimpleLongProperty mockProp = context.mock(ThreadSafeSimpleLongProperty.class, "mockProp");
+		final FXThreadLongProperty mockProp = context.mock(FXThreadLongProperty.class, "mockProp");
 		LongRollupListener fixture = new LongRollupListener(mockProp);
 
 		assertTrue(mockProp == fixture.prop);

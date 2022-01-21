@@ -2,6 +2,7 @@ package cotelab.dupfilefinder2.pipeline;
 
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
@@ -129,7 +130,7 @@ public class Pipeline extends Phase {
 	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.GroupByContentPhase#getBytesComparedCount()
 	 */
-	public ThreadSafeSimpleLongProperty getGBCBytesComparedCount() {
+	public SimpleLongProperty getGBCBytesComparedCount() {
 		return groupByContentPhase.getBytesComparedCount();
 	}
 
@@ -137,7 +138,7 @@ public class Pipeline extends Phase {
 	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.GroupByContentPhase#getFilesComparedCount()
 	 */
-	public ThreadSafeSimpleIntegerProperty getGBCFilesComparedCount() {
+	public SimpleIntegerProperty getGBCFilesComparedCount() {
 		return groupByContentPhase.getFilesComparedCount();
 	}
 
@@ -153,7 +154,7 @@ public class Pipeline extends Phase {
 	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.GroupByContentPhase#getUniqueCount()
 	 */
-	public ThreadSafeSimpleIntegerProperty getGBCUniqueCount() {
+	public SimpleIntegerProperty getGBCUniqueCount() {
 		return groupByContentPhase.getUniqueCount();
 	}
 
@@ -225,7 +226,7 @@ public class Pipeline extends Phase {
 	 * @return the property.
 	 * @see cotelab.dupfilefinder2.pipeline.MatchingSubtreeIdentificationPhase#getPathGroupsConsideredProperty()
 	 */
-	public ThreadSafeSimpleIntegerProperty getMSIPathGroupsConsideredProperty() {
+	public SimpleIntegerProperty getMSIPathGroupsConsideredProperty() {
 		return matchingSubtreeIdentificationPhase.getPathGroupsConsideredProperty();
 	}
 

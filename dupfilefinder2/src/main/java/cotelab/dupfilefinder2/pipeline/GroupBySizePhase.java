@@ -21,7 +21,7 @@ public class GroupBySizePhase extends Phase {
 	/**
 	 * The number of files measured.
 	 */
-	protected SimpleIntegerProperty filesMeasuredCount = new SimpleIntegerProperty(0);
+	protected FXThreadIntegerProperty filesMeasuredCount = new FXThreadIntegerProperty(0);
 
 	/**
 	 * A map from file size to path group.
@@ -31,17 +31,17 @@ public class GroupBySizePhase extends Phase {
 	/**
 	 * The number of file sizes found.
 	 */
-	protected SimpleIntegerProperty sizeCount = new SimpleIntegerProperty(0);
+	protected FXThreadIntegerProperty sizeCount = new FXThreadIntegerProperty(0);
 
 	/**
 	 * The number of unique files discovered.
 	 */
-	protected SimpleIntegerProperty uniqueCount = new SimpleIntegerProperty(0);
+	protected FXThreadIntegerProperty uniqueCount = new FXThreadIntegerProperty(0);
 
 	/**
 	 * The number of files that couldn't be measured.
 	 */
-	protected SimpleIntegerProperty unmeasurableCount = new SimpleIntegerProperty(0);
+	protected FXThreadIntegerProperty unmeasurableCount = new FXThreadIntegerProperty(0);
 
 	/**
 	 * Construct a new object.
@@ -126,9 +126,10 @@ public class GroupBySizePhase extends Phase {
 				long size = fileSize(path);
 				size2PathMap.put(size, path);
 
-				filesMeasuredCount.set(filesMeasuredCount.get() + 1);
+				filesMeasuredCount.increment(1);
+				sizeCount.set(size2PathMap.keySet().size());
 			} catch (IOException e) {
-				unmeasurableCount.set(unmeasurableCount.get() + 1);
+				unmeasurableCount.increment(1);
 			}
 		}
 	}
@@ -152,7 +153,7 @@ public class GroupBySizePhase extends Phase {
 
 			if (groupSize == 1) {
 				// if there's only 1 in the group, it's a unique file
-				uniqueCount.set(uniqueCount.get() + 1);
+				uniqueCount.increment(1);
 			} else if (groupSize > 1) {
 				// if there are 2 or more in the group, they match by size
 				try {

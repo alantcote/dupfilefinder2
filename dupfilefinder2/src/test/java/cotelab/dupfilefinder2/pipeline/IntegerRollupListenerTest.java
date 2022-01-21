@@ -18,8 +18,7 @@ public class IntegerRollupListenerTest extends TestCaseWithJMockAndByteBuddy {
 	 */
 	@Test
 	public void testChanged() {
-		final ThreadSafeSimpleIntegerProperty mockProp = context.mock(ThreadSafeSimpleIntegerProperty.class,
-				"mockProp");
+		final FXThreadIntegerProperty mockProp = context.mock(FXThreadIntegerProperty.class, "mockProp");
 		IntegerRollupListener fixture = new IntegerRollupListener(mockProp);
 		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class,
 				"mockSimpleIntegerProperty");
@@ -39,8 +38,7 @@ public class IntegerRollupListenerTest extends TestCaseWithJMockAndByteBuddy {
 	 */
 	@Test
 	public void testIntegerRollupListener() {
-		final ThreadSafeSimpleIntegerProperty mockProp = context.mock(ThreadSafeSimpleIntegerProperty.class,
-				"mockProp");
+		final FXThreadIntegerProperty mockProp = context.mock(FXThreadIntegerProperty.class, "mockProp");
 		IntegerRollupListener fixture = new IntegerRollupListener(mockProp);
 
 		assertTrue(mockProp == fixture.prop);

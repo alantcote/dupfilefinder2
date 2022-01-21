@@ -36,7 +36,8 @@ public class SubtreeSearchPhase extends Phase {
 	/**
 	 * The number of regular file paths found.
 	 */
-	protected SimpleIntegerProperty regularFileCount = newSimpleIntegerProperty();
+//	protected SimpleIntegerProperty regularFileCount = newSimpleIntegerProperty();
+	protected FXThreadIntegerProperty regularFileCount = new FXThreadIntegerProperty();
 
 	/**
 	 * The number of symbolic link paths found.
@@ -157,7 +158,8 @@ public class SubtreeSearchPhase extends Phase {
 							Number newValue) {
 						int delta = newValue.intValue() - oldValue.intValue();
 
-						regularFileCount.set(regularFileCount.get() + delta);
+//						regularFileCount.set(regularFileCount.get() + delta);
+						regularFileCount.increment(delta);
 					}
 				});
 				pathSearchVisitor.getSymbolicLinkCount().addListener(new ChangeListener<Number>() {
@@ -210,7 +212,7 @@ public class SubtreeSearchPhase extends Phase {
 	 * @return a new object with its value set to zero.
 	 */
 	protected SimpleIntegerProperty newSimpleIntegerProperty() {
-		return new SimpleIntegerProperty(0);
+		return new FXThreadIntegerProperty(0);
 	}
 
 }

@@ -17,13 +17,12 @@ import cotelab.dupfilefinder2.pipeline.Phase;
 import cotelab.dupfilefinder2.pipeline.Pipeline;
 import cotelab.dupfilefinder2.pipeline.PipelineQueue;
 import cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase;
-import cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleIntegerProperty;
-import cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleLongProperty;
 import cotelab.dupfilefinder2.treeview.DecoratedFileTreeView;
 import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -550,7 +549,8 @@ public class FXMLController implements Initializable {
 	 * @param label the display field.
 	 */
 	protected void bind(ReadOnlyObjectProperty<State> roop, Label label) {
-		roop.addListener(new StatePropToLabelBinder(label, this));
+//		roop.addListener(new StatePropToLabelBinder(label, this));
+		label.textProperty().bind(roop.asString());
 	}
 
 	/**
@@ -561,18 +561,7 @@ public class FXMLController implements Initializable {
 	 * @param label the display field.
 	 */
 	protected void bind(SimpleIntegerProperty sip, Label label) {
-		sip.addListener(new NumberPropToLabelBinder(label, this));
-	}
-
-	/**
-	 * Set up a listener to keep a display field updated to reflect changes to a
-	 * property.
-	 * 
-	 * @param tssip the property.
-	 * @param label the display field.
-	 */
-	protected void bind(ThreadSafeSimpleIntegerProperty tssip, Label label) {
-		tssip.addListener(new NumberPropToLabelBinder(label, this));
+		label.textProperty().bind(sip.asString("%,d"));
 	}
 
 	/**
@@ -582,8 +571,8 @@ public class FXMLController implements Initializable {
 	 * @param tsslp the property.
 	 * @param label the display field.
 	 */
-	protected void bind(ThreadSafeSimpleLongProperty tsslp, Label label) {
-		tsslp.addListener(new NumberPropToLabelBinder(label, this));
+	protected void bind(SimpleLongProperty tsslp, Label label) {
+		label.textProperty().bind(tsslp.asString("%,d"));
 	}
 
 	/**

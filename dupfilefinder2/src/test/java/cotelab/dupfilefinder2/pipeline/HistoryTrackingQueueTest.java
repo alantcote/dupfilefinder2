@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
+import javafx.application.Platform;
 
 /**
  * Test case for {@link cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue}.
@@ -55,9 +56,16 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 	public void testIncrementPutCount() {
 		HistoryTrackingQueue<String> fixture = new HistoryTrackingQueue<String>(5);
 
-		fixture.incrementPutCount(5);
+		Platform.runLater(new Runnable() {
 
-		assertEquals(5, fixture.getPutCount().get());
+			@Override
+			public void run() {
+				fixture.incrementPutCount(5);
+
+				assertEquals(5, fixture.getPutCount().get());
+			}
+			
+		});
 	}
 
 	/**
@@ -68,20 +76,28 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 	public void testIncrementTakeCount() {
 		HistoryTrackingQueue<String> fixture = new HistoryTrackingQueue<String>(5);
 
-		fixture.incrementTakeCount(5);
+		Platform.runLater(new Runnable() {
 
-		assertEquals(5, fixture.getTakeCount().get());
+			@Override
+			public void run() {
+				fixture.incrementTakeCount(5);
+
+				assertEquals(5, fixture.getTakeCount().get());
+			}
+			
+		});
+
 	}
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#newSimpleIntegerProperty()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#newFXThreadIntegerProperty()}.
 	 */
 	@Test
 	public void testNewSimpleIntegerProperty() {
 		HistoryTrackingQueue<String> fixture = new HistoryTrackingQueue<String>(5);
 
-		assertNotNull(fixture.newSimpleIntegerProperty());
+		assertNotNull(fixture.newFXThreadIntegerProperty());
 	}
 
 	/**
@@ -92,12 +108,23 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 	 */
 	@Test
 	public void testPoll() throws InterruptedException {
-		HistoryTrackingQueue<String> fixture = new HistoryTrackingQueue<String>(5);
+		final HistoryTrackingQueue<String> fixture = new HistoryTrackingQueue<String>(5);
 
-		fixture.put("item");
+		Platform.runLater(new Runnable() {
 
-		assertEquals("item", fixture.poll());
-		assertEquals(1, fixture.getTakeCount().get());
+			@Override
+			public void run() {
+				try {
+					fixture.put("item");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					assertEquals(null, e.getMessage());
+				}
+
+				assertEquals("item", fixture.poll());
+				assertEquals(1, fixture.getTakeCount().get());
+			}
+		});
 	}
 
 	/**
@@ -110,10 +137,26 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 	public void testPollLongTimeUnit() throws InterruptedException {
 		HistoryTrackingQueue<String> fixture = new HistoryTrackingQueue<String>(5);
 
-		fixture.put("item");
+		Platform.runLater(new Runnable() {
 
-		assertEquals("item", fixture.poll(1, TimeUnit.SECONDS));
-		assertEquals(1, fixture.getTakeCount().get());
+			@Override
+			public void run() {
+				try {
+					fixture.put("item");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					assertEquals(null, e.getMessage());
+				}
+
+				try {
+					assertEquals("item", fixture.poll(1, TimeUnit.SECONDS));
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					assertEquals(null, e.getMessage());
+				}
+				assertEquals(1, fixture.getTakeCount().get());
+			}
+		});
 	}
 
 	/**
@@ -126,9 +169,21 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 	public void testPutE() throws InterruptedException {
 		HistoryTrackingQueue<String> fixture = new HistoryTrackingQueue<String>(5);
 
-		fixture.put("item");
+		Platform.runLater(new Runnable() {
 
-		assertEquals(1, fixture.getPutCount().get());
+			@Override
+			public void run() {
+				try {
+					fixture.put("item");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					assertEquals(null, e.getMessage());
+				}
+
+				assertEquals("item", fixture.poll());
+				assertEquals(1, fixture.getPutCount().get());
+			}
+		});
 	}
 
 	/**
@@ -141,10 +196,25 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 	public void testTake() throws InterruptedException {
 		HistoryTrackingQueue<String> fixture = new HistoryTrackingQueue<String>(5);
 
-		fixture.put("item");
+		Platform.runLater(new Runnable() {
 
-		assertEquals("item", fixture.take());
-		assertEquals(1, fixture.getTakeCount().get());
+			@Override
+			public void run() {
+				try {
+					fixture.put("item");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					assertEquals(null, e.getMessage());
+				}
+				try {
+					assertEquals("item", fixture.take());
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					assertEquals(null, e.getMessage());
+				}
+				assertEquals(1, fixture.getTakeCount().get());
+			}
+		});
 	}
 
 }

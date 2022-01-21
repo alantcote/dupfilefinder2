@@ -17,12 +17,13 @@ import org.junit.runner.RunWith;
 
 import cotelab.dupfilefinder2.pipeline.Pipeline;
 import cotelab.dupfilefinder2.pipeline.PipelineQueue;
-import cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleIntegerProperty;
-import cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleLongProperty;
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
+import javafx.beans.InvalidationListener;
+import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Worker.State;
 import javafx.scene.control.Button;
@@ -125,11 +126,15 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 		final ReadOnlyObjectProperty<State> mockReadOnlyObjectProperty = context.mock(ReadOnlyObjectProperty.class,
 				"mockReadOnlyObjectProperty");
 		final Label mockLabel = context.mock(Label.class, "mockLabel");
+		final StringBinding mockStringBinding = context.mock(StringBinding.class, "mockStringBinding");
 		FXMLController fixture = new FXMLController();
 
 		context.checking(new Expectations() {
 			{
-				oneOf(mockReadOnlyObjectProperty).addListener(with(any(StatePropToLabelBinder.class)));
+				oneOf(mockReadOnlyObjectProperty).asString();
+				will(returnValue(mockStringBinding));
+				
+				oneOf(mockStringBinding).addListener(with(any(InvalidationListener.class)));
 			}
 		});
 
@@ -149,51 +154,11 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 
 		context.checking(new Expectations() {
 			{
-				oneOf(mockSimpleIntegerProperty).addListener(with(any(NumberPropToLabelBinder.class)));
+				oneOf(mockSimpleIntegerProperty).asString("%,d");
 			}
 		});
 
 		fixture.bind(mockSimpleIntegerProperty, mockLabel);
-	}
-
-	/**
-	 * Test method for
-	 * {@link cotelab.dupfilefinder2.FXMLController#bind(cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleIntegerProperty, javafx.scene.control.Label)}.
-	 */
-	@Test
-	public void testBindThreadSafeSimpleIntegerPropertyLabel() {
-		final ThreadSafeSimpleIntegerProperty mockThreadSafeSimpleIntegerProperty = context
-				.mock(ThreadSafeSimpleIntegerProperty.class, "mockThreadSafeSimpleIntegerProperty");
-		final Label mockLabel = context.mock(Label.class, "mockLabel");
-		FXMLController fixture = new FXMLController();
-
-		context.checking(new Expectations() {
-			{
-				oneOf(mockThreadSafeSimpleIntegerProperty).addListener(with(any(NumberPropToLabelBinder.class)));
-			}
-		});
-
-		fixture.bind(mockThreadSafeSimpleIntegerProperty, mockLabel);
-	}
-
-	/**
-	 * Test method for
-	 * {@link cotelab.dupfilefinder2.FXMLController#bind(cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleLongProperty, javafx.scene.control.Label)}.
-	 */
-	@Test
-	public void testBindThreadSafeSimpleLongPropertyLabel() {
-		final ThreadSafeSimpleLongProperty mockThreadSafeSimpleLongProperty = context
-				.mock(ThreadSafeSimpleLongProperty.class, "mockThreadSafeSimpleLongProperty");
-		final Label mockLabel = context.mock(Label.class, "mockLabel");
-		FXMLController fixture = new FXMLController();
-
-		context.checking(new Expectations() {
-			{
-				oneOf(mockThreadSafeSimpleLongProperty).addListener(with(any(NumberPropToLabelBinder.class)));
-			}
-		});
-
-		fixture.bind(mockThreadSafeSimpleLongProperty, mockLabel);
 	}
 
 	/**
@@ -458,10 +423,10 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 		@SuppressWarnings("unchecked")
 		final ReadOnlyObjectProperty<State> mockReadOnlyObjectProperty = context.mock(ReadOnlyObjectProperty.class,
 				"mockReadOnlyObjectProperty");
-		final ThreadSafeSimpleIntegerProperty mockThreadSafeSimpleIntegerProperty = context
-				.mock(ThreadSafeSimpleIntegerProperty.class, "mockThreadSafeSimpleIntegerProperty");
-		final ThreadSafeSimpleLongProperty mockThreadSafeSimpleLongProperty = context
-				.mock(ThreadSafeSimpleLongProperty.class, "mockThreadSafeSimpleLongProperty");
+		final SimpleIntegerProperty mockSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class,
+				"mockSimpleIntegerProperty");
+		final SimpleLongProperty mockSimpleLongProperty = context.mock(SimpleLongProperty.class,
+				"mockSimpleLongProperty");
 		Label label = new Label();
 		final SimpleIntegerProperty bindTSSIPCallCount = new SimpleIntegerProperty(0);
 		final SimpleIntegerProperty bindSLPCallCount = new SimpleIntegerProperty(0);
@@ -474,12 +439,12 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 			}
 
 			@Override
-			protected void bind(ThreadSafeSimpleIntegerProperty sip, Label label) {
+			protected void bind(SimpleIntegerProperty sip, Label label) {
 				bindTSSIPCallCount.set(1 + bindTSSIPCallCount.get());
 			}
 
 			@Override
-			protected void bind(ThreadSafeSimpleLongProperty tsslp, Label label) {
+			protected void bind(SimpleLongProperty tsslp, Label label) {
 				bindSLPCallCount.set(1 + bindSLPCallCount.get());
 			}
 
@@ -503,13 +468,13 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 				will(returnValue(mockReadOnlyObjectProperty));
 
 				oneOf(mockPipeline).getGBCUniqueCount();
-				will(returnValue(mockThreadSafeSimpleIntegerProperty));
+				will(returnValue(mockSimpleIntegerProperty));
 
 				oneOf(mockPipeline).getGBCFilesComparedCount();
-				will(returnValue(mockThreadSafeSimpleIntegerProperty));
+				will(returnValue(mockSimpleIntegerProperty));
 
 				oneOf(mockPipeline).getGBCBytesComparedCount();
-				will(returnValue(mockThreadSafeSimpleLongProperty));
+				will(returnValue(mockSimpleLongProperty));
 			}
 		});
 
@@ -658,8 +623,8 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 		@SuppressWarnings("unchecked")
 		final ReadOnlyObjectProperty<State> mockReadOnlyObjectProperty = context.mock(ReadOnlyObjectProperty.class,
 				"mockReadOnlyObjectProperty");
-		final ThreadSafeSimpleIntegerProperty mockThreadSafeSimpleIntegerProperty = context
-				.mock(ThreadSafeSimpleIntegerProperty.class, "mockThreadSafeSimpleIntegerProperty");
+		final SimpleIntegerProperty mockThreadSafeSimpleIntegerProperty = context.mock(SimpleIntegerProperty.class,
+				"mockSimpleIntegerProperty");
 		Label label = new Label();
 		final SimpleIntegerProperty bindSIPCallCount = new SimpleIntegerProperty(0);
 		final SimpleIntegerProperty bindSOPCallCount = new SimpleIntegerProperty(0);
@@ -671,7 +636,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 			}
 
 			@Override
-			protected void bind(ThreadSafeSimpleIntegerProperty sip, Label label) {
+			protected void bind(SimpleIntegerProperty sip, Label label) {
 				bindSIPCallCount.set(1 + bindSIPCallCount.get());
 			}
 

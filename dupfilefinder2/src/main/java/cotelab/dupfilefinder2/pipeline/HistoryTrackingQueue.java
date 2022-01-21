@@ -20,12 +20,12 @@ public class HistoryTrackingQueue<E> extends LinkedBlockingQueue<E> {
 	/**
 	 * The number of objects put into the queue.
 	 */
-	protected SimpleIntegerProperty putCount = newSimpleIntegerProperty();
+	protected FXThreadIntegerProperty putCount = newFXThreadIntegerProperty();
 
 	/**
 	 * The number of objects taken from the queue.
 	 */
-	protected SimpleIntegerProperty takeCount = newSimpleIntegerProperty();
+	protected FXThreadIntegerProperty takeCount = newFXThreadIntegerProperty();
 
 	/**
 	 * {@inheritDoc}
@@ -54,7 +54,7 @@ public class HistoryTrackingQueue<E> extends LinkedBlockingQueue<E> {
 	 * @param increment the value to be added.
 	 */
 	public synchronized void incrementPutCount(int increment) {
-		putCount.set(putCount.get() + increment);
+		putCount.increment(increment);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class HistoryTrackingQueue<E> extends LinkedBlockingQueue<E> {
 	 * @param increment the value to be added.
 	 */
 	public synchronized void incrementTakeCount(int increment) {
-		takeCount.set(takeCount.get() + increment);
+		takeCount.increment(increment);
 	}
 
 	/**
@@ -119,8 +119,8 @@ public class HistoryTrackingQueue<E> extends LinkedBlockingQueue<E> {
 	/**
 	 * @return a new object.
 	 */
-	protected SimpleIntegerProperty newSimpleIntegerProperty() {
-		return new SimpleIntegerProperty(0);
+	protected FXThreadIntegerProperty newFXThreadIntegerProperty() {
+		return new FXThreadIntegerProperty(0);
 	}
 
 }

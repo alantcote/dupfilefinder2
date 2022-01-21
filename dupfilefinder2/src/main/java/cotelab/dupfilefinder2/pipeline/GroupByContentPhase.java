@@ -3,6 +3,9 @@ package cotelab.dupfilefinder2.pipeline;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
+
 /**
  * A {@link Phase} designed to group files by content. The input is a sequence
  * of collections of pathnames to be grouped. The output is a sequence of
@@ -19,17 +22,17 @@ public class GroupByContentPhase extends Phase {
 	/**
 	 * The number of bytes compared.
 	 */
-	protected ThreadSafeSimpleLongProperty bytesComparedCount = newThreadSafeSimpleLongProperty();
+	protected FXThreadLongProperty bytesComparedCount = newThreadSafeSimpleLongProperty();
 
 	/**
 	 * The number of files compared.
 	 */
-	protected ThreadSafeSimpleIntegerProperty filesComparedCount = newThreadSafeSimpleIntegerProperty();
+	protected FXThreadIntegerProperty filesComparedCount = newThreadSafeSimpleIntegerProperty();
 
 	/**
 	 * The number of unique files identified.
 	 */
-	protected ThreadSafeSimpleIntegerProperty uniqueCount = newThreadSafeSimpleIntegerProperty();
+	protected FXThreadIntegerProperty uniqueCount = newThreadSafeSimpleIntegerProperty();
 
 	/**
 	 * Construct a new object.
@@ -56,21 +59,21 @@ public class GroupByContentPhase extends Phase {
 	/**
 	 * @return the bytesComparedCount
 	 */
-	public ThreadSafeSimpleLongProperty getBytesComparedCount() {
+	public SimpleLongProperty getBytesComparedCount() {
 		return bytesComparedCount;
 	}
 
 	/**
 	 * @return the filesComparedCount
 	 */
-	public ThreadSafeSimpleIntegerProperty getFilesComparedCount() {
+	public SimpleIntegerProperty getFilesComparedCount() {
 		return filesComparedCount;
 	}
 
 	/**
 	 * @return the uniqueCount
 	 */
-	public ThreadSafeSimpleIntegerProperty getUniqueCount() {
+	public SimpleIntegerProperty getUniqueCount() {
 		return uniqueCount;
 	}
 
@@ -96,14 +99,14 @@ public class GroupByContentPhase extends Phase {
 	/**
 	 * @return a new object.
 	 */
-	protected IntegerRollupListener newIntegerRollupListener(ThreadSafeSimpleIntegerProperty prop) {
+	protected IntegerRollupListener newIntegerRollupListener(FXThreadIntegerProperty prop) {
 		return new IntegerRollupListener(prop);
 	}
 
 	/**
 	 * @return a new object.
 	 */
-	protected LongRollupListener newLongRollupListener(ThreadSafeSimpleLongProperty prop) {
+	protected LongRollupListener newLongRollupListener(FXThreadLongProperty prop) {
 		return new LongRollupListener(prop);
 	}
 
@@ -117,15 +120,15 @@ public class GroupByContentPhase extends Phase {
 	/**
 	 * @return a new object.
 	 */
-	protected ThreadSafeSimpleIntegerProperty newThreadSafeSimpleIntegerProperty() {
-		return new ThreadSafeSimpleIntegerProperty(0);
+	protected FXThreadIntegerProperty newThreadSafeSimpleIntegerProperty() {
+		return new FXThreadIntegerProperty(0);
 	}
 
 	/**
 	 * @return a new object.
 	 */
-	protected ThreadSafeSimpleLongProperty newThreadSafeSimpleLongProperty() {
-		return new ThreadSafeSimpleLongProperty(0);
+	protected FXThreadLongProperty newThreadSafeSimpleLongProperty() {
+		return new FXThreadLongProperty(0);
 	}
 
 	/**

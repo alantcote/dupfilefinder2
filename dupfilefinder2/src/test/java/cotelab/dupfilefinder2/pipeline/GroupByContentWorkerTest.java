@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
+import javafx.application.Platform;
 
 /**
  * Test method for {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker}.
@@ -64,12 +65,12 @@ public class GroupByContentWorkerTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
-		final ThreadSafeSimpleLongProperty mockThreadSafeSimpleLongProperty = context
-				.mock(ThreadSafeSimpleLongProperty.class, "mockThreadSafeSimpleLongProperty");
+		final FXThreadLongProperty mockFXThreadLongProperty = context.mock(FXThreadLongProperty.class,
+				"mockFXThreadLongProperty");
 
-		fixture.bytesComparedCount = mockThreadSafeSimpleLongProperty;
+		fixture.bytesComparedCount = mockFXThreadLongProperty;
 
-		assertEquals(mockThreadSafeSimpleLongProperty, fixture.getBytesComparedCount());
+		assertEquals(mockFXThreadLongProperty, fixture.getBytesComparedCount());
 	}
 
 	/**
@@ -81,12 +82,12 @@ public class GroupByContentWorkerTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
-		final ThreadSafeSimpleIntegerProperty mockThreadSafeSimpleIntegerProperty = context
-				.mock(ThreadSafeSimpleIntegerProperty.class, "mockThreadSafeSimpleIntegerProperty");
+		final FXThreadIntegerProperty mockFXThreadIntegerProperty = context.mock(FXThreadIntegerProperty.class,
+				"mockFXThreadIntegerProperty");
 
-		fixture.filesComparedCount = mockThreadSafeSimpleIntegerProperty;
+		fixture.filesComparedCount = mockFXThreadIntegerProperty;
 
-		assertEquals(mockThreadSafeSimpleIntegerProperty, fixture.getFilesComparedCount());
+		assertEquals(mockFXThreadIntegerProperty, fixture.getFilesComparedCount());
 	}
 
 	/**
@@ -98,12 +99,12 @@ public class GroupByContentWorkerTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
-		final ThreadSafeSimpleIntegerProperty mockThreadSafeSimpleIntegerProperty = context
-				.mock(ThreadSafeSimpleIntegerProperty.class, "mockThreadSafeSimpleIntegerProperty");
+		final FXThreadIntegerProperty mockFXThreadIntegerProperty = context.mock(FXThreadIntegerProperty.class,
+				"mockFXThreadIntegerProperty");
 
-		fixture.uniqueCount = mockThreadSafeSimpleIntegerProperty;
+		fixture.uniqueCount = mockFXThreadIntegerProperty;
 
-		assertEquals(mockThreadSafeSimpleIntegerProperty, fixture.getUniqueCount());
+		assertEquals(mockFXThreadIntegerProperty, fixture.getUniqueCount());
 	}
 
 	/**
@@ -351,14 +352,28 @@ public class GroupByContentWorkerTest extends TestCaseWithJMockAndByteBuddy {
 		};
 		Collection<Path> pathColl = new ArrayList<Path>();
 		final Path mockPath = context.mock(Path.class, "mockPath");
-		ThreadSafeSimpleLongProperty bcc = new ThreadSafeSimpleLongProperty(0);
+		FXThreadLongProperty bcc = new FXThreadLongProperty(0);
 
-		fixture.bytesComparedCount = bcc;
-		pathColl.add(mockPath);
+		Platform.runLater(new Runnable() {
 
-		fixture.processBatch(pathColl);
+			@Override
+			public void run() {
+				fixture.bytesComparedCount = bcc;
+				pathColl.add(mockPath);
 
-		assertEquals(0, fixture.bytesComparedCount.get());
+				try {
+					fixture.processBatch(pathColl);
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+					e.printStackTrace();
+					assertNull(e.getMessage());
+				}
+
+				assertEquals(0, fixture.bytesComparedCount.get());
+			}
+			
+		});
+
 	}
 
 	/**
