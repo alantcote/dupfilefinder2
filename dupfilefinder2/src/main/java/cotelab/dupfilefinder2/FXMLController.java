@@ -23,6 +23,7 @@ import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -432,7 +433,7 @@ public class FXMLController implements Initializable {
 		subtreeSelectionTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		rootPane.setLeft(subtreeSelectionTreeView);
 
-		startHeapMonitor();
+		startHeapTracker();
 		elapsedTimeTracker = newElapsedTimeTracker(elapsedTime);
 
 		fileCloseMenuItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -567,6 +568,17 @@ public class FXMLController implements Initializable {
 	}
 
 	/**
+	 * Set up a listener to keep a display field updated to reflect changes to a
+	 * property.
+	 * 
+	 * @param tsslp the property.
+	 * @param label the display field.
+	 */
+	protected void bind(SimpleStringProperty tsslp, Label label) {
+		label.textProperty().bind(tsslp);
+	}
+
+	/**
 	 * Build up the ancestor set.
 	 */
 	protected void buildAncestorSet() {
@@ -684,8 +696,7 @@ public class FXMLController implements Initializable {
 	 * @param line the pipeline.
 	 */
 	protected void setUpGroupByContent2MatchingSubtreeIdentificationQueueListeners(Pipeline line) {
-		gbc2msiQueueName.setText(line.getGBC2MSIQueueName().get());
-
+		bind(line.getGBC2MSIQueueName(), gbc2msiQueueName);
 		bind(line.getGBC2MSIQueuePutCount(), gbc2msiPutCount);
 		bind(line.getGBC2MSIQueueTakeCount(), gbc2msiTakeCount);
 	}
@@ -696,9 +707,7 @@ public class FXMLController implements Initializable {
 	 * @param line the pipeline.
 	 */
 	protected void setUpGroupByContentPhaseListeners(Pipeline line) {
-		gbcName.setText(line.getGBCPhaseName().get());
-		gbcState.setText(line.gbcStateProperty().get().toString());
-
+		bind(line.getGBCPhaseName(), gbcName);
 		bind(line.gbcStateProperty(), gbcState);
 		bind(line.getGBCUniqueCount(), gbcUniqueCount);
 		bind(line.getGBCFilesComparedCount(), gbcFilesCompared);
@@ -711,8 +720,7 @@ public class FXMLController implements Initializable {
 	 * @param line the pipeline.
 	 */
 	protected void setUpGroupBySize2GroupByContentQueueListeners(Pipeline line) {
-		gbs2gbcQueueName.setText(line.getGBS2GBCQueueName().get());
-
+		bind(line.getGBS2GBCQueueName(), gbs2gbcQueueName);
 		bind(line.getGBS2GBCQueuePutCount(), gbs2gbcPutCount);
 		bind(line.getGBS2GBCQueueTakeCount(), gbs2gbcTakeCount);
 	}
@@ -723,9 +731,7 @@ public class FXMLController implements Initializable {
 	 * @param line the pipeline.
 	 */
 	protected void setUpGroupBySizePhaseListeners(Pipeline line) {
-		gbsName.setText(line.getGBSPhaseName().get());
-		gbsState.setText(line.gbsStateProperty().get().toString());
-
+		bind(line.getGBSPhaseName(), gbsName);
 		bind(line.gbsStateProperty(), gbsState);
 		bind(line.getGBSFilesMeasuredCount(), gbsFilesMeasuredCount);
 		bind(line.getGBSSizeCount(), gbsSizeCount);
@@ -739,9 +745,7 @@ public class FXMLController implements Initializable {
 	 * @param line the pipeline.
 	 */
 	protected void setUpMatchingSubtreeIdentificationPhaseListeners(Pipeline line) {
-		msiName.setText(line.getMSIPhaseName().get());
-		msiState.setText(line.msiStateProperty().get().toString());
-
+		bind(line.getMSIPhaseName(), msiName);
 		bind(line.msiStateProperty(), msiState);
 		bind(line.getMSIPathGroupsConsideredProperty(), msiPathGroupsConsidered);
 	}
@@ -786,9 +790,7 @@ public class FXMLController implements Initializable {
 	 * @param line the pipeline.
 	 */
 	protected void setUpPipelineInputQueueListeners(Pipeline line) {
-		pipelineInputQueueName.setText(line.getInputName().get());
-		pipelineInputPutCount.setText(Integer.toString(line.getInputPutCount().get()));
-
+		bind(line.getInputName(), pipelineInputQueueName);
 		bind(line.getInputPutCount(), pipelineInputPutCount);
 		bind(line.getInputTakeCount(), pipelineInputTakeCount);
 	}
@@ -799,11 +801,10 @@ public class FXMLController implements Initializable {
 	 * @param line the pipeline.
 	 */
 	protected void setUpPipelineListeners(Pipeline line) {
-		pipelineName.setText(line.getPhaseName().get());
-		pipelineState.setText(line.stateProperty().get().toString());
-
+		bind(line.getPhaseName(), pipelineName);
 		bind(line.stateProperty(), pipelineState);
 
+		// handle end-of-scan condition
 		line.stateProperty().addListener(new ChangeListener<State>() {
 			@Override
 			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
@@ -836,8 +837,7 @@ public class FXMLController implements Initializable {
 	 * @param line the pipeline.
 	 */
 	protected void setUpPipelineOutputQueueListeners(Pipeline line) {
-		pipelineOutputQueueName.setText(line.getOutputName().get());
-
+		bind(line.getOutputName(), pipelineOutputQueueName);
 		bind(line.getOutputPutCount(), pipelineOutputPutCount);
 		bind(line.getOutputTakeCount(), pipelineOutputTakeCount);
 	}
@@ -848,8 +848,7 @@ public class FXMLController implements Initializable {
 	 * @param line the pipeline.
 	 */
 	protected void setUpSubtreeSearch2GroupBySizeQueueListeners(Pipeline line) {
-		ss2gbsQueueName.setText(line.getSS2GBSQueueName().get());
-
+		bind(line.getSS2GBSQueueName(), ss2gbsQueueName);
 		bind(line.getSS2GBSQueuePutCount(), ss2gbsPutCount);
 		bind(line.getSS2GBSQueueTakeCount(), ss2gbsTakeCount);
 	}
@@ -860,9 +859,7 @@ public class FXMLController implements Initializable {
 	 * @param line the pipeline.
 	 */
 	protected void setUpSubtreeSearchPhaseListeners(Pipeline line) {
-		sspName.setText(line.getSSPPhaseName().get());
-		sspState.setText(line.sspStateProperty().get().toString());
-
+		bind(line.getSSPPhaseName(), sspName);
 		bind(line.sspStateProperty(), sspState);
 		bind(line.getSSPDirectoryCount(), sspDirectoryCount);
 		bind(line.getSSPFailedAccessCount(), sspFailedAccessCount);
@@ -888,16 +885,15 @@ public class FXMLController implements Initializable {
 		});
 	}
 	
+	/**
+	 * The heap tracking component.
+	 */
 	protected HeapTracker heapTracker;
 
 	/**
-	 * Start the heap monitor.
+	 * Start the heap tracker.
 	 */
-	protected void startHeapMonitor() {
-//		Thread t = new Thread(new HeapMonitor(heapProgressBar, heapMessage));
-//
-//		t.setDaemon(true);
-//		t.start();
+	protected void startHeapTracker() {
 		heapTracker = new HeapTracker(heapProgressBar, heapMessage);
 	}
 

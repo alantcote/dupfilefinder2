@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
+import javax.swing.event.ChangeListener;
+
 import org.jmock.Expectations;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -283,7 +285,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 			}
 
 			@Override
-			protected void startHeapMonitor() {
+			protected void startHeapTracker() {
 				startHeapMonitorCallCount.set(1 + startHeapMonitorCallCount.get());
 			}
 
@@ -383,8 +385,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 				oneOf(mockPipeline).getGBC2MSIQueueName();
 				will(returnValue(mockSimpleStringProperty));
 
-				oneOf(mockSimpleStringProperty).get();
-				will(returnValue("boo"));
+				oneOf(mockSimpleStringProperty).addListener(with(any(InvalidationListener.class)));
 
 				oneOf(mockPipeline).getGBC2MSIQueuePutCount();
 				will(returnValue(mockSimpleIntegerProperty));
@@ -447,14 +448,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 				oneOf(mockPipeline).getGBCPhaseName();
 				will(returnValue(mockSimpleStringProperty));
 
-				oneOf(mockSimpleStringProperty).get();
-				will(returnValue("boo"));
-
-				oneOf(mockPipeline).gbcStateProperty();
-				will(returnValue(mockReadOnlyObjectProperty));
-
-				oneOf(mockReadOnlyObjectProperty).get();
-				will(returnValue(State.RUNNING));
+				oneOf(mockSimpleStringProperty).addListener(with(any(InvalidationListener.class)));
 
 				oneOf(mockPipeline).gbcStateProperty();
 				will(returnValue(mockReadOnlyObjectProperty));
@@ -509,8 +503,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 				oneOf(mockPipeline).getGBS2GBCQueueName();
 				will(returnValue(mockSimpleStringProperty));
 
-				oneOf(mockSimpleStringProperty).get();
-				will(returnValue("boo"));
+				oneOf(mockSimpleStringProperty).addListener(with(any(InvalidationListener.class)));
 
 				oneOf(mockPipeline).getGBS2GBCQueuePutCount();
 				will(returnValue(mockSimpleIntegerProperty));
@@ -565,14 +558,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 				oneOf(mockPipeline).getGBSPhaseName();
 				will(returnValue(mockSimpleStringProperty));
 
-				oneOf(mockSimpleStringProperty).get();
-				will(returnValue("boo"));
-
-				oneOf(mockPipeline).gbsStateProperty();
-				will(returnValue(mockReadOnlyObjectProperty));
-
-				oneOf(mockReadOnlyObjectProperty).get();
-				will(returnValue(State.RUNNING));
+				oneOf(mockSimpleStringProperty).addListener(with(any(InvalidationListener.class)));
 
 				oneOf(mockPipeline).gbsStateProperty();
 				will(returnValue(mockReadOnlyObjectProperty));
@@ -639,14 +625,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 				oneOf(mockPipeline).getMSIPhaseName();
 				will(returnValue(mockSimpleStringProperty));
 
-				oneOf(mockSimpleStringProperty).get();
-				will(returnValue("boo"));
-
-				oneOf(mockPipeline).msiStateProperty();
-				will(returnValue(mockReadOnlyObjectProperty));
-
-				oneOf(mockReadOnlyObjectProperty).get();
-				will(returnValue(State.RUNNING));
+				oneOf(mockSimpleStringProperty).addListener(with(any(InvalidationListener.class)));
 
 				oneOf(mockPipeline).msiStateProperty();
 				will(returnValue(mockReadOnlyObjectProperty));
@@ -713,14 +692,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 				oneOf(mockPipeline).getInputName();
 				will(returnValue(mockSimpleStringProperty));
 
-				oneOf(mockSimpleStringProperty).get();
-				will(returnValue("boo"));
-
-				oneOf(mockPipeline).getInputPutCount();
-				will(returnValue(mockSimpleIntegerProperty));
-
-				oneOf(mockSimpleIntegerProperty).get();
-				will(returnValue(42));
+				oneOf(mockSimpleStringProperty).addListener(with(any(InvalidationListener.class)));
 
 				oneOf(mockPipeline).getInputPutCount();
 				will(returnValue(mockSimpleIntegerProperty));
@@ -844,8 +816,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 				oneOf(mockPipeline).getOutputName();
 				will(returnValue(mockSimpleStringProperty));
 
-				oneOf(mockSimpleStringProperty).get();
-				will(returnValue("boo"));
+				oneOf(mockSimpleStringProperty).addListener(with(any(InvalidationListener.class)));
 
 				oneOf(mockPipeline).getOutputPutCount();
 				will(returnValue(mockSimpleIntegerProperty));
@@ -891,8 +862,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 				oneOf(mockPipeline).getSS2GBSQueueName();
 				will(returnValue(mockSimpleStringProperty));
 
-				oneOf(mockSimpleStringProperty).get();
-				will(returnValue("boo"));
+				oneOf(mockSimpleStringProperty).addListener(with(any(InvalidationListener.class)));
 
 				oneOf(mockPipeline).getSS2GBSQueuePutCount();
 				will(returnValue(mockSimpleIntegerProperty));
@@ -947,14 +917,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 				oneOf(mockPipeline).getSSPPhaseName();
 				will(returnValue(mockSimpleStringProperty));
 
-				oneOf(mockSimpleStringProperty).get();
-				will(returnValue("boo"));
-
-				oneOf(mockPipeline).sspStateProperty();
-				will(returnValue(mockReadOnlyObjectProperty));
-
-				oneOf(mockReadOnlyObjectProperty).get();
-				will(returnValue(State.RUNNING));
+				oneOf(mockSimpleStringProperty).addListener(with(any(InvalidationListener.class)));
 
 				oneOf(mockPipeline).sspStateProperty();
 				will(returnValue(mockReadOnlyObjectProperty));
@@ -1004,7 +967,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.FXMLController#startHeapMonitor()}.
+	 * {@link cotelab.dupfilefinder2.FXMLController#startHeapTracker()}.
 	 */
 	@Test
 	public void testStartHeapMonitor() {
