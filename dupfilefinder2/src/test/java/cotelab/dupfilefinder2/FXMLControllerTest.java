@@ -251,19 +251,6 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.FXMLController#formatElapsed(long)}.
-	 */
-	@Test
-	public void testFormatElapsed() {
-		FXMLController fixture = new FXMLController();
-		String expected = "4h 16m 14.371s";
-		String actual = fixture.formatElapsed(864974371);
-
-		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for
 	 * {@link cotelab.dupfilefinder2.FXMLController#getResultsTreeView()}.
 	 */
 	@Test
@@ -289,6 +276,11 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 		MenuItem menuItem = new MenuItem();
 		Button button = new Button();
 		FXMLController fixture = new FXMLController() {
+
+			@Override
+			protected ElapsedTimeTracker newElapsedTimeTracker(Label aLabel) {
+				return null;
+			}
 
 			@Override
 			protected void startHeapMonitor() {
@@ -1026,23 +1018,6 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 	@Test
 	public void testStartPhase() {
 		// don't know how to write a meaningful unit test of this method
-	}
-
-	/**
-	 * Test method for
-	 * {@link cotelab.dupfilefinder2.FXMLController#updateElapsedTime()}.
-	 */
-	@Test
-	public void testUpdateElapsedTime() {
-		final Label mockLabel = new Label("");
-		FXMLController fixture = new FXMLController();
-
-		fixture.startStamp = new Date().getTime();
-		fixture.elapsedTime = mockLabel;
-
-		fixture.updateElapsedTime();
-
-		assertTrue(0 < mockLabel.getText().length());
 	}
 
 	/**

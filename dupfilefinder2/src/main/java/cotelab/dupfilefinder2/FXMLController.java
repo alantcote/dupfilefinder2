@@ -86,6 +86,11 @@ public class FXMLController implements Initializable {
 	protected Label elapsedTime;
 
 	/**
+	 * Tracker for elapsed time during a scan.
+	 */
+	protected ElapsedTimeTracker elapsedTimeTracker;
+
+	/**
 	 * The File>Close menu item.
 	 */
 	@FXML
@@ -407,11 +412,6 @@ public class FXMLController implements Initializable {
 	protected Button startButton;
 
 	/**
-	 * The starting timestamp.
-	 */
-	protected long startStamp = 0;
-
-	/**
 	 * The subtree selection tree view.
 	 */
 	protected FileTreeView subtreeSelectionTreeView;
@@ -433,6 +433,7 @@ public class FXMLController implements Initializable {
 		rootPane.setLeft(subtreeSelectionTreeView);
 
 		startHeapMonitor();
+		elapsedTimeTracker = newElapsedTimeTracker(elapsedTime);
 
 		fileCloseMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -466,7 +467,7 @@ public class FXMLController implements Initializable {
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				startStamp = System.currentTimeMillis();
+				elapsedTimeTracker.beginTracking();
 
 				pipeline = setUpPipeline();
 				startPhase(pipeline);
@@ -481,6 +482,7 @@ public class FXMLController implements Initializable {
 			public void handle(ActionEvent event) {
 				pipeline.cancel(true);
 
+				elapsedTimeTracker.stopTracking();
 				cancelButton.setDisable(true);
 				startButton.setDisable(false);
 			}
@@ -493,17 +495,6 @@ public class FXMLController implements Initializable {
 	public void refreshResultAids() {
 		buildPathToDupCollMap();
 		buildAncestorSet();
-	}
-
-	/**
-	 * Update the elapsed time field.
-	 */
-	public void updateElapsedTime() {
-		long now = System.currentTimeMillis();
-		long elapsedMillis = now - startStamp;
-		String elapsedString = formatElapsed(elapsedMillis);
-
-		elapsedTime.setText(elapsedString);
 	}
 
 	/**
@@ -628,37 +619,13 @@ public class FXMLController implements Initializable {
 	}
 
 	/**
-	 * Format elapsed time for display.
+	 * Construct a new object.
 	 * 
-	 * @param elapsedMillis the elapsed time, in milliseconds.
-	 * @return
+	 * @param aLabel the display field.
+	 * @return the new object.
 	 */
-	protected String formatElapsed(long elapsedMillis) {
-		long fraction = elapsedMillis % 1000;
-		long remnant = elapsedMillis / 1000;
-		long seconds = remnant % 60;
-
-		remnant /= 60;
-
-		long minutes = remnant % 60;
-
-		remnant /= 60;
-		
-		long hours = remnant / 60;
-		String fractionString = "00" + Long.toString(fraction);
-		String secondsString = Long.toString(seconds);
-		String minutesString = Long.toString(minutes);
-		String hoursString = Long.toString(hours);
-
-		fractionString = fractionString.substring(fractionString.length() - 3);
-
-		String result = hoursString + "h ";
-
-		result += minutesString + "m ";
-		result += secondsString + ".";
-		result += fractionString + "s";
-
-		return result;
+	protected ElapsedTimeTracker newElapsedTimeTracker(Label aLabel) {
+		return new ElapsedTimeTracker(aLabel);
 	}
 
 	/**
@@ -677,16 +644,19 @@ public class FXMLController implements Initializable {
 
 	/**
 	 * Get a new {@link DecoratedFileTreeView} to present search results.
+	 * 
 	 * @param fileIconFactory the {@link FileIconFactory} to use.
 	 * @return a new object.
 	 */
 	protected DecoratedFileTreeView newResultsTreeView(FileIconFactory fileIconFactory) {
-		return new DecoratedFileTreeView(newRootFileTreeItem(), fileIconFactory, ancestorSet,
-				dupCollections, pathToDupCollMap, this);
+		return new DecoratedFileTreeView(newRootFileTreeItem(), fileIconFactory, ancestorSet, dupCollections,
+				pathToDupCollMap, this);
 	}
 
 	/**
-	 * Get a new {@link FileTreeItem} that represents the (synthetic) file system root.
+	 * Get a new {@link FileTreeItem} that represents the (synthetic) file system
+	 * root.
+	 * 
 	 * @return a new object.
 	 */
 	protected FileTreeItem newRootFileTreeItem() {
@@ -842,6 +812,8 @@ public class FXMLController implements Initializable {
 					cancelButton.setDisable(true);
 					startButton.setDisable(false);
 
+					elapsedTimeTracker.stopTracking();
+
 					showResults();
 				}
 			}
@@ -936,22 +908,5 @@ public class FXMLController implements Initializable {
 
 		th.setDaemon(true);
 		th.start();
-	}
-
-	/**
-	 * Update the text of a {@link Label} with a string value of a {@link State}.
-	 * 
-	 * @param field    the Label.
-	 * @param newValue the State.
-	 */
-	protected void updateInFXThread(Label field, State newValue) {
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				field.setText(newValue.toString());
-
-				updateElapsedTime();
-			}
-		});
 	}
 }
