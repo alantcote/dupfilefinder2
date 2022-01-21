@@ -1,10 +1,11 @@
-package cotelab.dupfilefinder2.pipeline;
+package cotelab.dupfilefinder2.pipeline.queueing;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -17,7 +18,7 @@ public class PipelineQueueTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.PipelineQueue#getName()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue#getName()}.
 	 */
 	@Test
 	public void testGetName() {
@@ -28,7 +29,7 @@ public class PipelineQueueTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.PipelineQueue#newSimpleStringProperty()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue#newSimpleStringProperty()}.
 	 */
 	@Test
 	public void testNewSimpleStringProperty() {
@@ -40,7 +41,7 @@ public class PipelineQueueTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.PipelineQueue#PipelineQueue(int, java.lang.String)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue#PipelineQueue(int, java.lang.String)}.
 	 */
 	@Test
 	public void testPipelineQueue() {

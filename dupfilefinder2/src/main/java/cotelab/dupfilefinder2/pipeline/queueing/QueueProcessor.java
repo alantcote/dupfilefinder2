@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cotelab.dupfilefinder2.pipeline;
+package cotelab.dupfilefinder2.pipeline.queueing;
 
 /**
  * An object that consumes input from one queue and produces output to another.

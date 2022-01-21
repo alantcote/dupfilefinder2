@@ -1,4 +1,4 @@
-package cotelab.dupfilefinder2.pipeline;
+package cotelab.dupfilefinder2.beans.property;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleLongProperty;

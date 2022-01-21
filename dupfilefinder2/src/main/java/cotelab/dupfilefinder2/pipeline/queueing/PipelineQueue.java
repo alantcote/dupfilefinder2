@@ -1,4 +1,4 @@
-package cotelab.dupfilefinder2.pipeline;
+package cotelab.dupfilefinder2.pipeline.queueing;
 
 import java.nio.file.Path;
 import java.util.Collection;

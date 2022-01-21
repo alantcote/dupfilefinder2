@@ -3,6 +3,12 @@ package cotelab.dupfilefinder2.pipeline;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+import cotelab.dupfilefinder2.beans.property.FXThreadIntegerProperty;
+import cotelab.dupfilefinder2.beans.property.FXThreadLongProperty;
+import cotelab.dupfilefinder2.beans.value.IntegerRollupListener;
+import cotelab.dupfilefinder2.beans.value.LongRollupListener;
+import cotelab.dupfilefinder2.pipeline.phase.Phase;
+import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 

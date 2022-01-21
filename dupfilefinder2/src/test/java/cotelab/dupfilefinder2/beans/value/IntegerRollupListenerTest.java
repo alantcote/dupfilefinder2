@@ -1,10 +1,12 @@
-package cotelab.dupfilefinder2.pipeline;
+package cotelab.dupfilefinder2.beans.value;
 
 import static org.junit.Assert.assertTrue;
 
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import cotelab.dupfilefinder2.beans.property.FXThreadIntegerProperty;
+import cotelab.dupfilefinder2.beans.value.IntegerRollupListener;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -14,7 +16,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 public class IntegerRollupListenerTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.IntegerRollupListener#changed(javafx.beans.value.ObservableValue, java.lang.Number, java.lang.Number)}.
+	 * {@link cotelab.dupfilefinder2.beans.value.IntegerRollupListener#changed(javafx.beans.value.ObservableValue, java.lang.Number, java.lang.Number)}.
 	 */
 	@Test
 	public void testChanged() {
@@ -34,7 +36,7 @@ public class IntegerRollupListenerTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.IntegerRollupListener#IntegerRollupListener(cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleIntegerProperty)}.
+	 * {@link cotelab.dupfilefinder2.beans.value.IntegerRollupListener#IntegerRollupListener(cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleIntegerProperty)}.
 	 */
 	@Test
 	public void testIntegerRollupListener() {

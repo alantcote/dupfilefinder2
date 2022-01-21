@@ -12,6 +12,7 @@ import org.jmock.Expectations;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 
@@ -117,7 +118,7 @@ public class GroupBySizePhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupBySizePhase#GroupBySizePhase(java.lang.String, cotelab.dupfilefinder2.pipeline.PipelineQueue, cotelab.dupfilefinder2.pipeline.PipelineQueue)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupBySizePhase#GroupBySizePhase(java.lang.String, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue)}.
 	 */
 	@Test
 	public void testGroupBySizePhase() {

@@ -1,10 +1,12 @@
-package cotelab.dupfilefinder2.pipeline;
+package cotelab.dupfilefinder2.beans.value;
 
 import static org.junit.Assert.assertTrue;
 
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import cotelab.dupfilefinder2.beans.property.FXThreadLongProperty;
+import cotelab.dupfilefinder2.beans.value.LongRollupListener;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.property.SimpleLongProperty;
 
@@ -14,7 +16,7 @@ import javafx.beans.property.SimpleLongProperty;
 public class LongRollupListenerTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.LongRollupListener#changed(javafx.beans.value.ObservableValue, java.lang.Number, java.lang.Number)}.
+	 * {@link cotelab.dupfilefinder2.beans.value.LongRollupListener#changed(javafx.beans.value.ObservableValue, java.lang.Number, java.lang.Number)}.
 	 */
 	@Test
 	public void testChanged() {
@@ -34,7 +36,7 @@ public class LongRollupListenerTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.LongRollupListener#LongRollupListener(cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleLongProperty)}.
+	 * {@link cotelab.dupfilefinder2.beans.value.LongRollupListener#LongRollupListener(cotelab.dupfilefinder2.pipeline.ThreadSafeSimpleLongProperty)}.
 	 */
 	@Test
 	public void testLongRollupListener() {

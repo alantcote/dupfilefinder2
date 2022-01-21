@@ -1,4 +1,4 @@
-package cotelab.dupfilefinder2.pipeline;
+package cotelab.dupfilefinder2.pipeline.phase;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -11,12 +11,14 @@ import java.util.Date;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import cotelab.dupfilefinder2.pipeline.phase.Phase;
+import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
- * Test case for {@link cotelab.dupfilefinder2.pipeline.Phase}.
+ * Test case for {@link cotelab.dupfilefinder2.pipeline.phase.Phase}.
  */
 public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 	protected class ConcretePhase extends Phase {
@@ -28,7 +30,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.pipeline.Phase#call()}.
+	 * Test method for {@link cotelab.dupfilefinder2.pipeline.phase.Phase#call()}.
 	 * 
 	 * @throws Exception if thrown by the code under test.
 	 */
@@ -43,7 +45,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#cancel(boolean)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#cancel(boolean)}.
 	 */
 	@Test
 	public void testCancelBoolean() {
@@ -55,7 +57,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.pipeline.Phase#getInputName()}.
+	 * Test method for {@link cotelab.dupfilefinder2.pipeline.phase.Phase#getInputName()}.
 	 */
 	@Test
 	public void testGetInputName() {
@@ -77,7 +79,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#getInputPutCount()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#getInputPutCount()}.
 	 */
 	@Test
 	public void testGetInputPutCount() {
@@ -99,7 +101,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#getInputQueue()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#getInputQueue()}.
 	 */
 	@Test
 	public void testGetInputQueue() {
@@ -112,7 +114,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#getInputTakeCount()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#getInputTakeCount()}.
 	 */
 	@Test
 	public void testGetInputTakeCount() {
@@ -134,7 +136,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#getOutputName()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#getOutputName()}.
 	 */
 	@Test
 	public void testGetOutputName() {
@@ -156,7 +158,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#getOutputPutCount()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#getOutputPutCount()}.
 	 */
 	@Test
 	public void testGetOutputPutCount() {
@@ -178,7 +180,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#getOutputQueue()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#getOutputQueue()}.
 	 */
 	@Test
 	public void testGetOutputQueue() {
@@ -191,7 +193,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#getOutputTakeCount()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#getOutputTakeCount()}.
 	 */
 	@Test
 	public void testGetOutputTakeCount() {
@@ -212,7 +214,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.pipeline.Phase#getPhaseName()}.
+	 * Test method for {@link cotelab.dupfilefinder2.pipeline.phase.Phase#getPhaseName()}.
 	 */
 	@Test
 	public void testGetPhaseName() {
@@ -225,7 +227,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#newPhaseArrayList()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#newPhaseArrayList()}.
 	 */
 	@Test
 	public void testNewPhaseArrayList() {
@@ -238,7 +240,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#newThread(cotelab.dupfilefinder2.pipeline.Phase)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#newThread(cotelab.dupfilefinder2.pipeline.phase.Phase)}.
 	 */
 	@Test
 	public void testNewThread() {
@@ -252,7 +254,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#Phase(java.lang.String, cotelab.dupfilefinder2.pipeline.PipelineQueue, cotelab.dupfilefinder2.pipeline.PipelineQueue)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#Phase(java.lang.String, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue)}.
 	 */
 	@Test
 	public void testPhase() {
@@ -267,7 +269,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#setInputQueue(cotelab.dupfilefinder2.pipeline.PipelineQueue)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#setInputQueue(cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue)}.
 	 */
 	@Test
 	public void testSetInputQueue() {
@@ -286,7 +288,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#setOutputQueue(cotelab.dupfilefinder2.pipeline.PipelineQueue)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#setOutputQueue(cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue)}.
 	 */
 	@Test
 	public void testSetOutputQueue() {
@@ -305,7 +307,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#startChildren()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#startChildren()}.
 	 */
 	@Test
 	public void testStartChildren() {
@@ -317,7 +319,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 	}
 
 	/**
-	 * Test method for {@link cotelab.dupfilefinder2.pipeline.Phase#threadSleep()}.
+	 * Test method for {@link cotelab.dupfilefinder2.pipeline.phase.Phase#threadSleep()}.
 	 * 
 	 * @throws InterruptedException if thrown by the code under test.
 	 */
@@ -338,7 +340,7 @@ public class PhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Phase#waitForChildrenDone()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.phase.Phase#waitForChildrenDone()}.
 	 */
 	@Test
 	public void testWaitForChildrenDone() {

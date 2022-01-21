@@ -15,6 +15,9 @@ import org.jmock.Expectations;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import cotelab.dupfilefinder2.beans.property.FXThreadIntegerProperty;
+import cotelab.dupfilefinder2.beans.property.FXThreadLongProperty;
+import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.application.Platform;
@@ -109,7 +112,7 @@ public class GroupByContentWorkerTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#GroupByContentWorker(java.lang.String, cotelab.dupfilefinder2.pipeline.PipelineQueue, cotelab.dupfilefinder2.pipeline.PipelineQueue)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker#GroupByContentWorker(java.lang.String, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue)}.
 	 */
 	@Test
 	public void testGroupByContentWorker() {
@@ -117,9 +120,9 @@ public class GroupByContentWorkerTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		GroupByContentWorker fixture = new GroupByContentWorker("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
+		assertEquals(mockInput, fixture.getInputQueue());
+		assertEquals(mockOutput, fixture.getOutputQueue());
+		assertEquals("phase", fixture.getPhaseName().get());
 	}
 
 	/**

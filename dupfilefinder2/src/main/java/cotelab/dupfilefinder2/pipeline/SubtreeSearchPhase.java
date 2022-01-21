@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
+import cotelab.dupfilefinder2.beans.property.FXThreadIntegerProperty;
+import cotelab.dupfilefinder2.pipeline.phase.Phase;
+import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

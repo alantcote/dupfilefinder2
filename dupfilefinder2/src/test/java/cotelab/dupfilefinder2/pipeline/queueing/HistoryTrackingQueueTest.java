@@ -1,4 +1,4 @@
-package cotelab.dupfilefinder2.pipeline;
+package cotelab.dupfilefinder2.pipeline.queueing;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -7,16 +7,17 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
+import cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.application.Platform;
 
 /**
- * Test case for {@link cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue}.
+ * Test case for {@link cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue}.
  */
 public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getPutCount()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue#getPutCount()}.
 	 */
 	@Test
 	public void testGetPutCount() {
@@ -27,7 +28,7 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getTakeCount()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue#getTakeCount()}.
 	 */
 	@Test
 	public void testGetTakeCount() {
@@ -38,7 +39,7 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#HistoryTrackingQueue(int)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue#HistoryTrackingQueue(int)}.
 	 */
 	@Test
 	public void testHistoryTrackingQueue() {
@@ -50,7 +51,7 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#incrementPutCount(int)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue#incrementPutCount(int)}.
 	 */
 	@Test
 	public void testIncrementPutCount() {
@@ -70,7 +71,7 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#incrementTakeCount(int)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue#incrementTakeCount(int)}.
 	 */
 	@Test
 	public void testIncrementTakeCount() {
@@ -91,7 +92,7 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#newFXThreadIntegerProperty()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue#newFXThreadIntegerProperty()}.
 	 */
 	@Test
 	public void testNewSimpleIntegerProperty() {
@@ -102,7 +103,7 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#poll()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue#poll()}.
 	 * 
 	 * @throws InterruptedException if thrown by the code under test.
 	 */
@@ -129,7 +130,7 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#poll(long, java.util.concurrent.TimeUnit)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue#poll(long, java.util.concurrent.TimeUnit)}.
 	 * 
 	 * @throws InterruptedException if thrown by the code under test.
 	 */
@@ -161,7 +162,7 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#put(java.lang.Object)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue#put(java.lang.Object)}.
 	 * 
 	 * @throws InterruptedException if thrown by the code under test.
 	 */
@@ -188,7 +189,7 @@ public class HistoryTrackingQueueTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#take()}.
+	 * {@link cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue#take()}.
 	 * 
 	 * @throws InterruptedException if thrown by the code under test.
 	 */

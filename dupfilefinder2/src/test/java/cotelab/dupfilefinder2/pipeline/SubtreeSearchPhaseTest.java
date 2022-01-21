@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
@@ -160,7 +161,7 @@ public class SubtreeSearchPhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase#SubtreeSearchPhase(java.lang.String, cotelab.dupfilefinder2.pipeline.PipelineQueue, cotelab.dupfilefinder2.pipeline.PipelineQueue)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase#SubtreeSearchPhase(java.lang.String, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue)}.
 	 */
 	@Test
 	public void testSubtreeSearchPhase() {
@@ -168,9 +169,9 @@ public class SubtreeSearchPhaseTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		SubtreeSearchPhase fixture = new SubtreeSearchPhase("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
+		assertEquals(mockInput, fixture.getInputQueue());
+		assertEquals(mockOutput, fixture.getOutputQueue());
+		assertEquals("phase", fixture.getPhaseName().get());
 	}
 
 }

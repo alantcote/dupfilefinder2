@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import cotelab.dupfilefinder2.beans.property.FXThreadIntegerProperty;
+import cotelab.dupfilefinder2.beans.property.FXThreadLongProperty;
+import cotelab.dupfilefinder2.beans.value.IntegerRollupListener;
+import cotelab.dupfilefinder2.beans.value.LongRollupListener;
+import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -102,7 +107,7 @@ public class GroupByContentPhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentPhase#GroupByContentPhase(java.lang.String, cotelab.dupfilefinder2.pipeline.PipelineQueue, cotelab.dupfilefinder2.pipeline.PipelineQueue)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentPhase#GroupByContentPhase(java.lang.String, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue)}.
 	 */
 	@Test
 	public void testGroupByContentPhase() {
@@ -226,7 +231,7 @@ public class GroupByContentPhaseTest extends TestCaseWithJMockAndByteBuddy {
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentPhase#newGroupByContentWorker(java.lang.String, cotelab.dupfilefinder2.pipeline.PipelineQueue, cotelab.dupfilefinder2.pipeline.PipelineQueue)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.GroupByContentPhase#newGroupByContentWorker(java.lang.String, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue)}.
 	 */
 	@Test
 	public void testNewGroupByContentWorker() {

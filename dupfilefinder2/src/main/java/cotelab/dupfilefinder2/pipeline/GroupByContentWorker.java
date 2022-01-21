@@ -18,6 +18,10 @@ import java.util.Set;
 import org.apache.commons.collections4.MultiMapUtils;
 import org.apache.commons.collections4.MultiValuedMap;
 
+import cotelab.dupfilefinder2.beans.property.FXThreadIntegerProperty;
+import cotelab.dupfilefinder2.beans.property.FXThreadLongProperty;
+import cotelab.dupfilefinder2.pipeline.phase.Phase;
+import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 

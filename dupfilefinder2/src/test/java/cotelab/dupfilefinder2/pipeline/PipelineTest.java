@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
+import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
@@ -21,10 +22,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.groupByContentPhase.stateProperty(), fixture.gbcStateProperty());
 	}
 
@@ -38,10 +35,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.groupBySizePhase.stateProperty(), fixture.gbsStateProperty());
 	}
 
@@ -54,10 +47,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertEquals(fixture.groupByContent2MatchingSubtreeIdentificationQueue.getName(),
 				fixture.getGBC2MSIQueueName());
@@ -73,10 +62,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.groupByContent2MatchingSubtreeIdentificationQueue.getPutCount(),
 				fixture.getGBC2MSIQueuePutCount());
 	}
@@ -90,10 +75,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertEquals(fixture.groupByContent2MatchingSubtreeIdentificationQueue.getTakeCount(),
 				fixture.getGBC2MSIQueueTakeCount());
@@ -109,10 +90,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.groupByContentPhase.getBytesComparedCount(), fixture.getGBCBytesComparedCount());
 	}
 
@@ -125,10 +102,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertEquals(fixture.groupByContentPhase.getFilesComparedCount(), fixture.getGBCFilesComparedCount());
 	}
@@ -143,10 +116,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.groupByContentPhase.getPhaseName(), fixture.getGBCPhaseName());
 	}
 
@@ -159,10 +128,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertEquals(fixture.groupByContentPhase.getUniqueCount(), fixture.getGBCUniqueCount());
 	}
@@ -177,10 +142,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.groupBySize2GroupByContentQueue.getName(), fixture.getGBS2GBCQueueName());
 	}
 
@@ -193,10 +154,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertEquals(fixture.groupBySize2GroupByContentQueue.getPutCount(), fixture.getGBS2GBCQueuePutCount());
 	}
@@ -211,10 +168,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.groupBySize2GroupByContentQueue.getTakeCount(), fixture.getGBS2GBCQueueTakeCount());
 	}
 
@@ -227,10 +180,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertEquals(fixture.groupBySizePhase.getFilesMeasuredCount(), fixture.getGBSFilesMeasuredCount());
 	}
@@ -245,10 +194,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.groupBySizePhase.getPhaseName(), fixture.getGBSPhaseName());
 	}
 
@@ -261,10 +206,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertEquals(fixture.groupBySizePhase.getSizeCount(), fixture.getGBSSizeCount());
 	}
@@ -279,10 +220,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.groupBySizePhase.getUniqueCount(), fixture.getGBSUniqueCount());
 	}
 
@@ -296,10 +233,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.groupBySizePhase.getUnmeasurableCount(), fixture.getGBSUnmeasurableCount());
 	}
 
@@ -312,10 +245,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertEquals(fixture.matchingSubtreeIdentificationPhase.getPathGroupsConsideredProperty(),
 				fixture.getMSIPathGroupsConsideredProperty());
@@ -331,10 +260,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.matchingSubtreeIdentificationPhase.getPhaseName(), fixture.getMSIPhaseName());
 	}
 
@@ -347,10 +272,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertEquals(fixture.subtreeSearch2GroupBySizeQueue.getName(), fixture.getSS2GBSQueueName());
 	}
@@ -365,10 +286,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.subtreeSearch2GroupBySizeQueue.getPutCount(), fixture.getSS2GBSQueuePutCount());
 	}
 
@@ -381,10 +298,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertEquals(fixture.subtreeSearch2GroupBySizeQueue.getTakeCount(), fixture.getSS2GBSQueueTakeCount());
 	}
@@ -399,10 +312,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.subtreeSearchPhase.getDirectoryCount(), fixture.getSSPDirectoryCount());
 	}
 
@@ -415,10 +324,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertEquals(fixture.subtreeSearchPhase.getFailedAccessCount(), fixture.getSSPFailedAccessCount());
 	}
@@ -433,10 +338,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.subtreeSearchPhase.getOtherCount(), fixture.getSSPOtherCount());
 	}
 
@@ -449,10 +350,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertEquals(fixture.subtreeSearchPhase.getPhaseName(), fixture.getSSPPhaseName());
 	}
@@ -467,10 +364,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.subtreeSearchPhase.getRegularFileCount(), fixture.getSSPRegularFileCount());
 	}
 
@@ -483,10 +376,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertEquals(fixture.subtreeSearchPhase.getSymbolicLinkCount(), fixture.getSSPSymbolicLinkCount());
 	}
@@ -501,10 +390,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.subtreeSearchPhase.getUnreadableCount(), fixture.getSSPUnreadableCount());
 	}
 
@@ -518,16 +403,12 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertEquals(fixture.matchingSubtreeIdentificationPhase.stateProperty(), fixture.msiStateProperty());
 	}
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Pipeline#newGroupByContentPhase(java.lang.String, cotelab.dupfilefinder2.pipeline.PipelineQueue, cotelab.dupfilefinder2.pipeline.PipelineQueue)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.Pipeline#newGroupByContentPhase(java.lang.String, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue)}.
 	 */
 	@Test
 	public void testNewGroupByContentPhase() {
@@ -535,16 +416,12 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertNotNull(fixture.newGroupByContentPhase("phase", mockInput, mockOutput));
 	}
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Pipeline#newGroupBySizePhase(java.lang.String, cotelab.dupfilefinder2.pipeline.PipelineQueue, cotelab.dupfilefinder2.pipeline.PipelineQueue)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.Pipeline#newGroupBySizePhase(java.lang.String, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue)}.
 	 */
 	@Test
 	public void testNewGroupBySizePhase() {
@@ -552,26 +429,18 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertNotNull(fixture.newGroupBySizePhase("phase", mockInput, mockOutput));
 	}
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Pipeline#newMatchingSubtreeIdentificationPhase(java.lang.String, cotelab.dupfilefinder2.pipeline.PipelineQueue, cotelab.dupfilefinder2.pipeline.PipelineQueue)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.Pipeline#newMatchingSubtreeIdentificationPhase(java.lang.String, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue)}.
 	 */
 	@Test
 	public void testNewMatchingSubtreeIdentificationPhase() {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertNotNull(fixture.newMatchingSubtreeIdentificationPhase("phase", mockInput, mockOutput));
 	}
@@ -586,16 +455,12 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertNotNull(fixture.newPipelineQueue(5, "q"));
 	}
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Pipeline#newSubtreeSearchPhase(java.lang.String, cotelab.dupfilefinder2.pipeline.PipelineQueue, cotelab.dupfilefinder2.pipeline.PipelineQueue)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.Pipeline#newSubtreeSearchPhase(java.lang.String, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue)}.
 	 */
 	@Test
 	public void testNewSubtreeSearchPhase() {
@@ -603,16 +468,12 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
-
 		assertNotNull(fixture.newSubtreeSearchPhase("phase", mockInput, mockOutput));
 	}
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.pipeline.Pipeline#Pipeline(java.lang.String, cotelab.dupfilefinder2.pipeline.PipelineQueue, cotelab.dupfilefinder2.pipeline.PipelineQueue)}.
+	 * {@link cotelab.dupfilefinder2.pipeline.Pipeline#Pipeline(java.lang.String, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue, cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue)}.
 	 */
 	@Test
 	public void testPipeline() {
@@ -620,9 +481,9 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
 
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
+		assertEquals(mockInput, fixture.getInputQueue());
+		assertEquals(mockOutput, fixture.getOutputQueue());
+		assertEquals("phase", fixture.getPhaseName().get());
 	}
 
 	/**
@@ -634,10 +495,6 @@ public class PipelineTest extends TestCaseWithJMockAndByteBuddy {
 		final PipelineQueue mockInput = context.mock(PipelineQueue.class, "mockInput");
 		final PipelineQueue mockOutput = context.mock(PipelineQueue.class, "mockOutput");
 		Pipeline fixture = new Pipeline("phase", mockInput, mockOutput);
-
-		assertEquals(mockInput, fixture.inputQueue);
-		assertEquals(mockOutput, fixture.outputQueue);
-		assertEquals("phase", fixture.phaseName.get());
 
 		assertEquals(fixture.subtreeSearchPhase.stateProperty(), fixture.sspStateProperty());
 	}

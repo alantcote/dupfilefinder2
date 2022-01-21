@@ -1,8 +1,9 @@
-package cotelab.dupfilefinder2.pipeline;
+package cotelab.dupfilefinder2.pipeline.queueing;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import cotelab.dupfilefinder2.beans.property.FXThreadIntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 /**

@@ -1,5 +1,6 @@
-package cotelab.dupfilefinder2.pipeline;
+package cotelab.dupfilefinder2.beans.value;
 
+import cotelab.dupfilefinder2.beans.property.FXThreadIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 

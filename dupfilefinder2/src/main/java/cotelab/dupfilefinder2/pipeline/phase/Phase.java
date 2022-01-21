@@ -1,8 +1,10 @@
-package cotelab.dupfilefinder2.pipeline;
+package cotelab.dupfilefinder2.pipeline.phase;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
+import cotelab.dupfilefinder2.pipeline.queueing.QueueProcessor;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
@@ -99,7 +101,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 
 	/**
 	 * @return the property.
-	 * @see cotelab.dupfilefinder2.pipeline.PipelineQueue#getName()
+	 * @see cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue#getName()
 	 */
 	public SimpleStringProperty getInputName() {
 		return inputQueue.getName();
@@ -107,7 +109,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 
 	/**
 	 * @return the property.
-	 * @see cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getPutCount()
+	 * @see cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue#getPutCount()
 	 */
 	public SimpleIntegerProperty getInputPutCount() {
 		return inputQueue.getPutCount();
@@ -123,7 +125,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 
 	/**
 	 * @return the property.
-	 * @see cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getTakeCount()
+	 * @see cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue#getTakeCount()
 	 */
 	public SimpleIntegerProperty getInputTakeCount() {
 		return inputQueue.getTakeCount();
@@ -131,7 +133,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 
 	/**
 	 * @return the property.
-	 * @see cotelab.dupfilefinder2.pipeline.PipelineQueue#getName()
+	 * @see cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue#getName()
 	 */
 	public SimpleStringProperty getOutputName() {
 		return outputQueue.getName();
@@ -139,7 +141,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 
 	/**
 	 * @return the property.
-	 * @see cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getPutCount()
+	 * @see cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue#getPutCount()
 	 */
 	public SimpleIntegerProperty getOutputPutCount() {
 		return outputQueue.getPutCount();
@@ -155,7 +157,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 
 	/**
 	 * @return the property.
-	 * @see cotelab.dupfilefinder2.pipeline.HistoryTrackingQueue#getTakeCount()
+	 * @see cotelab.dupfilefinder2.pipeline.queueing.HistoryTrackingQueue#getTakeCount()
 	 */
 	public SimpleIntegerProperty getOutputTakeCount() {
 		return outputQueue.getTakeCount();

@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.dupfilefinder2.pipeline.Pipeline;
-import cotelab.dupfilefinder2.pipeline.PipelineQueue;
+import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.InvalidationListener;

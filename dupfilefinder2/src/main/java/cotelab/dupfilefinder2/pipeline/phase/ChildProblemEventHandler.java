@@ -1,4 +1,4 @@
-package cotelab.dupfilefinder2.pipeline;
+package cotelab.dupfilefinder2.pipeline.phase;
 
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
