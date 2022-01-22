@@ -20,6 +20,9 @@ import cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase;
 import cotelab.dupfilefinder2.pipeline.phase.Phase;
 import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import cotelab.dupfilefinder2.treeview.DecoratedFileTreeView;
+import cotelab.util.javafx.scene.control.FileIconFactory;
+import cotelab.util.javafx.scene.control.FileTreeItem;
+import cotelab.util.javafx.scene.control.FileTreeView;
 import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -43,9 +46,6 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
-import net.sf.cotelab.util.javafx.tree.FileIconFactory;
-import net.sf.cotelab.util.javafx.tree.FileTreeItem;
-import net.sf.cotelab.util.javafx.tree.FileTreeView;
 
 /**
  * The GUI controller.

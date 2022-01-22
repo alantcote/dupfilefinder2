@@ -8,10 +8,10 @@ import java.util.Set;
 
 import cotelab.dupfilefinder2.DupFileFinder2;
 import cotelab.dupfilefinder2.FXMLController;
+import cotelab.util.javafx.scene.control.FileIconFactory;
+import cotelab.util.javafx.scene.control.FileTreeCell;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import net.sf.cotelab.util.javafx.tree.FileIconFactory;
-import net.sf.cotelab.util.javafx.tree.FileTreeCell;
 
 /**
  * A {@link FileTreeCell} decorated to present {@link DupFileFinder2} results.

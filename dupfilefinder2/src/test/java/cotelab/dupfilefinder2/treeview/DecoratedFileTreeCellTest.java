@@ -17,7 +17,7 @@ import org.junit.runner.RunWith;
 import cotelab.dupfilefinder2.FXMLController;
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
-import net.sf.cotelab.util.javafx.tree.FileIconFactory;
+import cotelab.util.javafx.scene.control.FileIconFactory;
 
 /**
  * Test case for {@link cotelab.dupfilefinder2.treeview.DecoratedFileTreeCell}.

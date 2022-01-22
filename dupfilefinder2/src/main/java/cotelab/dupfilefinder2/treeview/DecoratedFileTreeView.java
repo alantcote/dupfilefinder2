@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Set;
 
 import cotelab.dupfilefinder2.FXMLController;
+import cotelab.util.javafx.scene.control.FileIconFactory;
+import cotelab.util.javafx.scene.control.FileTreeView;
 import javafx.scene.control.TreeItem;
-import net.sf.cotelab.util.javafx.tree.FileIconFactory;
-import net.sf.cotelab.util.javafx.tree.FileTreeView;
 
 /**
  * A {@link FileTreeView} that uses {@link DecoratedFileTreeCell} instances.

@@ -3,6 +3,7 @@ package cotelab.dupfilefinder2;
 import java.io.IOException;
 import java.util.prefs.BackingStoreException;
 
+import cotelab.util.javafx.windowprefs.WindowPrefs;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;

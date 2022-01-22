@@ -19,6 +19,8 @@ import cotelab.dupfilefinder2.pipeline.Pipeline;
 import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
+import cotelab.util.javafx.scene.control.FileIconFactory;
+import cotelab.util.javafx.scene.control.FileTreeView;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -32,8 +34,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
-import net.sf.cotelab.util.javafx.tree.FileIconFactory;
-import net.sf.cotelab.util.javafx.tree.FileTreeView;
 
 /**
  * Test case for {@link FXMLController}.

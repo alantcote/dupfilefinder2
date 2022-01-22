@@ -7,11 +7,11 @@ import java.util.Map;
 import java.util.Set;
 
 import cotelab.dupfilefinder2.FXMLController;
+import cotelab.util.javafx.scene.control.FileIconFactory;
+import cotelab.util.javafx.scene.control.FileTreeCell;
+import cotelab.util.javafx.util.callback.FileTreeCellFactory;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeView;
-import net.sf.cotelab.util.javafx.tree.FileIconFactory;
-import net.sf.cotelab.util.javafx.tree.FileTreeCell;
-import net.sf.cotelab.util.javafx.tree.FileTreeCellFactory;
 
 /**
  * A {@link FileTreeCellFactory} that supplies {@link DecoratedFileTreeCell} in

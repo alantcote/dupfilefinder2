@@ -17,7 +17,6 @@ cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$6.class
 cotelab\dupfilefinder2\FXMLController$4.class
 cotelab\dupfilefinder2\pipeline\queueing\PipelineQueue.class
 cotelab\dupfilefinder2\beans\property\FXThreadLongProperty$1.class
-cotelab\dupfilefinder2\beans\value\MetricListener.class
 cotelab\dupfilefinder2\pipeline\MatchingSubtreeIdentificationPhase.class
 cotelab\dupfilefinder2\pipeline\queueing\HistoryTrackingQueue.class
 cotelab\dupfilefinder2\FXMLController$1.class
@@ -37,7 +36,6 @@ cotelab\dupfilefinder2\PopupBrowserLauncher.class
 cotelab\dupfilefinder2\DupFileFinder2$1.class
 cotelab\dupfilefinder2\beans\property\FXThreadIntegerProperty$1.class
 cotelab\dupfilefinder2\treeview\DupItemsDialog$1.class
-cotelab\dupfilefinder2\WindowPrefs.class
 cotelab\dupfilefinder2\treeview\PathDeletionVisitor.class
 cotelab\dupfilefinder2\FXMLController$6.class
 cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$1.class

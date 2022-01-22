@@ -312,8 +312,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>net.sf.cotelab</groupId>
-			<artifactId>CLUtilities</artifactId>
+			<groupId>io.github.alantcote</groupId>
+			<artifactId>clutilities</artifactId>
 			<version>0.1.0-SNAPSHOT</version>
 		</dependency>
 
