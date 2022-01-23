@@ -123,6 +123,7 @@
 				</configuration>
 			</plugin>
 
+			<!--
 			<plugin>
 				<groupId>com.akathist.maven.plugins.launch4j</groupId>
 				<artifactId>launch4j-maven-plugin</artifactId>
@@ -149,6 +150,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
