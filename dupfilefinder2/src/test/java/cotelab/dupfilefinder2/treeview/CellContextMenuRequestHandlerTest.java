@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.dupfilefinder2.FXMLController;
-import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
+import de.saxsys.mvvmfx.testingutils.jfxrunner.JfxRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.ContextMenuEvent;
@@ -21,7 +21,7 @@ import javafx.scene.input.ContextMenuEvent;
  * Test case for
  * {@link cotelab.dupfilefinder2.treeview.CellContextMenuRequestHandler}.
  */
-@RunWith(JavaFxJUnit4ClassRunner.class)
+@RunWith(JfxRunner.class)
 public class CellContextMenuRequestHandlerTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for

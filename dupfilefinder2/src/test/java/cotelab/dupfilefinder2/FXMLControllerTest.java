@@ -17,7 +17,7 @@ import org.junit.runner.RunWith;
 import cotelab.dupfilefinder2.javafx.animation.ElapsedTimeTracker;
 import cotelab.dupfilefinder2.pipeline.Pipeline;
 import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
-import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
+import de.saxsys.mvvmfx.testingutils.jfxrunner.JfxRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import io.github.alantcote.clutilities.javafx.scene.control.FileIconFactory;
 import io.github.alantcote.clutilities.javafx.scene.control.FileTreeView;
@@ -38,7 +38,7 @@ import javafx.scene.layout.BorderPane;
 /**
  * Test case for {@link FXMLController}.
  */
-@RunWith(JavaFxJUnit4ClassRunner.class)
+@RunWith(JfxRunner.class)
 public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for

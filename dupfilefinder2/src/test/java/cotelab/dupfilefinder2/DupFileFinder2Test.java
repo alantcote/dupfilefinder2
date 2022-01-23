@@ -3,7 +3,7 @@ package cotelab.dupfilefinder2;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
+import de.saxsys.mvvmfx.testingutils.jfxrunner.JfxRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
@@ -11,7 +11,7 @@ import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
  * 
  * This class was generated automatically; assuming it is correct.
  */
-@RunWith(JavaFxJUnit4ClassRunner.class)
+@RunWith(JfxRunner.class)
 public class DupFileFinder2Test extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for

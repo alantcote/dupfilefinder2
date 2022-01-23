@@ -289,6 +289,42 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>javafx4linux</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<os>
+					<family>unix</family>
+				</os>
+			</activation>
+			<properties>
+				<javafx.classifier>linux</javafx.classifier>
+			</properties>
+		</profile>
+		<profile>
+			<id>javafx4mac</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<javafx.classifier>mac</javafx.classifier>
+			</properties>
+		</profile>
+		<profile>
+			<id>javafx4win</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<javafx.classifier>win</javafx.classifier>
+			</properties>
+		</profile>
 	</profiles>
 
 	<dependencies>
@@ -304,13 +340,6 @@
 			<artifactId>cglib-nodep</artifactId>
 			<version>3.3.0</version>
 			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>cotelab</groupId>
-			<artifactId>CLJUnitForOpenJFX</artifactId>
-			<version>1.0.0</version>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -393,6 +422,12 @@
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>de.saxsys</groupId>
+			<artifactId>mvvmfx-testing-utils</artifactId>
+			<version>1.8.0</version>
 		</dependency>
 	</dependencies>
 </project>

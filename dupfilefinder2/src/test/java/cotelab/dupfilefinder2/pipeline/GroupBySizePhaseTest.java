@@ -13,13 +13,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
-import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
+import de.saxsys.mvvmfx.testingutils.jfxrunner.JfxRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
  * Test case for {@link GroupBySizePhase}.
  */
-@RunWith(JavaFxJUnit4ClassRunner.class)
+@RunWith(JfxRunner.class)
 public class GroupBySizePhaseTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for

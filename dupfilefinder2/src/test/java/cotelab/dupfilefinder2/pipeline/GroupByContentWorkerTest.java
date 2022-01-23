@@ -18,14 +18,14 @@ import org.junit.runner.RunWith;
 import cotelab.dupfilefinder2.beans.property.FXThreadIntegerProperty;
 import cotelab.dupfilefinder2.beans.property.FXThreadLongProperty;
 import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
-import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
+import de.saxsys.mvvmfx.testingutils.jfxrunner.JfxRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.application.Platform;
 
 /**
  * Test method for {@link cotelab.dupfilefinder2.pipeline.GroupByContentWorker}.
  */
-@RunWith(JavaFxJUnit4ClassRunner.class)
+@RunWith(JfxRunner.class)
 public class GroupByContentWorkerTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for

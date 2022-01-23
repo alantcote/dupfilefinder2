@@ -9,7 +9,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
+import de.saxsys.mvvmfx.testingutils.jfxrunner.JfxRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.ButtonType;
@@ -19,7 +19,7 @@ import javafx.scene.web.WebView;
 /**
  * Test case for {@link PopupBrowserLauncher}.
  */
-@RunWith(JavaFxJUnit4ClassRunner.class)
+@RunWith(JfxRunner.class)
 public class PopupBrowserLauncherTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for

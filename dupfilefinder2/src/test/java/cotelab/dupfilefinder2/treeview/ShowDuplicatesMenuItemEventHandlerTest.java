@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.dupfilefinder2.FXMLController;
-import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
+import de.saxsys.mvvmfx.testingutils.jfxrunner.JfxRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
@@ -22,7 +22,7 @@ import javafx.event.ActionEvent;
  * Test case for
  * {@link cotelab.dupfilefinder2.treeview.ShowDuplicatesMenuItemEventHandler}.
  */
-@RunWith(JavaFxJUnit4ClassRunner.class)
+@RunWith(JfxRunner.class)
 public class ShowDuplicatesMenuItemEventHandlerTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
