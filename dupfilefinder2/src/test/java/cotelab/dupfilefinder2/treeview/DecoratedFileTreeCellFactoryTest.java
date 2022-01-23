@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 import cotelab.dupfilefinder2.FXMLController;
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
-import cotelab.util.javafx.scene.control.FileIconFactory;
+import io.github.alantcote.clutilities.javafx.scene.control.FileIconFactory;
 import javafx.scene.control.TreeView;
 
 /**
@@ -47,7 +47,7 @@ public class DecoratedFileTreeCellFactoryTest extends TestCaseWithJMockAndByteBu
 
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.treeview.DecoratedFileTreeCellFactory#DecoratedFileTreeCellFactory(net.sf.cotelab.util.javafx.tree.FileIconFactory, java.util.HashSet, java.util.ArrayList, java.util.Hashtable, cotelab.dupfilefinder2.FXMLController)}.
+	 * {@link cotelab.dupfilefinder2.treeview.DecoratedFileTreeCellFactory#DecoratedFileTreeCellFactory(io.github.alantcote.clutilities.javafx.scene.control.cotelab.util.javafx.tree.FileIconFactory, java.util.HashSet, java.util.ArrayList, java.util.Hashtable, cotelab.dupfilefinder2.FXMLController)}.
 	 */
 	@Test
 	public void testDecoratedFileTreeCellFactory() {

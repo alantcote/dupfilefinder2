@@ -8,8 +8,8 @@ import java.util.Set;
 
 import cotelab.dupfilefinder2.DupFileFinder2;
 import cotelab.dupfilefinder2.FXMLController;
-import cotelab.util.javafx.scene.control.FileIconFactory;
-import cotelab.util.javafx.scene.control.FileTreeCell;
+import io.github.alantcote.clutilities.javafx.scene.control.FileIconFactory;
+import io.github.alantcote.clutilities.javafx.scene.control.FileTreeCell;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 

@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 import cotelab.dupfilefinder2.FXMLController;
 import cotelab.jfxrunner.JavaFxJUnit4ClassRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
-import cotelab.util.javafx.scene.control.FileIconFactory;
+import io.github.alantcote.clutilities.javafx.scene.control.FileIconFactory;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -25,7 +25,7 @@ import javafx.scene.control.TreeItem;
 public class DecoratedFileTreeViewTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
-	 * {@link cotelab.dupfilefinder2.treeview.DecoratedFileTreeView#DecoratedFileTreeView(javafx.scene.control.TreeItem, net.sf.cotelab.util.javafx.tree.FileIconFactory, java.util.HashSet, java.util.ArrayList, java.util.Hashtable, cotelab.dupfilefinder2.FXMLController)}.
+	 * {@link cotelab.dupfilefinder2.treeview.DecoratedFileTreeView#DecoratedFileTreeView(javafx.scene.control.TreeItem, io.github.alantcote.clutilities.javafx.scene.control.cotelab.util.javafx.tree.FileIconFactory, java.util.HashSet, java.util.ArrayList, java.util.Hashtable, cotelab.dupfilefinder2.FXMLController)}.
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
