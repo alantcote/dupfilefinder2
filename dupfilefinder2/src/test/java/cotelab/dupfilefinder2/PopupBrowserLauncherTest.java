@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import de.saxsys.mvvmfx.testingutils.jfxrunner.JfxRunner;
+import de.saxsys.mvvmfx.testingutils.jfxrunner.TestInJfxThread;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.ButtonType;
@@ -26,6 +27,7 @@ public class PopupBrowserLauncherTest extends TestCaseWithJMockAndByteBuddy {
 	 * {@link cotelab.dupfilefinder2.PopupBrowserLauncher#newDialog()}.
 	 */
 	@Test
+	@TestInJfxThread
 	public void testNewDialog() {
 		PopupBrowserLauncher fixture = new PopupBrowserLauncher();
 
@@ -48,6 +50,7 @@ public class PopupBrowserLauncherTest extends TestCaseWithJMockAndByteBuddy {
 	 * {@link cotelab.dupfilefinder2.PopupBrowserLauncher#newWebView()}.
 	 */
 	@Test
+	@TestInJfxThread
 	public void testNewWebView() {
 		PopupBrowserLauncher fixture = new PopupBrowserLauncher();
 

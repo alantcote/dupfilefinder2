@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 
 import cotelab.dupfilefinder2.FXMLController;
 import de.saxsys.mvvmfx.testingutils.jfxrunner.JfxRunner;
+import de.saxsys.mvvmfx.testingutils.jfxrunner.TestInJfxThread;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 
 /**
@@ -34,6 +35,7 @@ public class DupItemsDialogTest extends TestCaseWithJMockAndByteBuddy {
 	 * {@link cotelab.dupfilefinder2.treeview.DupItemsDialog#DupItemsDialog(java.nio.file.Path, java.util.Map, java.util.Collection, cotelab.dupfilefinder2.FXMLController)}.
 	 */
 	@Test
+	@TestInJfxThread
 	public void testDupItemsDialog() {
 		final Path mockPath = context.mock(Path.class, "mockPath");
 		@SuppressWarnings("unchecked")
@@ -63,6 +65,7 @@ public class DupItemsDialogTest extends TestCaseWithJMockAndByteBuddy {
 	 * {@link cotelab.dupfilefinder2.treeview.DupItemsDialog#makeGridPane()}.
 	 */
 	@Test
+	@TestInJfxThread
 	public void testMakeGridPane() {
 		final Path mockPath = context.mock(Path.class, "mockPath");
 		@SuppressWarnings("unchecked")
@@ -93,6 +96,7 @@ public class DupItemsDialogTest extends TestCaseWithJMockAndByteBuddy {
 	 * {@link cotelab.dupfilefinder2.treeview.DupItemsDialog#newContextMenu(javafx.scene.control.MenuItem)}.
 	 */
 	@Test
+	@TestInJfxThread
 	public void testNewContextMenu() {
 		final Path mockPath = context.mock(Path.class, "mockPath");
 		@SuppressWarnings("unchecked")
@@ -122,6 +126,7 @@ public class DupItemsDialogTest extends TestCaseWithJMockAndByteBuddy {
 	 * {@link cotelab.dupfilefinder2.treeview.DupItemsDialog#newDeleteMenuItem()}.
 	 */
 	@Test
+	@TestInJfxThread
 	public void testNewDeleteMenuItem() {
 		final Path mockPath = context.mock(Path.class, "mockPath");
 		@SuppressWarnings("unchecked")
@@ -151,6 +156,7 @@ public class DupItemsDialogTest extends TestCaseWithJMockAndByteBuddy {
 	 * {@link cotelab.dupfilefinder2.treeview.DupItemsDialog#newGridPane()}.
 	 */
 	@Test
+	@TestInJfxThread
 	public void testNewGridPane() {
 		final Path mockPath = context.mock(Path.class, "mockPath");
 		@SuppressWarnings("unchecked")
@@ -180,6 +186,7 @@ public class DupItemsDialogTest extends TestCaseWithJMockAndByteBuddy {
 	 * {@link cotelab.dupfilefinder2.treeview.DupItemsDialog#newOKButtonType()}.
 	 */
 	@Test
+	@TestInJfxThread
 	public void testNewOKButtonType() {
 		final Path mockPath = context.mock(Path.class, "mockPath");
 		@SuppressWarnings("unchecked")
@@ -209,6 +216,7 @@ public class DupItemsDialogTest extends TestCaseWithJMockAndByteBuddy {
 	 * {@link cotelab.dupfilefinder2.treeview.DupItemsDialog#newPathDeletionVisitor()}.
 	 */
 	@Test
+	@TestInJfxThread
 	public void testNewPathDeletionVisitor() {
 		final Path mockPath = context.mock(Path.class, "mockPath");
 		@SuppressWarnings("unchecked")
@@ -238,6 +246,7 @@ public class DupItemsDialogTest extends TestCaseWithJMockAndByteBuddy {
 	 * {@link cotelab.dupfilefinder2.treeview.DupItemsDialog#newPathLabel(java.lang.String)}.
 	 */
 	@Test
+	@TestInJfxThread
 	public void testNewPathLabel() {
 		final Path mockPath = context.mock(Path.class, "mockPath");
 		@SuppressWarnings("unchecked")
@@ -267,6 +276,7 @@ public class DupItemsDialogTest extends TestCaseWithJMockAndByteBuddy {
 	 * {@link cotelab.dupfilefinder2.treeview.DupItemsDialog#newScrollPane()}.
 	 */
 	@Test
+	@TestInJfxThread
 	public void testNewScrollPane() {
 		final Path mockPath = context.mock(Path.class, "mockPath");
 		@SuppressWarnings("unchecked")

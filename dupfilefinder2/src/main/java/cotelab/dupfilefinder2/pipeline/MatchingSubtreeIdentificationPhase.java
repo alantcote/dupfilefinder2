@@ -387,7 +387,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 				}
 
 				String[] dirListing = parent.toFile().list();
-				int actualSize = dirListing.length;
+				int actualSize = (dirListing == null) ? 0 : dirListing.length;
 
 				if (actualSize != desiredSize) {
 					badParents.add(parent);

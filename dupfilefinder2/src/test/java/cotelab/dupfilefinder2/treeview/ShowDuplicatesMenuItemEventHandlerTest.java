@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 
 import cotelab.dupfilefinder2.FXMLController;
 import de.saxsys.mvvmfx.testingutils.jfxrunner.JfxRunner;
+import de.saxsys.mvvmfx.testingutils.jfxrunner.TestInJfxThread;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
@@ -58,6 +59,7 @@ public class ShowDuplicatesMenuItemEventHandlerTest extends TestCaseWithJMockAnd
 	 * {@link cotelab.dupfilefinder2.treeview.ShowDuplicatesMenuItemEventHandler#newDupItemsDialog()}.
 	 */
 	@Test
+	@TestInJfxThread
 	public void testNewDupItemsDialog() {
 		final Path mockPath = context.mock(Path.class, "mockPath");
 		@SuppressWarnings("unchecked")

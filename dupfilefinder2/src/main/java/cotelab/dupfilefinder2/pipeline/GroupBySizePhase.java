@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.Set;
 
 import org.apache.commons.collections4.MultiMapUtils;
@@ -97,6 +98,9 @@ public class GroupBySizePhase extends Phase {
 			}
 		} catch (InterruptedException e) {
 			// if cancelled, it'll be discovered later
+		} catch (ConcurrentModificationException e) {
+			System.err.println("GroupBySizePhase.call(): caught: " + e.getMessage());
+			e.printStackTrace();
 		}
 
 		if (!isCancelled()) {

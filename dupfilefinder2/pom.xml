@@ -4,7 +4,7 @@
 
 	<groupId>cotelab</groupId>
 	<artifactId>dupfilefinder2</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-${javafx.classifier}-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<description>A program to seek out duplicate files and directories.</description>
 
@@ -34,7 +34,7 @@
 		<java.version>17</java.version>
 		<javafx.main.class>cotelab.dupfilefinder2.DupFileFinder2</javafx.main.class>
 		<main.class>${javafx.main.class}</main.class>
-		<javafx.classifier>win</javafx.classifier>
+		<!-- <javafx.classifier>win</javafx.classifier> -->
 		<openjfx.version>18-ea+8</openjfx.version>
 	</properties>
 
