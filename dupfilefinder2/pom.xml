@@ -158,6 +158,7 @@
 				<version>3.3.0</version>
 				<executions>
 					<execution>
+						<id>zip</id>
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
@@ -166,6 +167,11 @@
 							<descriptors>
 								<descriptor>zip.xml</descriptor>
 							</descriptors>
+							<archive>
+								<manifest>
+									<mainClass>org.sample.App</mainClass>
+								</manifest>
+							</archive>
 						</configuration>
 					</execution>
 				</executions>
