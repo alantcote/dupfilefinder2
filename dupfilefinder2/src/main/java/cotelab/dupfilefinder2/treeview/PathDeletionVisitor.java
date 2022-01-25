@@ -33,7 +33,9 @@ public class PathDeletionVisitor extends SimpleFileVisitor<Path> {
 	 */
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-		doDelete(file);
+		if (!attrs.isDirectory()) {
+			doDelete(file);
+		}
 
 		return FileVisitResult.CONTINUE;
 	}

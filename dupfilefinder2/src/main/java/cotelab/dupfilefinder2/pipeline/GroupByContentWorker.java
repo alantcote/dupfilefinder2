@@ -106,8 +106,7 @@ public class GroupByContentWorker extends Phase {
 				batch = inputQueue.poll();
 			}
 		} catch (Exception e) {
-			System.err.println("GroupByContentWorker.call: caught: " + e.getMessage());
-			e.printStackTrace();
+			showException(e);
 		}
 
 		return null;
@@ -256,13 +255,10 @@ public class GroupByContentWorker extends Phase {
 				inputStreams.add(is);
 			} catch (NoSuchFileException e) {
 				missingFilePaths.add(aPath);
-//				System.err.println(printlnPrefix + "caught: " + e.getMessage());
-//				e.printStackTrace();
 			} catch (FileSystemException e) {
 				missingFilePaths.add(aPath);
 			} catch (IOException e) {
-				System.err.println(printlnPrefix + "caught: " + e.getMessage());
-				e.printStackTrace();
+				showException(e);
 
 				return retValue;
 			}
@@ -303,8 +299,7 @@ public class GroupByContentWorker extends Phase {
 				try {
 					is.close();
 				} catch (IOException e) {
-					System.err.println(printlnPrefix + "caught");
-					e.printStackTrace();
+					showException(e);
 
 					return retValue;
 				}
@@ -364,8 +359,7 @@ public class GroupByContentWorker extends Phase {
 			try {
 				bis.reset();
 			} catch (IOException ex) {
-				System.err.println(phaseName.get() + ": nWayCompareEqualStreams(): caught ...");
-				ex.printStackTrace();
+				showException(ex);
 
 				return retValue;
 			}

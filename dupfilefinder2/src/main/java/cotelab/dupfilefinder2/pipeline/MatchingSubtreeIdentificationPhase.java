@@ -130,8 +130,7 @@ public class MatchingSubtreeIdentificationPhase extends Phase {
 				outputQueue.put(subtreeGroup);
 			}
 		} catch (Exception e) {
-			System.err.println("MatchingSubtreeIdentificationPhase.call(): caught " + e.getMessage());
-			e.printStackTrace();
+			showException(e);
 		}
 
 		outputQueue.put(newPathArrayList()); // EOF convention

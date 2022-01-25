@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.Set;
 
@@ -99,8 +100,7 @@ public class GroupBySizePhase extends Phase {
 		} catch (InterruptedException e) {
 			// if cancelled, it'll be discovered later
 		} catch (ConcurrentModificationException e) {
-			System.err.println("GroupBySizePhase.call(): caught: " + e.getMessage());
-			e.printStackTrace();
+			showException(e);
 		}
 
 		if (!isCancelled()) {
@@ -146,7 +146,10 @@ public class GroupBySizePhase extends Phase {
 			return;
 		}
 
-		Set<Long> sizes = size2PathMap.keySet();
+		ArrayList<Long> sizes = new ArrayList<Long>(size2PathMap.keySet());
+		
+		// distribute file lengths at random through the output
+		Collections.shuffle(sizes);
 
 		for (Long size : sizes) {
 			Collection<Path> group = size2PathMap.get(size);

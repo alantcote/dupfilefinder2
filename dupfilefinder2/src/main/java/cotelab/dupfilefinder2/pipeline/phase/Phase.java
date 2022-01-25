@@ -5,9 +5,12 @@ import java.util.Collection;
 
 import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import cotelab.dupfilefinder2.pipeline.queueing.QueueProcessor;
+import io.github.alantcote.clutilities.javafx.scene.control.ExceptionAlert;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * A {@link Task} that may have child tasks that it manages.
@@ -198,8 +201,7 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 
 			waitForChildrenDone();
 		} catch (Exception e) {
-			System.err.println("Phase.call(): caught" + e.getMessage());
-			e.printStackTrace();
+			showException(e);
 			cancel();
 		}
 
@@ -241,6 +243,22 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 				th.start();
 			}
 		}
+	}
+	
+	protected void showException(Throwable t) {
+		System.err.println("Caught " + t.getMessage());
+		t.printStackTrace();
+		
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				ExceptionAlert ea = new ExceptionAlert(AlertType.ERROR, t, "Caught Exception");
+
+				ea.showAndWait();
+			}
+			
+		});
 	}
 
 	/**

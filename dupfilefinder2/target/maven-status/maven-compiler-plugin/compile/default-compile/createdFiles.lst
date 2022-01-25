@@ -22,10 +22,13 @@ cotelab\dupfilefinder2\pipeline\queueing\HistoryTrackingQueue.class
 cotelab\dupfilefinder2\FXMLController$1.class
 cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase$3.class
 cotelab\dupfilefinder2\pipeline\GroupByContentWorker.class
+cotelab\dupfilefinder2\FXMLController$8.class
 cotelab\dupfilefinder2\treeview\DecoratedFileTreeCell.class
+cotelab\dupfilefinder2\treeview\DupItemsDialog$2.class
 cotelab\dupfilefinder2\pipeline\phase\Phase.class
 cotelab\dupfilefinder2\treeview\DupItemsDialog.class
 cotelab\dupfilefinder2\FXMLController.class
+cotelab\dupfilefinder2\pipeline\phase\Phase$1.class
 cotelab\dupfilefinder2\beans\property\FXThreadLongProperty$2.class
 cotelab\dupfilefinder2\FXMLController$5.class
 cotelab\dupfilefinder2\pipeline\SubtreeSearchPhase.class
@@ -48,3 +51,4 @@ cotelab\dupfilefinder2\treeview\DecoratedFileTreeView.class
 cotelab\dupfilefinder2\treeview\DecoratedFileTreeCellFactory.class
 cotelab\dupfilefinder2\treeview\CellContextMenuRequestHandler.class
 cotelab\dupfilefinder2\FXMLController$3.class
+cotelab\dupfilefinder2\pipeline\phase\ChildProblemEventHandler$1.class

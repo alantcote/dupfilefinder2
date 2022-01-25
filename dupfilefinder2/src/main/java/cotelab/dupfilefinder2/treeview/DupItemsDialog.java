@@ -7,8 +7,11 @@ import java.util.Collection;
 import java.util.Map;
 
 import cotelab.dupfilefinder2.FXMLController;
+import io.github.alantcote.clutilities.javafx.scene.control.ExceptionAlert;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
@@ -75,11 +78,10 @@ public class DupItemsDialog extends Dialog<Void> {
 		try {
 			Files.walkFileTree(aPath, newPathDeletionVisitor());
 		} catch (IOException e) {
-			System.err.println("DecoratedFileTreeCell.doDelete(): caught" + e.getMessage());
-			e.printStackTrace();
+			showException(e);
 		}
 	}
-
+	
 	/**
 	 * Make the pane that will be the main content of the dialog.
 	 * 
@@ -196,5 +198,21 @@ public class DupItemsDialog extends Dialog<Void> {
 	 */
 	protected ScrollPane newScrollPane() {
 		return new ScrollPane();
+	}
+
+	protected void showException(Throwable t) {
+		System.err.println("Caught " + t.getMessage());
+		t.printStackTrace();
+		
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				ExceptionAlert ea = new ExceptionAlert(AlertType.ERROR, t, "Caught Exception");
+
+				ea.showAndWait();
+			}
+			
+		});
 	}
 }

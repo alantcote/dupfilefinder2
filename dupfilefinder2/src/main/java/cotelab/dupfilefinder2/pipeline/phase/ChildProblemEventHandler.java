@@ -1,7 +1,10 @@
 package cotelab.dupfilefinder2.pipeline.phase;
 
+import io.github.alantcote.clutilities.javafx.scene.control.ExceptionAlert;
+import javafx.application.Platform;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * An event handler for worker state changes.
@@ -20,5 +23,16 @@ public class ChildProblemEventHandler implements EventHandler<WorkerStateEvent> 
 
 		System.err.println("Phase.ChildProblemEventHandler.handle(): handling " + event);
 		t.printStackTrace();
+		
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				ExceptionAlert ea = new ExceptionAlert(AlertType.ERROR, t, "Caught Exception");
+
+				ea.showAndWait();
+			}
+			
+		});
 	}
 }

@@ -20,6 +20,7 @@ import cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase;
 import cotelab.dupfilefinder2.pipeline.phase.Phase;
 import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import cotelab.dupfilefinder2.treeview.DecoratedFileTreeView;
+import io.github.alantcote.clutilities.javafx.scene.control.ExceptionAlert;
 import io.github.alantcote.clutilities.javafx.scene.control.FileIconFactory;
 import io.github.alantcote.clutilities.javafx.scene.control.FileTreeItem;
 import io.github.alantcote.clutilities.javafx.scene.control.FileTreeView;
@@ -37,6 +38,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -217,6 +219,11 @@ public class FXMLController implements Initializable {
 	 */
 	@FXML
 	protected ProgressBar heapProgressBar;
+
+	/**
+	 * The heap tracking component.
+	 */
+	protected HeapTracker heapTracker;
 
 	/**
 	 * The Help>About menu item.
@@ -751,7 +758,7 @@ public class FXMLController implements Initializable {
 		bind(line.msiStateProperty(), msiState);
 		bind(line.getMSIPathGroupsConsideredProperty(), msiPathGroupsConsidered);
 	}
-
+	
 	/**
 	 * Set up a pipeline.
 	 * 
@@ -777,8 +784,7 @@ public class FXMLController implements Initializable {
 
 			input.put(new ArrayList<Path>()); // EOF convention
 		} catch (InterruptedException e) {
-			System.err.println("FXMLController.setUpPipeline(): caught " + e.getMessage());
-			e.printStackTrace();
+			showException(e);
 		}
 
 		setUpPipelineListeners(result);
@@ -871,6 +877,22 @@ public class FXMLController implements Initializable {
 		bind(line.getSSPUnreadableCount(), sspUnreadableCount);
 	}
 
+	protected void showException(Throwable t) {
+		System.err.println("Caught " + t.getMessage());
+		t.printStackTrace();
+		
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				ExceptionAlert ea = new ExceptionAlert(AlertType.ERROR, t, "Caught Exception");
+
+				ea.showAndWait();
+			}
+			
+		});
+	}
+	
 	/**
 	 * Display the pipeline results.
 	 */
@@ -886,11 +908,6 @@ public class FXMLController implements Initializable {
 			}
 		});
 	}
-	
-	/**
-	 * The heap tracking component.
-	 */
-	protected HeapTracker heapTracker;
 
 	/**
 	 * Start the heap tracker.
