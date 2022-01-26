@@ -26,6 +26,10 @@
 			<outputDirectory>lib</outputDirectory>
 			<excludes>
 				<exclude>${project.groupId}:${project.artifactId}:jar:*</exclude>
+				<exclude>*:*annotations*:jar:*</exclude>
+				<exclude>*:hamcrest*:jar:1.3</exclude>
+				<exclude>*:jsr305:jar:*</exclude>
+				<exclude>*:mvvmfx*:jar:*</exclude>
 			</excludes>
 		</dependencySet>
 	</dependencySets>

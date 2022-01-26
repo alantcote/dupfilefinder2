@@ -115,6 +115,22 @@
 		</resources>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>tree</id>
+						<phase>package</phase>
+						<goals>
+							<goal>analyze</goal>
+							<goal>tree</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<groupId>org.openjfx</groupId>
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>0.0.8</version>
@@ -334,6 +350,8 @@
 	</profiles>
 
 	<dependencies>
+		<!--
+		-->
 		<dependency>
 			<groupId>net.bytebuddy</groupId>
 			<artifactId>byte-buddy</artifactId>
@@ -413,21 +431,18 @@
 			<groupId>org.jmock</groupId>
 			<artifactId>jmock-imposters</artifactId>
 			<version>2.12.0</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.jmock</groupId>
 			<artifactId>jmock-legacy</artifactId>
 			<version>2.12.0</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>

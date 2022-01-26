@@ -8,6 +8,7 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
+import org.jmock.Expectations;
 import org.junit.Test;
 
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
@@ -84,6 +85,13 @@ public class PathDeletionVisitorTest extends TestCaseWithJMockAndByteBuddy {
 		final Path mockPath = context.mock(Path.class, "mockPath");
 		final BasicFileAttributes mockBasicFileAttributes = context.mock(BasicFileAttributes.class,
 				"mockBasicFileAttributes");
+
+		context.checking(new Expectations() {
+			{
+				oneOf(mockBasicFileAttributes).isDirectory();
+				will(returnValue(true));
+			}
+		});
 
 		assertEquals(FileVisitResult.CONTINUE, fixture.visitFile(mockPath, mockBasicFileAttributes));
 	}
