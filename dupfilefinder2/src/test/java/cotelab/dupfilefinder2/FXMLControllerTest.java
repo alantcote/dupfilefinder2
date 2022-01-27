@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,10 +16,10 @@ import org.junit.runner.RunWith;
 import cotelab.dupfilefinder2.javafx.animation.ElapsedTimeTracker;
 import cotelab.dupfilefinder2.pipeline.Pipeline;
 import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
-import de.saxsys.mvvmfx.testingutils.jfxrunner.JfxRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
-import io.github.alantcote.clutilities.javafx.scene.control.FileIconFactory;
-import io.github.alantcote.clutilities.javafx.scene.control.FileTreeView;
+import de.saxsys.mvvmfx.testingutils.jfxrunner.JfxRunner;
+import io.github.alantcote.clutilities.javafx.scene.control.PathIconFactory;
+import io.github.alantcote.clutilities.javafx.scene.control.PathTreeView;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -98,15 +97,15 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 	 */
 	@Test
 	public void testAssembleResultsTreeView() {
-		final FileIconFactory mockFileIconFactory = context.mock(FileIconFactory.class, "mockFileIconFactory");
+		final PathIconFactory mockPathIconFactory = context.mock(PathIconFactory.class, "mockPathIconFactory");
 		final SimpleIntegerProperty callCount = new SimpleIntegerProperty(0);
 		FXMLController fixture = new FXMLController() {
 
 			@Override
-			protected FileIconFactory newFileIconFactory() {
+			protected PathIconFactory newPathIconFactory() {
 				callCount.set(1 + callCount.get());
 
-				return mockFileIconFactory;
+				return mockPathIconFactory;
 			}
 
 		};
@@ -244,7 +243,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 	@Test
 	public void testCreateFileTreeView() {
 		FXMLController fixture = new FXMLController();
-		FileTreeView ftv = fixture.createFileTreeView();
+		PathTreeView ftv = fixture.createPathTreeView();
 
 		assertNotNull(ftv);
 	}
@@ -256,13 +255,13 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 	@Test
 	public void testGetResultsTreeView() {
 		FXMLController fixture = new FXMLController();
-		final FileTreeView mockFileTreeView = context.mock(FileTreeView.class, "mockFileTreeView");
+		final PathTreeView mockPathTreeView = context.mock(PathTreeView.class, "mockPathTreeView");
 
-		fixture.resultsTreeView = mockFileTreeView;
+		fixture.resultsTreeView = mockPathTreeView;
 
-		TreeView<File> actual = fixture.getResultsTreeView();
+		TreeView<Path> actual = fixture.getResultsTreeView();
 
-		assertEquals(mockFileTreeView, actual);
+		assertEquals(mockPathTreeView, actual);
 	}
 
 	/**
@@ -655,7 +654,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 				// just a stub
 			}
 		};
-		fixture.subtreeSelectionTreeView = fixture.createFileTreeView();
+		fixture.subtreeSelectionTreeView = fixture.createPathTreeView();
 		fixture.subtreeSelectionTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 		Pipeline pipeline = fixture.setUpPipeline();
@@ -776,7 +775,7 @@ public class FXMLControllerTest extends TestCaseWithJMockAndByteBuddy {
 		fixture.pipelineState = label;
 
 		// semi-integration test to sidestep weird jmock behavior
-		fixture.subtreeSelectionTreeView = fixture.createFileTreeView();
+		fixture.subtreeSelectionTreeView = fixture.createPathTreeView();
 		fixture.subtreeSelectionTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		fixture.pipeline = fixture.setUpPipeline();
 

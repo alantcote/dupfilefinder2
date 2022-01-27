@@ -3,7 +3,6 @@ package cotelab.dupfilefinder2.treeview;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,9 +13,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cotelab.dupfilefinder2.FXMLController;
-import de.saxsys.mvvmfx.testingutils.jfxrunner.JfxRunner;
 import cotelab.junit4utils.TestCaseWithJMockAndByteBuddy;
-import io.github.alantcote.clutilities.javafx.scene.control.FileIconFactory;
+import de.saxsys.mvvmfx.testingutils.jfxrunner.JfxRunner;
+import io.github.alantcote.clutilities.javafx.scene.control.PathIconFactory;
 import javafx.scene.control.TreeView;
 
 /**
@@ -31,16 +30,16 @@ public class DecoratedFileTreeCellFactoryTest extends TestCaseWithJMockAndByteBu
 	 */
 	@Test
 	public void testCall() {
-		final FileIconFactory mockFileIconFactory = context.mock(FileIconFactory.class, "mockFileIconFactory");
+		final PathIconFactory mockPathIconFactory = context.mock(PathIconFactory.class, "mockPathIconFactory");
 		final HashSet<Path> realHashSet = new HashSet<Path>();
 		@SuppressWarnings("unchecked")
 		final ArrayList<Collection<Path>> mockArrayList = context.mock(ArrayList.class, "mockArrayList");
 		final Hashtable<Path, Collection<Path>> realHashtable = new Hashtable<Path, Collection<Path>>();
 		final FXMLController mockFXMLController = context.mock(FXMLController.class, "mockFXMLController");
-		DecoratedFileTreeCellFactory fixture = new DecoratedFileTreeCellFactory(mockFileIconFactory, realHashSet,
+		DecoratedPathTreeCellFactory fixture = new DecoratedPathTreeCellFactory(mockPathIconFactory, realHashSet,
 				mockArrayList, realHashtable, mockFXMLController);
 		@SuppressWarnings("unchecked")
-		final TreeView<File> mockTreeView = context.mock(TreeView.class, "mockTreeView");
+		final TreeView<Path> mockTreeView = context.mock(TreeView.class, "mockTreeView");
 
 		assertNotNull(fixture.call(mockTreeView));
 	}
@@ -51,13 +50,13 @@ public class DecoratedFileTreeCellFactoryTest extends TestCaseWithJMockAndByteBu
 	 */
 	@Test
 	public void testDecoratedFileTreeCellFactory() {
-		final FileIconFactory mockFileIconFactory = context.mock(FileIconFactory.class, "mockFileIconFactory");
+		final PathIconFactory mockFileIconFactory = context.mock(PathIconFactory.class, "mockFileIconFactory");
 		final HashSet<Path> realHashSet = new HashSet<Path>();
 		@SuppressWarnings("unchecked")
 		final ArrayList<Collection<Path>> mockArrayList = context.mock(ArrayList.class, "mockArrayList");
 		final Hashtable<Path, Collection<Path>> realHashtable = new Hashtable<Path, Collection<Path>>();
 		final FXMLController mockFXMLController = context.mock(FXMLController.class, "mockFXMLController");
-		DecoratedFileTreeCellFactory fixture = new DecoratedFileTreeCellFactory(mockFileIconFactory, realHashSet,
+		DecoratedPathTreeCellFactory fixture = new DecoratedPathTreeCellFactory(mockFileIconFactory, realHashSet,
 				mockArrayList, realHashtable, mockFXMLController);
 
 		assertNotNull(fixture);

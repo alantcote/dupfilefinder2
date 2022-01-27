@@ -12,7 +12,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.ContextMenuEvent;
 
 /**
- * A handler for a context menu request from a {@link DecoratedFileTreeCell}.
+ * A handler for a context menu request from a {@link DecoratedPathTreeCell}.
  */
 public class CellContextMenuRequestHandler implements EventHandler<ContextMenuEvent> {
 	/**

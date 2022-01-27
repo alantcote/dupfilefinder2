@@ -1,6 +1,5 @@
 package cotelab.dupfilefinder2.treeview;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
@@ -8,15 +7,16 @@ import java.util.Set;
 
 import cotelab.dupfilefinder2.DupFileFinder2;
 import cotelab.dupfilefinder2.FXMLController;
-import io.github.alantcote.clutilities.javafx.scene.control.FileIconFactory;
 import io.github.alantcote.clutilities.javafx.scene.control.FileTreeCell;
+import io.github.alantcote.clutilities.javafx.scene.control.PathIconFactory;
+import io.github.alantcote.clutilities.javafx.scene.control.PathTreeCell;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
 /**
  * A {@link FileTreeCell} decorated to present {@link DupFileFinder2} results.
  */
-public class DecoratedFileTreeCell extends FileTreeCell {
+public class DecoratedPathTreeCell extends PathTreeCell {
 	/**
 	 * The ancestor set.
 	 */
@@ -40,16 +40,16 @@ public class DecoratedFileTreeCell extends FileTreeCell {
 	/**
 	 * Construct a new object.
 	 * 
-	 * @param aFileIconFactory  a factory for icons.
+	 * @param aPathIconFactory  a factory for icons.
 	 * @param ancestorSet2      a set of ancestors.
 	 * @param aDupCollections   a collection of duplicate path groups.
 	 * @param aPathToDupCollMap a map from paths to duplicate paths.
 	 * @param aController       a controller.
 	 */
-	public DecoratedFileTreeCell(FileIconFactory aFileIconFactory, Set<Path> ancestorSet2,
+	public DecoratedPathTreeCell(PathIconFactory aPathIconFactory, Set<Path> ancestorSet2,
 			Collection<Collection<Path>> aDupCollections, Map<Path, Collection<Path>> aPathToDupCollMap,
 			FXMLController aController) {
-		super(aFileIconFactory);
+		super(aPathIconFactory);
 
 		ancestorSet = ancestorSet2;
 		dupCollections = aDupCollections;
@@ -93,14 +93,14 @@ public class DecoratedFileTreeCell extends FileTreeCell {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void updateItem(File item, boolean empty) {
+	protected void updateItem(Path item, boolean empty) {
 		super.updateItem(item, empty);
 
 		disableContextMenu();
 
 		if (!empty) {
 			if (item != null) {
-				Path path = item.toPath();
+				Path path = item;
 
 				if (pathToDupCollMap.containsKey(path)) {
 					setTextFill(Color.RED);

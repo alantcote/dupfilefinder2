@@ -227,7 +227,6 @@ public class GroupByContentWorker extends Phase {
 		Map<InputStream, Path> inputStream2Path = newInputStreamToPathMap();
 		Collection<InputStream> inputStreams = newInputStreamCollection();
 		Collection<Collection<InputStream>> nwcesRC;
-		String printlnPrefix = phaseName.get() + ": nWayCompareEqualPaths(): ";
 		Collection<Path> missingFilePaths = newPathArrayList();
 
 		if (pathColl.size() < 2) {

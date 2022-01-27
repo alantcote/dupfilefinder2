@@ -1,6 +1,5 @@
 package cotelab.dupfilefinder2;
 
-import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -19,11 +18,11 @@ import cotelab.dupfilefinder2.pipeline.Pipeline;
 import cotelab.dupfilefinder2.pipeline.SubtreeSearchPhase;
 import cotelab.dupfilefinder2.pipeline.phase.Phase;
 import cotelab.dupfilefinder2.pipeline.queueing.PipelineQueue;
-import cotelab.dupfilefinder2.treeview.DecoratedFileTreeView;
+import cotelab.dupfilefinder2.treeview.DecoratedPathTreeView;
 import io.github.alantcote.clutilities.javafx.scene.control.ExceptionAlert;
-import io.github.alantcote.clutilities.javafx.scene.control.FileIconFactory;
-import io.github.alantcote.clutilities.javafx.scene.control.FileTreeItem;
-import io.github.alantcote.clutilities.javafx.scene.control.FileTreeView;
+import io.github.alantcote.clutilities.javafx.scene.control.PathIconFactory;
+import io.github.alantcote.clutilities.javafx.scene.control.PathTreeItem;
+import io.github.alantcote.clutilities.javafx.scene.control.PathTreeView;
 import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -339,7 +338,7 @@ public class FXMLController implements Initializable {
 	 * The placeholder results tree view.
 	 */
 	@FXML
-	protected TreeView<File> resultsTreeView;
+	protected TreeView<Path> resultsTreeView;
 
 	/**
 	 * The root pane.
@@ -424,12 +423,12 @@ public class FXMLController implements Initializable {
 	/**
 	 * The subtree selection tree view.
 	 */
-	protected FileTreeView subtreeSelectionTreeView;
+	protected PathTreeView subtreeSelectionTreeView;
 
 	/**
 	 * @return the resultsTreeView
 	 */
-	public TreeView<File> getResultsTreeView() {
+	public TreeView<Path> getResultsTreeView() {
 		return resultsTreeView;
 	}
 
@@ -438,7 +437,7 @@ public class FXMLController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		subtreeSelectionTreeView = createFileTreeView();
+		subtreeSelectionTreeView = createPathTreeView();
 		subtreeSelectionTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		rootPane.setLeft(subtreeSelectionTreeView);
 
@@ -536,7 +535,7 @@ public class FXMLController implements Initializable {
 	 * Assemble the results display.
 	 */
 	protected void assembleResultsTreeView() {
-		FileIconFactory fileIconFactory = newFileIconFactory();
+		PathIconFactory fileIconFactory = newPathIconFactory();
 
 		resultsTreeView = newResultsTreeView(fileIconFactory);
 		resultsTreeView.setShowRoot(false);
@@ -630,9 +629,9 @@ public class FXMLController implements Initializable {
 	/**
 	 * @return a new object.
 	 */
-	protected FileTreeView createFileTreeView() {
-		TreeItem<File> rootFileTreeItem = newRootFileTreeItem();
-		FileTreeView fileTreeView = new FileTreeView(rootFileTreeItem);
+	protected PathTreeView createPathTreeView() {
+		TreeItem<Path> rootPathTreeItem = newRootPathTreeItem();
+		PathTreeView fileTreeView = new PathTreeView(rootPathTreeItem);
 
 		fileTreeView.showRootProperty().set(false);
 
@@ -652,8 +651,8 @@ public class FXMLController implements Initializable {
 	/**
 	 * @return a new object.
 	 */
-	protected FileIconFactory newFileIconFactory() {
-		return new FileIconFactory();
+	protected PathIconFactory newPathIconFactory() {
+		return new PathIconFactory();
 	}
 
 	/**
@@ -664,24 +663,24 @@ public class FXMLController implements Initializable {
 	}
 
 	/**
-	 * Get a new {@link DecoratedFileTreeView} to present search results.
+	 * Get a new {@link DecoratedPathTreeView} to present search results.
 	 * 
-	 * @param fileIconFactory the {@link FileIconFactory} to use.
+	 * @param fileIconFactory the {@link PathIconFactory} to use.
 	 * @return a new object.
 	 */
-	protected DecoratedFileTreeView newResultsTreeView(FileIconFactory fileIconFactory) {
-		return new DecoratedFileTreeView(newRootFileTreeItem(), fileIconFactory, ancestorSet, dupCollections,
+	protected DecoratedPathTreeView newResultsTreeView(PathIconFactory fileIconFactory) {
+		return new DecoratedPathTreeView(newRootPathTreeItem(), fileIconFactory, ancestorSet, dupCollections,
 				pathToDupCollMap, this);
 	}
 
 	/**
-	 * Get a new {@link FileTreeItem} that represents the (synthetic) file system
+	 * Get a new {@link PathTreeItem} that represents the (synthetic) file system
 	 * root.
 	 * 
 	 * @return a new object.
 	 */
-	protected FileTreeItem newRootFileTreeItem() {
-		return new FileTreeItem(null);
+	protected PathTreeItem newRootPathTreeItem() {
+		return new PathTreeItem(null);
 	}
 
 	/**
@@ -769,13 +768,12 @@ public class FXMLController implements Initializable {
 		output = new PipelineQueue(Integer.MAX_VALUE, "Pipeline Output");
 
 		Pipeline result = new Pipeline("Pipeline", input, output);
-		MultipleSelectionModel<TreeItem<File>> selModel = subtreeSelectionTreeView.getSelectionModel();
-		ObservableList<TreeItem<File>> selectedItems = selModel.getSelectedItems();
+		MultipleSelectionModel<TreeItem<Path>> selModel = subtreeSelectionTreeView.getSelectionModel();
+		ObservableList<TreeItem<Path>> selectedItems = selModel.getSelectedItems();
 
 		try {
-			for (TreeItem<File> rootItem : selectedItems) {
-				File rootFile = rootItem.getValue();
-				Path rootPath = rootFile.toPath();
+			for (TreeItem<Path> rootItem : selectedItems) {
+				Path rootPath = rootItem.getValue();
 				LinkedList<Path> searchRoots = new LinkedList<Path>();
 
 				searchRoots.add(rootPath);

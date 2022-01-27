@@ -1,23 +1,22 @@
 package cotelab.dupfilefinder2.treeview;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
 import cotelab.dupfilefinder2.FXMLController;
-import io.github.alantcote.clutilities.javafx.scene.control.FileIconFactory;
-import io.github.alantcote.clutilities.javafx.scene.control.FileTreeCell;
-import io.github.alantcote.clutilities.javafx.util.callback.FileTreeCellFactory;
+import io.github.alantcote.clutilities.javafx.scene.control.PathIconFactory;
+import io.github.alantcote.clutilities.javafx.scene.control.PathTreeCell;
+import io.github.alantcote.clutilities.javafx.util.callback.PathTreeCellFactory;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeView;
 
 /**
- * A {@link FileTreeCellFactory} that supplies {@link DecoratedFileTreeCell} in
- * place of {@link FileTreeCell} instances.
+ * A {@link PathTreeCellFactory} that supplies {@link DecoratedPathTreeCell} in
+ * place of {@link PathTreeCell} instances.
  */
-public class DecoratedFileTreeCellFactory extends FileTreeCellFactory {
+public class DecoratedPathTreeCellFactory extends PathTreeCellFactory {
 	/**
 	 * The set of ancestors.
 	 */
@@ -41,17 +40,17 @@ public class DecoratedFileTreeCellFactory extends FileTreeCellFactory {
 	/**
 	 * Construct a new object.
 	 * 
-	 * @param aFileIconFactory  a source for system-authentic icons.
+	 * @param aPathIconFactory  a source for system-authentic icons.
 	 * @param anAncestorSet     a set of ancestors.
 	 * @param aDupCollections   a collection of duplicate path groups.
 	 * @param aPathToDupCollMap a map from path to a group of paths of duplicate
 	 *                          files.
 	 * @param aController       the controller.
 	 */
-	public DecoratedFileTreeCellFactory(FileIconFactory aFileIconFactory, Set<Path> anAncestorSet,
+	public DecoratedPathTreeCellFactory(PathIconFactory aPathIconFactory, Set<Path> anAncestorSet,
 			Collection<Collection<Path>> aDupCollections, Map<Path, Collection<Path>> aPathToDupCollMap,
 			FXMLController aController) {
-		super(aFileIconFactory);
+		super(aPathIconFactory);
 
 		ancestorSet = anAncestorSet;
 		dupCollections = aDupCollections;
@@ -63,8 +62,8 @@ public class DecoratedFileTreeCellFactory extends FileTreeCellFactory {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public TreeCell<File> call(TreeView<File> param) {
-		return new DecoratedFileTreeCell(fileIconFactory, ancestorSet, dupCollections, pathToDupCollMap, controller);
+	public TreeCell<Path> call(TreeView<Path> param) {
+		return new DecoratedPathTreeCell(pathIconFactory, ancestorSet, dupCollections, pathToDupCollMap, controller);
 	}
 
 }
