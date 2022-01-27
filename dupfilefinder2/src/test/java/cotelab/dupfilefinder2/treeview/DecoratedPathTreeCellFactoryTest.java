@@ -23,7 +23,7 @@ import javafx.scene.control.TreeView;
  * {@link cotelab.dupfilefinder2.treeview.DecoratedFileTreeCellFactory}.
  */
 @RunWith(JfxRunner.class)
-public class DecoratedFileTreeCellFactoryTest extends TestCaseWithJMockAndByteBuddy {
+public class DecoratedPathTreeCellFactoryTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.treeview.DecoratedFileTreeCellFactory#call(javafx.scene.control.TreeView)}.

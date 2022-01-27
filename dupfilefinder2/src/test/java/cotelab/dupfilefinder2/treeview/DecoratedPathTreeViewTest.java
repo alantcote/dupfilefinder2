@@ -21,7 +21,7 @@ import javafx.scene.control.TreeItem;
  * Test case for {@link cotelab.dupfilefinder2.treeview.DecoratedPathTreeView}.
  */
 @RunWith(JfxRunner.class)
-public class DecoratedFileTreeViewTest extends TestCaseWithJMockAndByteBuddy {
+public class DecoratedPathTreeViewTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.treeview.DecoratedPathTreeView#DecoratedFileTreeView(javafx.scene.control.TreeItem, io.github.alantcote.clutilities.javafx.scene.control.cotelab.util.javafx.tree.FileIconFactory, java.util.HashSet, java.util.ArrayList, java.util.Hashtable, cotelab.dupfilefinder2.FXMLController)}.

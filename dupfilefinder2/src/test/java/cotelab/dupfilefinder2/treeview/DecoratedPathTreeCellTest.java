@@ -22,7 +22,7 @@ import io.github.alantcote.clutilities.javafx.scene.control.PathIconFactory;
  * Test case for {@link cotelab.dupfilefinder2.treeview.DecoratedPathTreeCell}.
  */
 @RunWith(JfxRunner.class)
-public class DecoratedFileTreeCellTest extends TestCaseWithJMockAndByteBuddy {
+public class DecoratedPathTreeCellTest extends TestCaseWithJMockAndByteBuddy {
 	/**
 	 * Test method for
 	 * {@link cotelab.dupfilefinder2.treeview.DecoratedPathTreeCell#DecoratedFileTreeCell(io.github.alantcote.clutilities.javafx.scene.control.cotelab.util.javafx.tree.FileIconFactory, java.util.HashSet, java.util.ArrayList, java.util.Hashtable, cotelab.dupfilefinder2.FXMLController)}.
