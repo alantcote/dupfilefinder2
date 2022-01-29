@@ -4,14 +4,14 @@ module cotelab.dupfilefinder2 {
 	requires javafx.web;
 	requires org.apache.commons.collections4;
 	
-    opens cotelab.dupfilefinder2 to javafx.fxml;
+    opens io.github.alantcote.dupfilefinder2 to javafx.fxml;
     
-    exports cotelab.dupfilefinder2;
-    exports cotelab.dupfilefinder2.beans.property;
-    exports cotelab.dupfilefinder2.beans.value;
-    exports cotelab.dupfilefinder2.javafx.animation;
-    exports cotelab.dupfilefinder2.pipeline;
-    exports cotelab.dupfilefinder2.pipeline.phase;
-    exports cotelab.dupfilefinder2.pipeline.queueing;
-    exports cotelab.dupfilefinder2.treeview;
+    exports io.github.alantcote.dupfilefinder2;
+    exports io.github.alantcote.dupfilefinder2.beans.property;
+    exports io.github.alantcote.dupfilefinder2.beans.value;
+    exports io.github.alantcote.dupfilefinder2.javafx.animation;
+    exports io.github.alantcote.dupfilefinder2.pipeline;
+    exports io.github.alantcote.dupfilefinder2.pipeline.phase;
+    exports io.github.alantcote.dupfilefinder2.pipeline.queueing;
+    exports io.github.alantcote.dupfilefinder2.treeview;
 }

@@ -7,11 +7,11 @@
   </component>
   <component name="RunManager">
     <configuration name="MainApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="cotelab.dupfilefinder2.MainApp" />
+      <option name="MAIN_CLASS_NAME" value="io.github.alantcote.dupfilefinder2.MainApp" />
       <module name="dupfilefinder2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="cotelab.dupfilefinder2.*" />
+          <option name="PATTERN" value="io.github.alantcote.dupfilefinder2.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
