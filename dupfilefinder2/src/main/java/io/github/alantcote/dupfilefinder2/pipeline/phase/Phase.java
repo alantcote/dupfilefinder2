@@ -70,10 +70,10 @@ public abstract class Phase extends Task<Void> implements QueueProcessor {
 		boolean success = true;
 		Collection<Phase> livingKids = newPhaseArrayList();
 
-		System.err.println("Phase.cancel(): cancel entered for " + phaseName.get());
-		Throwable throwable = new Throwable();
-
-		throwable.printStackTrace();
+//		System.err.println("Phase.cancel(): cancel entered for " + phaseName.get());
+//		Throwable throwable = new Throwable();
+//
+//		throwable.printStackTrace();
 
 		for (Phase child : children) {
 			if (!child.isDone()) {

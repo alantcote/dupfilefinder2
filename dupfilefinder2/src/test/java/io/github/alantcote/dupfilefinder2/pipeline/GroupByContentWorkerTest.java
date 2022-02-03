@@ -373,7 +373,7 @@ public class GroupByContentWorkerTest extends TestCaseWithJMockAndByteBuddy {
 					assertNull(e.getMessage());
 				}
 
-				assertEquals(0, fixture.bytesComparedCount.get());
+				assertEquals(1, fixture.bytesComparedCount.get());
 			}
 			
 		});

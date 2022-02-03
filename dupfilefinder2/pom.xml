@@ -113,23 +113,8 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.2.0</version>
-				<executions>
-					<execution>
-						<id>tree</id>
-						<phase>package</phase>
-						<goals>
-							<goal>analyze</goal>
-							<goal>tree</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 
+		<plugins>
 			<plugin>
 				<groupId>org.openjfx</groupId>
 				<artifactId>javafx-maven-plugin</artifactId>
@@ -138,35 +123,6 @@
 					<mainClass>${javafx.main.class}</mainClass>
 				</configuration>
 			</plugin>
-
-			<!--
-			<plugin>
-				<groupId>com.akathist.maven.plugins.launch4j</groupId>
-				<artifactId>launch4j-maven-plugin</artifactId>
-				<version>2.1.2</version>
-				<executions>
-					<execution>
-						<id>l4j-gui</id>
-						<phase>package</phase>
-						<goals>
-							<goal>launch4j</goal>
-						</goals>
-						<configuration>
-							<headerType>gui</headerType>
-							<outfile>target/${project.artifactId}-${project.version}.exe</outfile>
-							<jar>target/${project.artifactId}-${project.version}.jar</jar>
-							<errTitle>${project.artifactId}</errTitle>
-							<classPath>
-								<mainClass>${javafx.main.class}</mainClass>
-							</classPath>
-							<jre>
-								<minVersion>${java.version}</minVersion>
-							</jre>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			-->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -207,6 +163,16 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>tree</id>
+						<phase>package</phase>
+						<goals>
+							<goal>analyze</goal>
+							<goal>tree</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
