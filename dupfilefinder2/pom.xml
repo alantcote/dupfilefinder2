@@ -317,7 +317,6 @@
 
 	<dependencies>
 		<!--
-		-->
 		<dependency>
 			<groupId>net.bytebuddy</groupId>
 			<artifactId>byte-buddy</artifactId>
@@ -331,6 +330,7 @@
 			<version>3.3.0</version>
 			<scope>provided</scope>
 		</dependency>
+		-->
 
 		<dependency>
 			<groupId>io.github.alantcote</groupId>
@@ -393,6 +393,7 @@
 			<classifier>${javafx.classifier}</classifier>
 		</dependency>
 
+		<!--
 		<dependency>
 			<groupId>org.jmock</groupId>
 			<artifactId>jmock-imposters</artifactId>
@@ -404,6 +405,7 @@
 			<artifactId>jmock-legacy</artifactId>
 			<version>2.12.0</version>
 		</dependency>
+		-->
 
 		<dependency>
 			<groupId>junit</groupId>
