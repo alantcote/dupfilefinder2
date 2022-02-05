@@ -35,7 +35,7 @@
 		<javafx.main.class>io.github.alantcote.dupfilefinder2.DupFileFinder2</javafx.main.class>
 		<main.class>${javafx.main.class}</main.class>
 		<!-- <javafx.classifier>win</javafx.classifier> -->
-		<openjfx.version>18-ea+8</openjfx.version>
+		<openjfx.version>18-ea+10</openjfx.version>
 	</properties>
 
 	<distributionManagement>
