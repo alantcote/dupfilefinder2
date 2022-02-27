@@ -5,10 +5,10 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import io.github.alantcote.clutilities.javafx.scene.control.FileTreeView;
-import io.github.alantcote.clutilities.javafx.scene.control.PathIconFactory;
-import io.github.alantcote.clutilities.javafx.scene.control.PathTreeView;
 import io.github.alantcote.dupfilefinder2.FXMLController;
+import io.github.alantcote.fxutilities.javafx.scene.control.FileTreeView;
+import io.github.alantcote.fxutilities.javafx.scene.control.PathIconFactory;
+import io.github.alantcote.fxutilities.javafx.scene.control.PathTreeView;
 import javafx.scene.control.TreeItem;
 
 /**

@@ -1,5 +1,5 @@
 module cotelab.dupfilefinder2 {
-	requires transitive clutilities;
+	requires transitive fxutilities;
     requires javafx.fxml;
 	requires javafx.web;
 	requires org.apache.commons.collections4;

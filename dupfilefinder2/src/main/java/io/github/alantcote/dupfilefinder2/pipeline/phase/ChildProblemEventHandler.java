@@ -1,6 +1,6 @@
 package io.github.alantcote.dupfilefinder2.pipeline.phase;
 
-import io.github.alantcote.clutilities.javafx.scene.control.ExceptionAlert;
+import io.github.alantcote.fxutilities.javafx.scene.control.ExceptionAlert;
 import javafx.application.Platform;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;

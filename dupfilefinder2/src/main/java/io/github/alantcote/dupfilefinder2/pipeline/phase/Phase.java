@@ -3,9 +3,9 @@ package io.github.alantcote.dupfilefinder2.pipeline.phase;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import io.github.alantcote.clutilities.javafx.scene.control.ExceptionAlert;
 import io.github.alantcote.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import io.github.alantcote.dupfilefinder2.pipeline.queueing.QueueProcessor;
+import io.github.alantcote.fxutilities.javafx.scene.control.ExceptionAlert;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;

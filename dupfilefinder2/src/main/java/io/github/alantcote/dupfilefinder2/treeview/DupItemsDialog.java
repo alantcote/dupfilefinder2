@@ -6,8 +6,8 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 
-import io.github.alantcote.clutilities.javafx.scene.control.ExceptionAlert;
 import io.github.alantcote.dupfilefinder2.FXMLController;
+import io.github.alantcote.fxutilities.javafx.scene.control.ExceptionAlert;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

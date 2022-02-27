@@ -3,7 +3,7 @@ package io.github.alantcote.dupfilefinder2;
 import java.io.IOException;
 import java.util.prefs.BackingStoreException;
 
-import io.github.alantcote.clutilities.javafx.windowprefs.WindowPrefs;
+import io.github.alantcote.fxutilities.javafx.windowprefs.WindowPrefs;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;

@@ -5,11 +5,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import io.github.alantcote.clutilities.javafx.scene.control.FileTreeCell;
-import io.github.alantcote.clutilities.javafx.scene.control.PathIconFactory;
-import io.github.alantcote.clutilities.javafx.scene.control.PathTreeCell;
 import io.github.alantcote.dupfilefinder2.DupFileFinder2;
 import io.github.alantcote.dupfilefinder2.FXMLController;
+import io.github.alantcote.fxutilities.javafx.scene.control.FileTreeCell;
+import io.github.alantcote.fxutilities.javafx.scene.control.PathIconFactory;
+import io.github.alantcote.fxutilities.javafx.scene.control.PathTreeCell;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
