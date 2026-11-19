@@ -418,8 +418,7 @@ public class GroupByContentWorker extends Phase {
 
 	protected void processBatch(Collection<Path> batch) throws Exception {
 		int nbrPaths = batch.size();
-		Path firstPath = (Path) (batch.toArray()[0]);
-		long fileLen = fileSize(firstPath);
+		long fileLen = findBatchFileLength(batch);
 		Collection<Collection<Path>> pathCollColl = nWayCompareEqualPaths(batch);
 
 		if (isCancelled()) {
@@ -443,6 +442,40 @@ public class GroupByContentWorker extends Phase {
 		}
 
 		bytesComparedCount.increment(fileLen * nbrPaths);
+	}
+
+	/**
+	 * Find the length of the files represented by the paths in the batch, which
+	 * should all be the same length. Some of the files may have disappeared
+	 * since they were discovered; these are removed from the batch, so it is
+	 * possible for the batch to be reduced to fewer than 2 entries.
+	 * @param batch A collection of paths
+	 * @return the length of the files in the remaining batch.
+	 */
+	protected long findBatchFileLength(Collection<Path> batch) {
+		long fileLen = 0;
+		Path[] paths = new Path[batch.size()];
+		int ndx = 0;
+		int nPaths = paths.length;
+		
+		for (Path entry : batch) {
+			paths[ndx++] = entry;
+		}
+		
+		for (int entryIndex = 0; entryIndex < nPaths; ++entryIndex) {
+			Path aPath = paths[entryIndex];
+			long len = 0;
+			
+			try {
+				len = fileSize(aPath);
+			} catch (IOException e) {
+				batch.remove(aPath);
+			}
+			
+			fileLen = len;
+		}
+		
+		return fileLen;
 	}
 
 	/**
