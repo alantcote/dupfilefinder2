@@ -244,24 +244,27 @@
       <TreeView fx:id="placeHolderTreeView" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </left>
    <right>
-      <BorderPane BorderPane.alignment="CENTER">
+      <BorderPane fx:id="resultsBorderPane" BorderPane.alignment="CENTER">
          <center>
             <TreeView fx:id="resultsTreeView" prefHeight="200.0" prefWidth="200.0" />
          </center>
-         <bottom>
-            <VBox prefHeight="73.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" text="Legend" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label text="Unique objects are BLACK" />
-                  <Label text="Duplicated objects are RED" textFill="RED" />
-                  <Label text="Ancestors of duplicates are PURPLE" textFill="PURPLE" />
-               </children>
-            </VBox>
-         </bottom>
+		<bottom>
+			<VBox prefHeight="73.0" prefWidth="200.0"
+				BorderPane.alignment="CENTER">
+				<children>
+					<Label alignment="CENTER" contentDisplay="CENTER"
+						text="Legend" textAlignment="CENTER">
+						<font>
+							<Font name="System Bold" size="12.0" />
+						</font>
+					</Label>
+					<Label text="Unique objects are BLACK" />
+					<Label text="Duplicated objects are RED" textFill="RED" />
+					<Label text="Ancestors of duplicates are PURPLE"
+						textFill="PURPLE" />
+				</children>
+			</VBox>
+		</bottom>
       </BorderPane>
    </right>
 </BorderPane>

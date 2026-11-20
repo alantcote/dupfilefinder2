@@ -339,6 +339,9 @@ public class FXMLController implements Initializable {
 	 */
 	@FXML
 	protected TreeView<Path> resultsTreeView;
+	
+	@FXML
+	protected BorderPane resultsBorderPane;
 
 	/**
 	 * The root pane.
@@ -901,7 +904,7 @@ public class FXMLController implements Initializable {
 				assembleResults();
 
 				assembleResultsTreeView();
-				rootPane.setRight(resultsTreeView);
+				resultsBorderPane.setCenter(resultsTreeView);
 				resultsTreeView.setVisible(true);
 			}
 		});
