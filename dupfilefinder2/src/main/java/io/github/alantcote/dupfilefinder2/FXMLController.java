@@ -11,11 +11,7 @@ import java.util.ResourceBundle;
 
 import io.github.alantcote.dupfilefinder2.javafx.animation.ElapsedTimeTracker;
 import io.github.alantcote.dupfilefinder2.javafx.animation.HeapTracker;
-import io.github.alantcote.dupfilefinder2.pipeline.GroupByContentPhase;
-import io.github.alantcote.dupfilefinder2.pipeline.GroupBySizePhase;
-import io.github.alantcote.dupfilefinder2.pipeline.MatchingSubtreeIdentificationPhase;
 import io.github.alantcote.dupfilefinder2.pipeline.Pipeline;
-import io.github.alantcote.dupfilefinder2.pipeline.SubtreeSearchPhase;
 import io.github.alantcote.dupfilefinder2.pipeline.phase.Phase;
 import io.github.alantcote.dupfilefinder2.pipeline.queueing.PipelineQueue;
 import io.github.alantcote.dupfilefinder2.treeview.DecoratedPathTreeView;
@@ -52,6 +48,159 @@ import javafx.scene.layout.BorderPane;
  * The GUI controller.
  */
 public class FXMLController implements Initializable {
+
+    @FXML
+    private Button cancelButton;
+
+    @FXML
+    private Label elapsedTime;
+
+    @FXML
+    private MenuItem fileCloseMenuItem;
+
+    @FXML
+    private Label gbc2msiPutCount;
+
+    @FXML
+    private Label gbc2msiQueueName;
+
+    @FXML
+    private Label gbc2msiTakeCount;
+
+    @FXML
+    private Label gbcBytesCompared;
+
+    @FXML
+    private Label gbcFilesCompared;
+
+    @FXML
+    private Label gbcName;
+
+    @FXML
+    private Label gbcState;
+
+    @FXML
+    private Label gbcUniqueCount;
+
+    @FXML
+    private Label gbs2gbcPutCount;
+
+    @FXML
+    private Label gbs2gbcQueueName;
+
+    @FXML
+    private Label gbs2gbcTakeCount;
+
+    @FXML
+    private Label gbsFilesMeasuredCount;
+
+    @FXML
+    private Label gbsName;
+
+    @FXML
+    private Label gbsSizeCount;
+
+    @FXML
+    private Label gbsState;
+
+    @FXML
+    private Label gbsUniqueCount;
+
+    @FXML
+    private Label gbsUnmeasurableCount;
+
+    @FXML
+    private Label heapMessage;
+
+    @FXML
+    private ProgressBar heapProgressBar;
+
+    @FXML
+    private MenuItem helpAboutMenuItem;
+
+    @FXML
+    private MenuItem helpUsageMenuItem;
+
+    @FXML
+    private Label msiName;
+
+    @FXML
+    private Label msiPathGroupsConsidered;
+
+    @FXML
+    private Label msiState;
+
+    @FXML
+    private Label pipelineInputPutCount;
+
+    @FXML
+    private Label pipelineInputQueueName;
+
+    @FXML
+    private Label pipelineInputTakeCount;
+
+    @FXML
+    private Label pipelineName;
+
+    @FXML
+    private Label pipelineOutputPutCount;
+
+    @FXML
+    private Label pipelineOutputQueueName;
+
+    @FXML
+    private Label pipelineOutputTakeCount;
+
+    @FXML
+    private Label pipelineState;
+
+    @FXML
+    private TreeView<?> placeHolderTreeView;
+
+    @FXML
+    private BorderPane resultsBorderPane;
+
+    @FXML
+    private TreeView<?> resultsTreeView;
+
+    @FXML
+    private BorderPane rootPane;
+
+    @FXML
+    private Label ss2gbsPutCount;
+
+    @FXML
+    private Label ss2gbsQueueName;
+
+    @FXML
+    private Label ss2gbsTakeCount;
+
+    @FXML
+    private Label sspDirectoryCount;
+
+    @FXML
+    private Label sspFailedAccessCount;
+
+    @FXML
+    private Label sspName;
+
+    @FXML
+    private Label sspOtherCount;
+
+    @FXML
+    private Label sspRegularFileCount;
+
+    @FXML
+    private Label sspState;
+
+    @FXML
+    private Label sspSymbolicLinkCount;
+
+    @FXML
+    private Label sspUnreadableCount;
+
+    @FXML
+    private Button startButton;
 	/**
 	 * The name of the resource used as Help>About dialog content.
 	 */
@@ -71,23 +220,10 @@ public class FXMLController implements Initializable {
 	 * The popup browser launcher.
 	 */
 	protected PopupBrowserLauncher browserLauncher = null;
-
-	/**
-	 * The cancel button.
-	 */
-	@FXML
-	protected Button cancelButton;
-
 	/**
 	 * The collection of duplicate file groups.
 	 */
 	protected ArrayList<Collection<Path>> dupCollections = null;
-
-	/**
-	 * The elapsed time display.
-	 */
-	@FXML
-	protected Label elapsedTime;
 
 	/**
 	 * Tracker for elapsed time during a scan.
@@ -95,146 +231,9 @@ public class FXMLController implements Initializable {
 	protected ElapsedTimeTracker elapsedTimeTracker;
 
 	/**
-	 * The File>Close menu item.
-	 */
-	@FXML
-	protected MenuItem fileCloseMenuItem;
-
-	/**
-	 * The {@link GroupByContentPhase} to {@link MatchingSubtreeIdentificationPhase}
-	 * queue put count field.
-	 */
-	@FXML
-	protected Label gbc2msiPutCount;
-
-	/**
-	 * The {@link GroupByContentPhase} to {@link MatchingSubtreeIdentificationPhase}
-	 * queue name field.
-	 */
-	@FXML
-	protected Label gbc2msiQueueName;
-
-	/**
-	 * The {@link GroupByContentPhase} to {@link MatchingSubtreeIdentificationPhase}
-	 * queue take count field.
-	 */
-	@FXML
-	protected Label gbc2msiTakeCount;
-
-	/**
-	 * The {@link GroupByContentPhase} bytes compared count field.
-	 */
-	@FXML
-	protected Label gbcBytesCompared;
-
-	/**
-	 * The {@link GroupByContentPhase} files compared count field.
-	 */
-	@FXML
-	protected Label gbcFilesCompared;
-
-	/**
-	 * The {@link GroupByContentPhase} name field.
-	 */
-	@FXML
-	protected Label gbcName;
-
-	/**
-	 * The {@link GroupByContentPhase} state field.
-	 */
-	@FXML
-	protected Label gbcState;
-
-	/**
-	 * The {@link GroupByContentPhase} unique files count field.
-	 */
-	@FXML
-	protected Label gbcUniqueCount;
-
-	/**
-	 * The {@link GroupBySizePhase} to {@link GroupByContentPhase} queue put count
-	 * field.
-	 */
-	@FXML
-	protected Label gbs2gbcPutCount;
-
-	/**
-	 * The {@link GroupBySizePhase} to {@link GroupByContentPhase} queue name field.
-	 */
-	@FXML
-	protected Label gbs2gbcQueueName;
-
-	/**
-	 * The {@link GroupBySizePhase} to {@link GroupByContentPhase} queue take count
-	 * field.
-	 */
-	@FXML
-	protected Label gbs2gbcTakeCount;
-
-	/**
-	 * The {@link GroupBySizePhase} files measured count field.
-	 */
-	@FXML
-	protected Label gbsFilesMeasuredCount;
-
-	/**
-	 * The {@link GroupBySizePhase} name field.
-	 */
-	@FXML
-	protected Label gbsName;
-
-	/**
-	 * The {@link GroupBySizePhase} file size count field.
-	 */
-	@FXML
-	protected Label gbsSizeCount;
-
-	/**
-	 * The {@link GroupBySizePhase} state field.
-	 */
-	@FXML
-	protected Label gbsState;
-
-	/**
-	 * The {@link GroupBySizePhase} unique files count field.
-	 */
-	@FXML
-	protected Label gbsUniqueCount;
-
-	/**
-	 * The {@link GroupBySizePhase} unmeasurable files count field.
-	 */
-	@FXML
-	protected Label gbsUnmeasurableCount;
-
-	/**
-	 * The heap message field.
-	 */
-	@FXML
-	protected Label heapMessage;
-
-	/**
-	 * The heap progress bar.
-	 */
-	@FXML
-	protected ProgressBar heapProgressBar;
-
-	/**
 	 * The heap tracking component.
 	 */
 	protected HeapTracker heapTracker;
-
-	/**
-	 * The Help>About menu item.
-	 */
-	@FXML
-	protected MenuItem helpAboutMenuItem;
-
-	/**
-	 * The Help>Usage menu item.
-	 */
-	@FXML
-	protected MenuItem helpUsageMenuItem;
 
 	/**
 	 * The instance of {@link HostServices}.
@@ -245,25 +244,6 @@ public class FXMLController implements Initializable {
 	 * The pipeline input queue.
 	 */
 	protected PipelineQueue input = null;
-
-	/**
-	 * The {@link MatchingSubtreeIdentificationPhase} name field.
-	 */
-	@FXML
-	protected Label msiName;
-
-	/**
-	 * The {@link MatchingSubtreeIdentificationPhase} path groups considered count
-	 * field.
-	 */
-	@FXML
-	protected Label msiPathGroupsConsidered;
-
-	/**
-	 * The {@link MatchingSubtreeIdentificationPhase} state field.
-	 */
-	@FXML
-	protected Label msiState;
 
 	/**
 	 * The pipeline output queue.
@@ -281,149 +261,6 @@ public class FXMLController implements Initializable {
 	protected Pipeline pipeline;
 
 	/**
-	 * The pipeline input queue put count field.
-	 */
-	@FXML
-	protected Label pipelineInputPutCount;
-
-	/**
-	 * The pipeline input queue name field.
-	 */
-	@FXML
-	protected Label pipelineInputQueueName;
-
-	/**
-	 * The pipeline input queue take count field.
-	 */
-	@FXML
-	protected Label pipelineInputTakeCount;
-
-	/**
-	 * The pipeline name field.
-	 */
-	@FXML
-	protected Label pipelineName;
-
-	/**
-	 * The pipeline output queue put count field.
-	 */
-	@FXML
-	protected Label pipelineOutputPutCount;
-
-	/**
-	 * The pipeline output queue name field.
-	 */
-	@FXML
-	protected Label pipelineOutputQueueName;
-
-	/**
-	 * The pipeline output queue take count field.
-	 */
-	@FXML
-	protected Label pipelineOutputTakeCount;
-
-	/**
-	 * The pipeline state field.
-	 */
-	@FXML
-	protected Label pipelineState;
-
-	/**
-	 * The placeholder subtree selection tree view.
-	 */
-	@FXML
-	protected TreeView<String> placeHolderTreeView;
-
-	/**
-	 * The placeholder results tree view.
-	 */
-	@FXML
-	protected TreeView<Path> resultsTreeView;
-	
-	@FXML
-	protected BorderPane resultsBorderPane;
-
-	/**
-	 * The root pane.
-	 */
-	@FXML
-	protected BorderPane rootPane;
-
-	/**
-	 * The {@link SubtreeSearchPhase} to {@link GroupBySizePhase} queue put count
-	 * field.
-	 */
-	@FXML
-	protected Label ss2gbsPutCount;
-
-	/**
-	 * The {@link SubtreeSearchPhase} to {@link GroupBySizePhase} queue name field.
-	 */
-	@FXML
-	protected Label ss2gbsQueueName;
-
-	/**
-	 * The {@link SubtreeSearchPhase} to {@link GroupBySizePhase} queue take count
-	 * field.
-	 */
-	@FXML
-	protected Label ss2gbsTakeCount;
-
-	/**
-	 * The {@link SubtreeSearchPhase} directory count field.
-	 */
-	@FXML
-	protected Label sspDirectoryCount;
-
-	/**
-	 * The {@link SubtreeSearchPhase} failed access count field.
-	 */
-	@FXML
-	protected Label sspFailedAccessCount;
-
-	/**
-	 * The {@link SubtreeSearchPhase} name field.
-	 */
-	@FXML
-	protected Label sspName;
-
-	/**
-	 * The {@link SubtreeSearchPhase} other count field.
-	 */
-	@FXML
-	protected Label sspOtherCount;
-
-	/**
-	 * The {@link SubtreeSearchPhase} regular file count field.
-	 */
-	@FXML
-	protected Label sspRegularFileCount;
-
-	/**
-	 * The {@link SubtreeSearchPhase} state field.
-	 */
-	@FXML
-	protected Label sspState;
-
-	/**
-	 * The {@link SubtreeSearchPhase} symbolic link count field.
-	 */
-	@FXML
-	protected Label sspSymbolicLinkCount;
-
-	/**
-	 * The {@link SubtreeSearchPhase} unreadable count field.
-	 */
-	@FXML
-	protected Label sspUnreadableCount;
-
-	/**
-	 * The start button.
-	 */
-	@FXML
-	protected Button startButton;
-
-	/**
 	 * The subtree selection tree view.
 	 */
 	protected PathTreeView subtreeSelectionTreeView;
@@ -431,8 +268,14 @@ public class FXMLController implements Initializable {
 	/**
 	 * @return the resultsTreeView
 	 */
+	@SuppressWarnings("unchecked")
 	public TreeView<Path> getResultsTreeView() {
-		return resultsTreeView;
+		return (TreeView<Path>) resultsTreeView;
+	}
+
+    @FXML
+	public void initialize() {
+		initialize(null, null);
 	}
 
 	/**
