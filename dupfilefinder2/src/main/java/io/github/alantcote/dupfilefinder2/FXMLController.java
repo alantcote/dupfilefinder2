@@ -201,6 +201,10 @@ public class FXMLController implements Initializable {
 
     @FXML
     private Button startButton;
+
+    @FXML
+    private BorderPane subtreeSelectionBorderPane;
+    
 	/**
 	 * The name of the resource used as Help>About dialog content.
 	 */
@@ -285,7 +289,7 @@ public class FXMLController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		subtreeSelectionTreeView = createPathTreeView();
 		subtreeSelectionTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		rootPane.setLeft(subtreeSelectionTreeView);
+		subtreeSelectionBorderPane.setCenter(subtreeSelectionTreeView);
 
 		startHeapTracker();
 		elapsedTimeTracker = newElapsedTimeTracker(elapsedTime);

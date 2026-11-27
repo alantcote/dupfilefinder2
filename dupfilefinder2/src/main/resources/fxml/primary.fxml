@@ -241,7 +241,18 @@
       </HBox>
    </bottom>
    <left>
-      <TreeView id="subtreeSelectionTreeView" fx:id="placeHolderTreeView" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <BorderPane id="subtreeSelectionBorderPane" fx:id="subtreeSelectionBorderPane" BorderPane.alignment="CENTER">
+         <center>
+            <TreeView id="subtreeSelectionTreeView" fx:id="placeHolderTreeView" prefWidth="200.0" />
+         </center>
+         <top>
+            <Label id="subtreeSelectionLabel" text="Subtree Selection Browser" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </top>
+      </BorderPane>
    </left>
    <right>
       <BorderPane fx:id="resultsBorderPane" BorderPane.alignment="CENTER">
@@ -262,6 +273,13 @@
 				</children>
 			</VBox>
 		</bottom>
+         <top>
+            <Label text="Results" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </top>
       </BorderPane>
    </right>
 </BorderPane>
